@@ -48,6 +48,6 @@ jobs:
             **/.git*
             **/.git*/**
             **/node_modules/**
-            **/vendor/** # Skip the entire vendor directory
+            **/vendor/**
             .env.example
             README.md
