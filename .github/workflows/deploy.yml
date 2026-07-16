@@ -23,7 +23,7 @@ jobs:
 
       # 3. Install Backend Dependencies
       - name: 📦 Install Composer Dependencies
-        run: composer install --no-dev --optimize-autoloader
+        run: composer install --no-dev --optimize-autoloader --ignore-platform-reqs
 
       # 4. Optional: Build Frontend Assets (if using Node/Vite/Mix)
       # - name: 🛠️ Setup Node and Build
