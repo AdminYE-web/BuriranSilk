@@ -1,0 +1,49 @@
+name: Deploy to Shared Hosting
+
+# This triggers the action when you push to the main branch
+on:
+  push:
+    branches:
+      - main 
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the latest code
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v4
+
+      # 2. Setup PHP environment (Adjust version as needed)
+      - name: 🐘 Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      # 3. Install Backend Dependencies
+      - name: 📦 Install Composer Dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      # 4. Optional: Build Frontend Assets (if using Node/Vite/Mix)
+      # - name: 🛠️ Setup Node and Build
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: '20'
+      # - run: npm ci
+      # - run: npm run build
+
+      # 5. Sync files to Shared Host via FTP
+      - name: 🚀 Sync files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          # Exclude files you don't want on the live server
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            .env.example
+            README.md
