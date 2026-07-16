@@ -19,7 +19,7 @@ jobs:
       - name: 🐘 Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3' # THIS IS THE CRITICAL FIX
+          php-version: '8.4'
 
       # 3. Install Backend Dependencies
       - name: 📦 Install Composer Dependencies
