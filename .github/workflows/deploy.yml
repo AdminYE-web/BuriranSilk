@@ -19,11 +19,15 @@ jobs:
       - name: 🐘 Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3' # Changed from 8.2 to 8.3
+          php-version: '8.3' # THIS IS THE CRITICAL FIX
 
       # 3. Install Backend Dependencies
       - name: 📦 Install Composer Dependencies
-        run: composer install --no-dev --optimize-autoloader --ignore-platform-reqs
+        # If you updated your lock file locally, use this:
+        run: composer install --no-dev --optimize-autoloader
+        
+        # ONLY if you still have lock file issues, use this instead:
+        # run: composer install --no-dev --optimize-autoloader --ignore-platform-reqs
 
       # 4. Optional: Build Frontend Assets (if using Node/Vite/Mix)
       # - name: 🛠️ Setup Node and Build
