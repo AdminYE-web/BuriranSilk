@@ -91,17 +91,17 @@
                     <li class="nav-item">
                         <a
                             href="{{ url('/about') }}"
-                            class="nav-link {{ request()->is('about') ? 'active' : '' }}"
+                            class="nav-link header-pill-link {{ request()->is('about') ? 'active' : '' }}"
                         >
                             私たちについて
                         </a>
                     </li>
 
                     {{-- Guide --}}
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown product-dropdown">
                         <a
                             href="#"
-                            class="nav-link dropdown-toggle"
+                            class="nav-link dropdown-toggle product-dropdown-toggle"
                             role="button"
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
@@ -109,7 +109,7 @@
                             ご利用ガイド
                         </a>
 
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu product-dropdown-menu">
                             <li>
                                 <a
                                     href="{{ url('/guide') }}"
@@ -152,7 +152,7 @@
                     <li class="nav-item">
                         <a
                             href="{{ url('/contact') }}"
-                            class="nav-link {{ request()->is('contact') ? 'active' : '' }}"
+                            class="nav-link header-pill-link {{ request()->is('contact') ? 'active' : '' }}"
                         >
                             お問い合わせ
                         </a>
@@ -231,3 +231,21 @@
         </div>
     </nav>
 </header>
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const siteHeader = document.querySelector('.site-header');
+
+            if (!siteHeader) {
+                return;
+            }
+
+            const updateHeader = function () {
+                siteHeader.classList.toggle('is-scrolled', window.scrollY > 24);
+            };
+
+            updateHeader();
+            window.addEventListener('scroll', updateHeader, { passive: true });
+        });
+    </script>
+@endpush
