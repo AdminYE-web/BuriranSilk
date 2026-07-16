@@ -1,0 +1,1350 @@
+/* ========================================
+   Home Hero
+======================================== */
+
+.home-hero {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - var(--header-height));
+    min-height: 430px;
+    max-height: 700px;
+    overflow: hidden;
+    color: #ffffff;
+    background: #777777;
+}
+
+.home-hero-picture {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.home-hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.home-hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0, 0, 0, 0.3) 0%,
+            rgba(0, 0, 0, 0.12) 43%,
+            rgba(0, 0, 0, 0.02) 100%
+        );
+}
+
+.home-hero-container {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+}
+
+.home-hero-content {
+    max-width: 620px;
+    margin-left: clamp(10px, 5vw, 75px);
+}
+
+.home-hero-title {
+    margin: 0 0 21px;
+    color: #ffffff;
+    font-family: "Noto Serif JP", serif;
+    font-size: clamp(34px, 3.2vw, 47px);
+    font-weight: 300;
+    line-height: 1.45;
+    letter-spacing: 0.045em;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.28);
+}
+
+.home-hero-description {
+    margin: 0 0 36px;
+    color: rgba(255, 255, 255, 0.96);
+    font-family: "Noto Serif JP", serif;
+    font-size: clamp(15px, 1.4vw, 19px);
+    font-weight: 300;
+    line-height: 1.8;
+    letter-spacing: 0.06em;
+    text-shadow: 0 2px 9px rgba(0, 0, 0, 0.3);
+}
+
+.home-hero-button {
+    min-width: 171px;
+    min-height: 48px;
+    padding: 10px 27px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    background: #c6a45f;
+    border: 1px solid rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    font-family: "Noto Serif JP", serif;
+    font-size: 18px;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16);
+    transition:
+        color 0.25s ease,
+        background-color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.home-hero-button:hover,
+.home-hero-button:focus {
+    color: #ffffff;
+    background: #ad8a49;
+    border-color: #ffffff;
+    transform: translateY(-2px);
+}
+
+/* ========================================
+   Home Concept
+======================================== */
+
+.home-concept {
+    position: relative;
+    padding: 40px 0 58px;
+    overflow: hidden;
+    color: #2c2925;
+    background: #f5f3ed;
+}
+
+/* ลายตกแต่ง */
+
+.home-concept-decoration {
+    position: absolute;
+    top: -44px;
+    right: 55px;
+    width: 211px;
+    height: 202px;
+    color: #d9d4c2;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.home-concept-decoration img {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* หัวข้อ */
+
+.home-concept-heading {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 30px;
+}
+
+.home-concept-eyebrow {
+    margin: 0 0 8px;
+    font-family: "Noto Serif JP", serif;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+.home-concept-title {
+    margin: 0;
+    font-family: "Noto Serif JP", serif;
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0.08em;
+}
+
+.home-concept-row {
+    column-gap: 20px;
+}
+
+/* รูปภาพซ้อนกัน */
+
+.home-concept-images {
+    width: min(100%, 370px);
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.home-concept-image {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.concept-image {
+    position: absolute;
+    overflow: hidden;
+    background: #dddddd;
+}
+
+.concept-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.concept-image-first {
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 135px;
+    height: 135px;
+}
+
+.concept-image-second {
+    top: 38px;
+    left: 66px;
+    z-index: 2;
+    width: 135px;
+    height: 135px;
+}
+
+.concept-image-third {
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    width: 135px;
+    height: 135px;
+}
+
+/* กล่องข้อความ */
+
+.home-concept-card {
+    width: 100%;
+    max-width: 465px;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 17px 19px 13px;
+    background: rgba(255, 255, 255, 0.38);
+    border: 1px solid #a78657;
+}
+
+.home-concept-card-title {
+    margin: 0;
+    font-family: "Noto Serif JP", serif;
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1.55;
+    letter-spacing: 0.025em;
+}
+
+.home-concept-divider {
+    width: 100%;
+    height: 1px;
+    margin: 7px 0 10px;
+    background: #aaa79f;
+}
+
+.home-concept-description {
+    font-family: "Noto Serif JP", serif;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.85;
+    letter-spacing: 0.015em;
+}
+
+.home-concept-description p {
+    margin: 0;
+}
+
+.home-concept-description p + p {
+    margin-top: 2px;
+}
+
+/* ========================================
+   Tablet
+======================================== */
+
+@media (max-width: 991.98px) {
+    .home-hero {
+        height: calc(100svh - var(--header-height));
+        min-height: 520px;
+        max-height: none;
+    }
+
+    .home-hero-container .row {
+        align-items: flex-end !important;
+        padding-bottom: 70px;
+    }
+
+    .home-hero-content {
+        margin-left: 0;
+    }
+
+    .home-concept {
+        padding: 55px 0 70px;
+    }
+
+    .home-concept-heading {
+        margin-bottom: 40px;
+    }
+
+    .home-concept-row {
+        row-gap: 45px;
+    }
+
+    .home-concept-images {
+        width: min(100%, 370px);
+    }
+
+    .concept-image-first,
+    .concept-image-second,
+    .concept-image-third {
+        width: 150px;
+        height: 150px;
+    }
+
+    .concept-image-second {
+        top: 42px;
+        left: 76px;
+    }
+
+    .home-concept-card {
+        max-width: 560px;
+    }
+
+    .home-concept-decoration {
+        right: 10px;
+    }
+}
+
+/* ========================================
+   Mobile
+======================================== */
+
+@media (max-width: 767.98px) {
+    .home-hero-image {
+        object-position: 62% center;
+    }
+
+    .home-hero-overlay {
+        background:
+            linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.62) 0%,
+                rgba(0, 0, 0, 0.2) 48%,
+                rgba(0, 0, 0, 0.03) 100%
+            );
+    }
+
+    .home-hero-container .row {
+        padding-bottom: 48px;
+    }
+
+    .home-hero-title {
+        margin-bottom: 13px;
+        font-size: 29px;
+    }
+
+    .home-hero-description {
+        margin-bottom: 25px;
+        font-size: 15px;
+    }
+
+    .home-hero-button {
+        min-width: 150px;
+        min-height: 44px;
+        border-radius: 9px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .home-concept {
+        padding: 45px 0 55px;
+    }
+
+    .home-concept-decoration {
+        top: -30px;
+        right: -25px;
+        width: 120px;
+        height: 120px;
+    }
+
+    .home-concept-heading {
+        margin-bottom: 28px;
+    }
+
+    .home-concept-eyebrow {
+        font-size: 15px;
+    }
+
+    .home-concept-title {
+        font-size: 25px;
+    }
+
+    .home-concept-images {
+        width: min(100%, 285px);
+    }
+
+    .concept-image-first,
+    .concept-image-second,
+    .concept-image-third {
+        width: 118px;
+        height: 118px;
+    }
+
+    .concept-image-second {
+        top: 35px;
+        left: 53px;
+    }
+
+    .home-concept-card {
+        padding: 17px 16px 15px;
+    }
+
+    .home-concept-card-title {
+        font-size: 18px;
+    }
+
+    .home-concept-description {
+        font-size: 12px;
+        line-height: 1.9;
+    }
+}
+
+/* ========================================
+   Home Collection
+======================================== */
+
+.home-collection {
+    position: relative;
+    padding: 28px 0 55px;
+    overflow: hidden;
+    color: #2c2925;
+    background: #f5f3ed;
+}
+
+/* Heading */
+
+.home-collection-heading {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 28px;
+}
+
+.home-collection-eyebrow {
+    margin: 0 0 8px;
+    font-family: "Noto Serif JP", serif;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+}
+
+.home-collection-title {
+    margin: 0;
+    font-family: "Noto Serif JP", serif;
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0.08em;
+}
+
+/* Product Grid */
+
+.home-collection-grid {
+    position: relative;
+    z-index: 2;
+    /* width: min(100%, 700px); */
+    margin-right: auto;
+    margin-left: auto;
+}
+
+/* Product Card */
+
+.collection-product-card {
+    overflow: hidden;
+    background: #ffffff;
+    border: 0;
+}
+
+/* Product Image */
+
+.collection-product-image-link {
+    position: relative;
+    display: block;
+    overflow: hidden;
+}
+
+.collection-product-image {
+    width: 100%;
+    aspect-ratio: 1.28 / 1;
+    object-fit: cover;
+    transition: opacity 0.35s ease;
+}
+
+.collection-product-image-hover {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+}
+
+.collection-product-card:hover .collection-product-image-default,
+.collection-product-card:focus-within .collection-product-image-default {
+    opacity: 0;
+}
+
+.collection-product-card:hover .collection-product-image-hover,
+.collection-product-card:focus-within .collection-product-image-hover {
+    opacity: 1;
+}
+
+/* Product Detail */
+
+.collection-product-body {
+    padding: 12px 12px 14px;
+}
+
+.collection-product-title {
+    margin: 0 0 4px;
+    font-family: "Noto Serif JP", serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0.04em;
+}
+
+.collection-product-title a {
+    color: #181818;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.collection-product-title a:hover {
+    opacity: 0.6;
+}
+
+.collection-product-price {
+    margin: 0 0 6px;
+    color: #2a2926;
+    font-family: "Noto Serif JP", serif;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.5;
+}
+
+.collection-product-delivery {
+    min-width: 112px;
+    min-height: 19px;
+    padding: 2px 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #99958d;
+    background: #ffffff;
+    border: 1px solid #d7d4ce;
+    border-radius: 2px;
+    font-family: "Noto Sans JP", sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.2;
+}
+
+/* Decorative Images */
+
+.home-collection-decoration {
+    position: absolute;
+    z-index: 1;
+    color: #dcd8c7;
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.home-collection-decoration svg,
+.home-collection-decoration img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.home-collection-decoration-left {
+    bottom: -36px;
+    left: -8px;
+    width: 130px;
+    height: 130px;
+}
+
+.home-collection-decoration-right {
+    top: 112px;
+    right: 8px;
+    width: 120px;
+    height: 120px;
+}
+
+/* ========================================
+   Collection Tablet
+======================================== */
+
+@media (max-width: 991.98px) {
+    .home-collection {
+        padding: 50px 0 70px;
+    }
+
+    .home-collection-heading {
+        margin-bottom: 35px;
+    }
+
+    .home-collection-grid {
+        width: min(100%, 680px);
+    }
+
+    .home-collection-decoration-right {
+        top: 95px;
+        right: -25px;
+        width: 110px;
+        height: 110px;
+    }
+}
+
+/* ========================================
+   Collection Mobile
+======================================== */
+
+@media (max-width: 767.98px) {
+    .home-collection-grid {
+        max-width: 520px;
+    }
+
+    .collection-product-title {
+        font-size: 14px;
+    }
+
+    .collection-product-price {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .home-collection {
+        padding: 45px 0 60px;
+    }
+
+    .home-collection-heading {
+        margin-bottom: 28px;
+    }
+
+    .home-collection-eyebrow {
+        font-size: 15px;
+    }
+
+    .home-collection-title {
+        font-size: 25px;
+    }
+
+    .home-collection-grid {
+        width: min(100%, 330px);
+    }
+
+    .collection-product-body {
+        padding: 14px 14px 16px;
+    }
+
+    .collection-product-title {
+        font-size: 15px;
+    }
+
+    .collection-product-price {
+        font-size: 11px;
+    }
+
+    .collection-product-delivery {
+        min-height: 21px;
+        font-size: 9px;
+    }
+
+    .home-collection-decoration-left {
+        bottom: -25px;
+        left: -35px;
+        width: 115px;
+        height: 115px;
+    }
+
+    .home-collection-decoration-right {
+        top: 120px;
+        right: -45px;
+        width: 105px;
+        height: 105px;
+    }
+}
+/* ========================================
+   Product Stories
+======================================== */
+
+.home-product-stories {
+    position: relative;
+    padding: 80px 0 110px;
+    overflow: hidden;
+    color: #2c2925;
+    background: #f5f3ed;
+}
+
+.home-product-stories-inner {
+    position: relative;
+    z-index: 2;
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.home-product-story-row {
+    display: grid;
+    grid-template-columns: minmax(360px, 500px) minmax(0, 1fr);
+    gap: 72px;
+    align-items: center;
+}
+
+.home-product-story-row + .home-product-story-row {
+    margin-top: 72px;
+}
+
+.home-product-story-row-reverse {
+    grid-template-columns: minmax(0, 1fr) minmax(360px, 500px);
+}
+
+.home-product-story-image {
+    display: block;
+    overflow: hidden;
+}
+
+.home-product-story-image img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}
+
+.home-product-story-content {
+    max-width: 540px;
+}
+
+.home-product-story-title {
+    margin: 0 0 12px;
+    font-family: "Noto Serif JP", serif;
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1.45;
+    letter-spacing: 0.04em;
+}
+
+.home-product-story-content p {
+    margin: 0;
+    font-family: "Noto Serif JP", serif;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 2;
+    letter-spacing: 0.035em;
+}
+
+.home-product-story-content p + p {
+    margin-top: 2px;
+}
+
+.home-product-stories-decoration {
+    position: absolute;
+    bottom: 25px;
+    left: 10px;
+    width: 145px;
+    height: 145px;
+    object-fit: contain;
+    opacity: 0.16;
+    pointer-events: none;
+}
+
+@media (max-width: 1199.98px) and (min-width: 768px) {
+    .home-product-story-row {
+        grid-template-columns: minmax(280px, 40%) minmax(0, 1fr);
+        gap: 40px;
+    }
+
+    .home-product-story-row-reverse {
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 40%);
+    }
+}
+
+@media (max-width: 767.98px) {
+    .home-product-stories {
+        padding: 20px 0 70px;
+    }
+
+    .home-product-story-row,
+    .home-product-story-row-reverse {
+        grid-template-columns: 1fr;
+        gap: 22px;
+    }
+
+    .home-product-story-row + .home-product-story-row {
+        margin-top: 55px;
+    }
+
+    .home-product-story-row-reverse .home-product-story-image {
+        order: 1;
+    }
+
+    .home-product-story-row-reverse .home-product-story-content {
+        order: 2;
+    }
+
+    .home-product-story-image {
+        width: min(100%, 330px);
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .home-product-story-content {
+        max-width: none;
+    }
+
+    .home-product-story-title {
+        font-size: 19px;
+    }
+
+    .home-product-story-content p {
+        font-size: 12px;
+        line-height: 1.9;
+    }
+
+    .home-product-stories-decoration {
+        bottom: 8px;
+        left: -25px;
+        width: 115px;
+        height: 115px;
+    }
+}
+/* ========================================
+   Home Business Calendar
+======================================== */
+
+.home-calendar {
+    position: relative;
+    padding: 20px 0 70px;
+    overflow: hidden;
+    color: #38342f;
+    background: #f5f3ed;
+}
+
+/* ========================================
+   Heading
+======================================== */
+
+.home-calendar-heading {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 35px;
+}
+
+.home-calendar-eyebrow {
+    margin: 0 0 7px;
+    font-family: "Noto Serif JP", serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+}
+
+.home-calendar-title {
+    margin: 0 0 5px;
+    font-family: "Noto Serif JP", serif;
+    font-size: clamp(27px, 2.5vw, 34px);
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0.08em;
+}
+
+.home-calendar-subtitle {
+    margin: 0;
+    font-family: "Noto Serif JP", serif;
+    font-size: clamp(14px, 1.45vw, 20px);
+    font-weight: 300;
+    line-height: 1.8;
+    letter-spacing: 0.04em;
+}
+
+/* ========================================
+   Calendar Layout
+======================================== */
+
+.business-calendar-wrapper {
+    position: relative;
+    z-index: 2;
+    width: min(100%, 540px);
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.business-calendar-column {
+    width: 100%;
+    max-width: 220px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.business-calendar-month {
+    margin: 0 0 13px;
+    font-family: "Noto Serif JP", serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    letter-spacing: 0.03em;
+}
+
+/* ========================================
+   FullCalendar Reset
+======================================== */
+
+.business-calendar {
+    width: 100%;
+    min-height: 181px;
+    font-family: "Noto Serif JP", serif;
+}
+
+.business-calendar .fc {
+    font-size: 12px;
+}
+
+.business-calendar .fc-view-harness {
+    background: transparent;
+}
+
+/* เอาเส้นขอบหลักออก */
+
+.business-calendar .fc-scrollgrid,
+.business-calendar .fc-scrollgrid table,
+.business-calendar .fc-scrollgrid td,
+.business-calendar .fc-scrollgrid th {
+    border: 0 !important;
+}
+
+/* Header วัน */
+
+.business-calendar .fc-col-header {
+    margin-bottom: 6px;
+}
+
+.business-calendar .fc-col-header-cell {
+    height: 25px;
+    background: transparent;
+    font-weight: 400;
+}
+
+.business-calendar .fc-col-header-cell-cushion {
+    padding: 3px 0;
+    color: #393632;
+    font-size: 12px;
+    font-weight: 400;
+    text-decoration: none;
+}
+
+/* วันอาทิตย์ */
+
+.business-calendar .fc-col-header-cell:first-child
+.fc-col-header-cell-cushion {
+    color: #bf735e;
+}
+
+/* ช่องวันที่ */
+
+.business-calendar .fc-daygrid-day {
+    padding: 0 !important;
+    background: #ffffff;
+}
+
+.business-calendar .fc-daygrid-day-frame {
+    position: relative;
+    min-height: 31px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+}
+
+.business-calendar .fc-daygrid-day-top {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.business-calendar .fc-daygrid-day-number {
+    width: 100%;
+    height: 100%;
+    padding: 7px 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #302e2a;
+    font-size: 12px;
+    line-height: 1;
+    text-decoration: none;
+}
+
+/* ซ่อน event container เพราะใช้เฉพาะสีช่อง */
+
+.business-calendar .fc-daygrid-day-events,
+.business-calendar .fc-daygrid-day-bottom {
+    display: none;
+}
+
+/* วันที่ของเดือนอื่น */
+
+.business-calendar .fc-day-other {
+    background: transparent;
+}
+
+.business-calendar .fc-day-other .fc-daygrid-day-frame {
+    background: transparent;
+}
+
+.business-calendar .fc-day-other .fc-daygrid-day-number {
+    opacity: 0;
+}
+
+/* เอาสี today ของ FullCalendar ออก */
+
+.business-calendar .fc-day-today,
+.business-calendar .fc-day-today .fc-daygrid-day-frame {
+    background: #ffffff !important;
+}
+
+/* ========================================
+   Holiday Colors
+======================================== */
+
+/* 営業＋生産休業日 */
+
+.business-calendar .calendar-day-closed,
+.business-calendar .calendar-day-closed .fc-daygrid-day-frame,
+.business-calendar .calendar-day-closed.fc-day-today,
+.business-calendar .calendar-day-closed.fc-day-today
+.fc-daygrid-day-frame {
+    background: #c87860 !important;
+}
+
+.business-calendar .calendar-day-closed
+.fc-daygrid-day-number {
+    color: #ffffff;
+}
+
+/* 営業休業日（生産はあり） */
+
+.business-calendar .calendar-day-production,
+.business-calendar .calendar-day-production
+.fc-daygrid-day-frame,
+.business-calendar .calendar-day-production.fc-day-today,
+.business-calendar .calendar-day-production.fc-day-today
+.fc-daygrid-day-frame {
+    background: #c5a064 !important;
+}
+
+.business-calendar .calendar-day-production
+.fc-daygrid-day-number {
+    color: #ffffff;
+}
+
+/* 生産休業日（営業はあり） */
+
+.business-calendar .calendar-day-production-open,
+.business-calendar .calendar-day-production-open
+.fc-daygrid-day-frame,
+.business-calendar .calendar-day-production-open.fc-day-today,
+.business-calendar .calendar-day-production-open.fc-day-today
+.fc-daygrid-day-frame {
+    background: #d5dfd5 !important;
+}
+
+.business-calendar .calendar-day-production-open
+.fc-daygrid-day-number {
+    color: #3c4940;
+}
+
+/* ========================================
+   Legend
+======================================== */
+
+.calendar-legend {
+    margin-top: 14px;
+    font-family: "Noto Serif JP", serif;
+    font-size: 11px;
+    font-weight: 300;
+    line-height: 1.5;
+}
+
+.calendar-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 8px;
+}
+
+.calendar-legend-color {
+    flex: 0 0 auto;
+    width: 19px;
+    height: 19px;
+    display: inline-block;
+    border-radius: 2px;
+}
+
+.legend-closed {
+    background: #c87860;
+}
+
+.legend-production {
+    background: #c5a064;
+}
+
+.legend-production-open {
+    background: #d5dfd5;
+}
+
+/* ========================================
+   Calendar Information
+======================================== */
+
+.calendar-information {
+    margin-top: 14px;
+    font-family: "Noto Serif JP", serif;
+    font-size: 11px;
+    font-weight: 300;
+    line-height: 1.5;
+}
+
+.calendar-deadline {
+    margin: 0 0 11px;
+}
+
+.calendar-information-row {
+    min-height: 22px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 7px;
+}
+
+.calendar-information-row .calendar-legend-color {
+    width: 19px;
+    height: 19px;
+}
+
+/* ========================================
+   Decoration
+======================================== */
+
+.home-calendar-decoration {
+    position: absolute;
+    top: 110px;
+    right: 12px;
+    width: 145px;
+    height: 145px;
+    color: #ddd9c8;
+    opacity: 0.68;
+    pointer-events: none;
+}
+
+.home-calendar-decoration svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* ========================================
+   Tablet
+======================================== */
+
+@media (max-width: 991.98px) {
+    .home-calendar {
+        padding: 45px 0 70px;
+    }
+
+    .home-calendar-decoration {
+        top: 130px;
+        right: -45px;
+        width: 130px;
+        height: 130px;
+    }
+}
+
+/* ========================================
+   Mobile
+======================================== */
+
+@media (max-width: 767.98px) {
+    .home-calendar-heading {
+        margin-bottom: 40px;
+    }
+
+    .home-calendar-subtitle {
+        max-width: 520px;
+        margin-right: auto;
+        margin-left: auto;
+        padding: 0 15px;
+    }
+
+    .business-calendar-wrapper {
+        width: min(100%, 360px);
+    }
+
+    .business-calendar-column {
+        max-width: 220px;
+    }
+
+    .calendar-information,
+    .calendar-legend {
+        margin-bottom: 30px;
+    }
+
+    .home-calendar-decoration {
+        top: 180px;
+        right: -55px;
+        opacity: 0.4;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .home-calendar {
+        padding: 45px 0 55px;
+    }
+
+    .home-calendar-eyebrow {
+        font-size: 15px;
+    }
+
+    .home-calendar-title {
+        font-size: 27px;
+    }
+
+    .home-calendar-subtitle {
+        font-size: 13px;
+        line-height: 1.9;
+    }
+
+    .business-calendar-column {
+        max-width: 220px;
+    }
+}
+
+/* ========================================
+   Calendar Target Layout Overrides
+======================================== */
+.business-calendar-wrapper {
+    width: min(100%, 850px);
+}
+
+.business-calendar-column {
+    max-width: 315px;
+}
+
+.business-calendar-month {
+    margin-bottom: 18px;
+    font-size: 20px;
+}
+
+.business-calendar {
+    min-height: 261px;
+}
+
+.business-calendar .fc {
+    font-size: 16px;
+}
+
+.business-calendar .fc-col-header {
+    margin-bottom: 8px;
+}
+
+.business-calendar .fc-col-header-cell {
+    height: 36px;
+}
+
+.business-calendar .fc-col-header-cell-cushion {
+    padding: 5px 0;
+    font-size: 17px;
+}
+
+.business-calendar .fc-daygrid-day-frame {
+    min-height: 45px;
+}
+
+.business-calendar .fc-daygrid-day-number {
+    padding: 12px 2px;
+    font-size: 16px;
+}
+
+.calendar-legend,
+.calendar-information {
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+.calendar-legend-item {
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.calendar-legend-color,
+.calendar-information-row .calendar-legend-color {
+    width: 24px;
+    height: 24px;
+}
+
+.calendar-deadline {
+    margin-bottom: 15px;
+}
+
+.calendar-information-row {
+    min-height: 28px;
+    gap: 9px;
+    margin-bottom: 9px;
+}
+
+@media (max-width: 767.98px) {
+    .business-calendar-wrapper {
+        width: min(100%, 360px);
+    }
+
+    .business-calendar-column {
+        max-width: 315px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .business-calendar-column {
+        max-width: 290px;
+    }
+
+    .business-calendar-month {
+        font-size: 18px;
+    }
+
+    .business-calendar .fc-col-header-cell-cushion,
+    .business-calendar .fc-daygrid-day-number {
+        font-size: 15px;
+    }
+
+    .business-calendar .fc-daygrid-day-frame {
+        min-height: 41px;
+    }
+
+
+
+    .calendar-legend,
+    .calendar-information {
+        font-size: 14px;
+    }
+}
+
+.business-calendar .fc-daygrid-day {
+    padding: 0 !important;
+    background: #ffffff !important;
+
+}
+
+.business-calendar .fc-daygrid-day-frame {
+    box-shadow: inset 0 0 0 1px #ffffff !important;
+}

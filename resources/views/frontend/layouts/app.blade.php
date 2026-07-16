@@ -34,7 +34,7 @@
     >
 
     <link
-        href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600&family=Noto+Serif+JP:wght@300;400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&display=swap"
         rel="stylesheet"
     >
 
@@ -51,6 +51,8 @@
     >
 
     @stack('styles')
+
+     @yield('css')
 </head>
 
 <body class="@yield('body-class')">
@@ -69,7 +71,7 @@
     ></script>
 
     @stack('scripts')
-
+ @yield('js')
 </body>
 
 </html>

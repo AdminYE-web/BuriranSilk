@@ -8,58 +8,12 @@
                 class="navbar-brand header-brand"
                 aria-label="ThaiSilk Home"
             >
-                <span class="header-brand-icon">
-                    <svg
-                        viewBox="0 0 50 50"
-                        xmlns="http://www.w3.org/2000/svg"
-                        aria-hidden="true"
-                    >
-                        <path
-                            d="M25 44C20 39 11 37 8 29C15 29 21 33 25 39C29 33 35 29 42 29C39 37 30 39 25 44Z"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.6"
-                        />
-
-                        <path
-                            d="M25 39C19 34 15 26 17 18C22 21 25 27 25 34C25 27 28 21 33 18C35 26 31 34 25 39Z"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.6"
-                        />
-
-                        <path
-                            d="M25 33C21 27 21 18 25 10C29 18 29 27 25 33Z"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.6"
-                        />
-
-                        <path
-                            d="M17 30C12 27 9 22 9 17C15 18 20 22 22 28"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.6"
-                        />
-
-                        <path
-                            d="M33 30C38 27 41 22 41 17C35 18 30 22 28 28"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.6"
-                        />
-                    </svg>
-                </span>
-
-                <span class="header-brand-text">
-                    <span class="header-brand-name">
-                        ThaiSilk
-                    </span>
-
-                    <span class="header-brand-subtitle">
-                        時を越えて愛される上質な手仕事
-                    </span>
-                </span>
+                <img
+                    src="{{ asset('assets/images/logo/logo_thaisilk.png') }}"
+                    alt="ThaiSilk"
+                    width="167"
+                    height="55"
+                >
             </a>
 
             {{-- Mobile Menu Button --}}
@@ -83,55 +37,55 @@
                 <ul class="navbar-nav ms-auto align-items-lg-center">
 
                     {{-- Product --}}
-                    <li class="nav-item dropdown">
-                        <a
-                            href="#"
-                            class="nav-link dropdown-toggle"
-                            role="button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                        >
-                            商品一覧
-                        </a>
+                    <li class="nav-item dropdown product-dropdown">
+    <a
+        href="#"
+        class="nav-link dropdown-toggle product-dropdown-toggle"
+        role="button"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+    >
+        <span>商品一覧</span>
+    </a>
 
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a
-                                    href="{{ url('/products') }}"
-                                    class="dropdown-item"
-                                >
-                                    すべての商品
-                                </a>
-                            </li>
+    <ul class="dropdown-menu product-dropdown-menu">
+        <li>
+            <a
+                href="{{ url('/products/silk-employee-id-case') }}"
+                class="dropdown-item"
+            >
+                シルク製社員証ケース
+            </a>
+        </li>
 
-                            <li>
-                                <a
-                                    href="{{ url('/products/bags') }}"
-                                    class="dropdown-item"
-                                >
-                                    バッグ
-                                </a>
-                            </li>
+        <li>
+            <a
+                href="{{ url('/products/key-ring') }}"
+                class="dropdown-item"
+            >
+                key ring
+            </a>
+        </li>
 
-                            <li>
-                                <a
-                                    href="{{ url('/products/wallets') }}"
-                                    class="dropdown-item"
-                                >
-                                    財布・小物
-                                </a>
-                            </li>
+        <li>
+            <a
+                href="{{ url('/products/business-card-holder') }}"
+                class="dropdown-item"
+            >
+                Business Card Holder
+            </a>
+        </li>
 
-                            <li>
-                                <a
-                                    href="{{ url('/products/accessories') }}"
-                                    class="dropdown-item"
-                                >
-                                    アクセサリー
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+        <li>
+            <a
+                href="{{ url('/products/gold-thread-products') }}"
+                class="dropdown-item"
+            >
+                製品金撚
+            </a>
+        </li>
+    </ul>
+</li>
 
                     {{-- About --}}
                     <li class="nav-item">

@@ -1,0 +1,30 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::table('option_groups', function (Blueprint $table) {
+            $table->unsignedBigInteger('parent_group_id')
+                ->nullable()
+                ->after('option_group_id');
+
+            $table->foreign('parent_group_id')
+                ->references('option_group_id')
+                ->on('option_groups')
+                ->onDelete('cascade');
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::table('option_groups', function (Blueprint $table) {
+            $table->dropForeign(['parent_group_id']);
+            $table->dropColumn('parent_group_id');
+        });
+    }
+};
