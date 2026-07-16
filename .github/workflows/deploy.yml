@@ -44,10 +44,10 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          # Exclude files you don't want on the live server
           exclude: |
             **/.git*
             **/.git*/**
             **/node_modules/**
+            **/vendor/** # Skip the entire vendor directory
             .env.example
             README.md
