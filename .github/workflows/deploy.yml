@@ -15,11 +15,11 @@ jobs:
       - name: 🚚 Get latest code
         uses: actions/checkout@v4
 
-      # 2. Setup PHP environment (Adjust version as needed)
+      # 2. Setup PHP environment
       - name: 🐘 Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.3' # Changed from 8.2 to 8.3
 
       # 3. Install Backend Dependencies
       - name: 📦 Install Composer Dependencies
