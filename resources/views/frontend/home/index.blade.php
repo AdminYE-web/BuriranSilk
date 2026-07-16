@@ -457,34 +457,12 @@
         class="home-calendar-decoration"
         aria-hidden="true"
     >
-        <svg
-            viewBox="0 0 180 180"
-            xmlns="http://www.w3.org/2000/svg"
+        <img
+            src="{{ asset('assets/images/home/ph_flower-tulip-light.png') }}"
+            alt=""
+            width="281"
+            height="347"
         >
-            <g
-                fill="none"
-                stroke="currentColor"
-                stroke-width="9"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            >
-                <path
-                    d="M87 101C58 96 38 73 32 43C61 43 84 61 93 89"
-                />
-
-                <path
-                    d="M93 89C98 54 119 31 148 26C151 58 138 84 111 101"
-                />
-
-                <path
-                    d="M111 101C133 116 145 137 143 156"
-                />
-
-                <path
-                    d="M103 148H153"
-                />
-            </g>
-        </svg>
     </div>
 
     <div class="container">
@@ -619,6 +597,8 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            const holidayCalendar = {{ \Illuminate\Support\Js::from($holidayCalendar) }};
+
             const currentMonthDate = new Date();
             currentMonthDate.setDate(1);
             currentMonthDate.setHours(12, 0, 0, 0);
@@ -644,39 +624,6 @@
             |--------------------------------------------------------------------------
             */
 
-            const closedDates = [
-                // June 2026
-                '2026-06-07',
-                '2026-06-14',
-                '2026-06-21',
-                '2026-06-28',
-
-                // July 2026
-                '2026-07-05',
-                '2026-07-12',
-                '2026-07-19',
-                '2026-07-26',
-            ];
-
-            const productionDates = [
-                // June 2026
-                '2026-06-06',
-                '2026-06-13',
-                '2026-06-20',
-                '2026-06-27',
-
-                // July 2026
-                '2026-07-04',
-                '2026-07-11',
-                '2026-07-18',
-                '2026-07-20',
-                '2026-07-25',
-            ];
-
-            const productionOpenDates = [
-                '2026-06-19',
-            ];
-
             /*
             |--------------------------------------------------------------------------
             | แปลง Date เป็น YYYY-MM-DD
@@ -700,6 +647,7 @@
             function decorateDayCell(info) {
                 const dateKey = formatLocalDate(info.date);
                 const dayOfWeek = info.date.getDay();
+                const holidayType = Number(holidayCalendar[dateKey] ?? 0);
                 const dayNumberElement = info.el.querySelector(
                     '.fc-daygrid-day-number'
                 );
@@ -708,15 +656,19 @@
                     dayNumberElement.textContent = String(info.date.getDate());
                 }
 
-                if (dayOfWeek === 0 || closedDates.includes(dateKey)) {
+                if (dayOfWeek === 0) {
                     info.el.classList.add('calendar-day-closed');
                 }
 
-                if (dayOfWeek === 6 || productionDates.includes(dateKey)) {
+                if (dayOfWeek === 6) {
                     info.el.classList.add('calendar-day-production');
                 }
 
-                if (productionOpenDates.includes(dateKey)) {
+                if (holidayType === 2) {
+                    info.el.classList.add('calendar-day-production');
+                }
+
+                if (holidayType === 3) {
                     info.el.classList.add('calendar-day-production-open');
                 }
             }

@@ -65,6 +65,8 @@
         @yield('content')
     </main>
 
+      @include('frontend.partials.footer')
+
     {{-- Bootstrap 5 JavaScript --}}
     <script
         src="{{ asset('assets/bootstrap/js/bootstrap.bundle.min.js') }}"
