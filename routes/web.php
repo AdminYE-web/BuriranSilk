@@ -1,5 +1,7 @@
 <?php
 
+
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -40,3 +42,7 @@ Route::get('/', function () {
 
     return view('frontend.home.index', compact('holidayCalendar'));
 })->name('home');
+
+
+Route::get('/products', [ProductController::class, 'index'])
+    ->name('products.index');
