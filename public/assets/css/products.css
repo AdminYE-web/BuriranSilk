@@ -28,6 +28,18 @@
     box-shadow: 1px 0 3px rgba(0, 0, 0, 0.04);
 }
 
+/* Bootstrap 5.0 has no responsive .offcanvas-lg utility. */
+@media (min-width: 992px) {
+    .product-filter-panel.offcanvas {
+        position: static;
+        z-index: auto;
+        display: block;
+        visibility: visible;
+        transform: none;
+        transition: none;
+    }
+}
+
 .product-filter-mobile-header {
     display: none;
 }
@@ -98,7 +110,7 @@
     border-left: 1px solid #fff;
     content: "";
     transform: rotate(45deg);
-    transition: transform 0.2s ease, top 0.2s ease;
+    transition: transform 0.3s ease, top 0.3s ease;
 }
 
 .product-filter-section:not(.is-open) .product-filter-chevron::before {
@@ -107,11 +119,31 @@
 }
 
 .product-filter-section-content {
-    display: none;
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+        height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.22s ease,
+        visibility 0s linear 0.35s;
 }
 
 .product-filter-section.is-open .product-filter-section-content {
-    display: block;
+    height: auto;
+    opacity: 1;
+    visibility: visible;
+    transition:
+        height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.25s ease 0.08s,
+        visibility 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .product-filter-chevron::before,
+    .product-filter-section-content {
+        transition: none;
+    }
 }
 
 .product-filter-checkbox {
@@ -331,19 +363,33 @@
 }
 
 .product-card-image-link {
+    position: relative;
     display: block;
     overflow: hidden;
 }
 
 .product-card-image {
+    display: block;
     width: 100%;
     aspect-ratio: 1 / 1;
     object-fit: cover;
-    transition: transform 0.45s ease;
+    transition: opacity 0.35s ease;
 }
 
-.product-card:hover .product-card-image {
-    transform: scale(1.035);
+.product-card-image-hover {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+}
+
+.product-card:hover .product-card-image-default,
+.product-card:focus-within .product-card-image-default {
+    opacity: 0;
+}
+
+.product-card:hover .product-card-image-hover,
+.product-card:focus-within .product-card-image-hover {
+    opacity: 1;
 }
 
 .product-card-body {

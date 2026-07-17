@@ -14,7 +14,7 @@
     <div class="product-list-layout">
         <aside
             id="productFilter"
-            class="product-filter-panel offcanvas-lg offcanvas-start"
+            class="product-filter-panel offcanvas offcanvas-start"
             tabindex="-1"
             aria-labelledby="productFilterLabel"
         >
@@ -176,8 +176,16 @@
                                     <img
                                         src="{{ asset($product['image']) }}"
                                         alt="{{ $product['name'] }}"
-                                        class="product-card-image"
+                                        class="product-card-image product-card-image-default"
                                     >
+                                    @if ($product['hover_image'])
+                                        <img
+                                            src="{{ asset($product['hover_image']) }}"
+                                            alt=""
+                                            class="product-card-image product-card-image-hover"
+                                            aria-hidden="true"
+                                        >
+                                    @endif
                                 </a>
 
                                 <div class="product-card-body">
@@ -262,8 +270,27 @@
             document.querySelectorAll('.product-filter-section-toggle').forEach(function (button) {
                 button.addEventListener('click', function () {
                     const section = button.closest('.product-filter-section');
-                    const isOpen = section.classList.toggle('is-open');
+                    const content = section.querySelector('.product-filter-section-content');
+                    const isOpen = ! section.classList.contains('is-open');
+
+                    content.style.height = content.getBoundingClientRect().height + 'px';
+                    content.offsetHeight;
+
+                    section.classList.toggle('is-open', isOpen);
+                    content.style.height = isOpen ? content.scrollHeight + 'px' : '0px';
                     button.setAttribute('aria-expanded', String(isOpen));
+
+                    content.addEventListener('transitionend', function handleTransition(event) {
+                        if (event.propertyName !== 'height') {
+                            return;
+                        }
+
+                        content.removeEventListener('transitionend', handleTransition);
+
+                        if (section.classList.contains('is-open')) {
+                            content.style.height = 'auto';
+                        }
+                    });
                 });
             });
 

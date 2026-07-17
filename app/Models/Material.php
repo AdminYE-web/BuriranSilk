@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Material extends Model
+{
+    protected $primaryKey = 'material_id';
+
+    protected $fillable = [
+        'material_name',
+        'material_code',
+        'is_active',
+        'language',
+        'translation_key',
+        'product_type',
+    ];
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'material_id', 'material_id');
+    }
+}

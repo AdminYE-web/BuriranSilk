@@ -104,6 +104,143 @@
 }
 
 /* ========================================
+   Home Card Holder
+======================================== */
+
+.home-card-holder {
+    position: relative;
+    padding: 28px 0 46px;
+    overflow: hidden;
+    color: #2c2925;
+    background: #f5f3ed;
+}
+
+.home-card-holder-decoration {
+    position: absolute;
+    top: -54px;
+    right: 18px;
+    width: 174px;
+    height: 174px;
+    color: #d9d4c2;
+    opacity: 0.42;
+    pointer-events: none;
+}
+
+.home-card-holder-decoration img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+}
+
+.home-card-holder-inner {
+    position: relative;
+    z-index: 1;
+}
+
+.home-card-holder-heading {
+    margin-bottom: 28px;
+    text-align: center;
+}
+
+.home-card-holder-heading p {
+    margin: 0 0 5px;
+    font-family: "Noto Serif JP", serif;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.025em;
+}
+
+.home-card-holder-heading h2 {
+    margin: 0;
+    font-family: "Noto Serif JP", serif;
+    font-size: clamp(25px, 2.2vw, 31px);
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0.07em;
+}
+
+.home-card-holder-layout {
+    width: min(100%, 1040px);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
+    align-items: center;
+}
+
+.home-card-holder-copy {
+    width: min(100%, 370px);
+    justify-self: start;
+}
+
+.home-card-holder-copy h3 {
+    margin: 0 0 9px;
+    font-family: "Noto Serif JP", serif;
+    font-size: clamp(18px, 1.5vw, 22px);
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.home-card-holder-copy h3 a {
+    color: inherit;
+    border-bottom: 1px solid currentColor;
+    text-decoration: none;
+}
+
+.home-card-holder-copy p {
+    margin: 0;
+    font-family: "Noto Serif JP", serif;
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 2;
+    letter-spacing: 0.025em;
+}
+
+.home-card-holder-image {
+    width: 100%;
+    display: block;
+    overflow: hidden;
+}
+
+.home-card-holder-image img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 402 / 320;
+    display: block;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.home-card-holder-image:hover img,
+.home-card-holder-image:focus img {
+    transform: scale(1.025);
+}
+
+@media (max-width: 767.98px) {
+    .home-card-holder {
+        padding: 30px 0 45px;
+    }
+
+    .home-card-holder-layout {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .home-card-holder-copy,
+    .home-card-holder-image {
+        width: min(100%, 428px);
+        margin: 0 auto;
+        justify-self: center;
+    }
+
+    .home-card-holder-copy p {
+        font-size: 12px;
+    }
+}
+
+/* ========================================
    Home Concept
 ======================================== */
 
@@ -816,6 +953,92 @@
         height: 115px;
     }
 }
+/* ========================================
+   Thai Silk Showcase
+======================================== */
+
+.home-silk-showcase {
+    padding: clamp(32px, 5vw, 72px) 0;
+    color: #241d18;
+    background: #f5f3ed;
+}
+
+.home-silk-showcase-grid {
+    width: min(100%, 1040px);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.home-silk-showcase-media {
+    margin: 0;
+    overflow: hidden;
+    background: #ddd8d0;
+}
+
+.home-silk-showcase-media img {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 428 / 340;
+    display: block;
+    object-fit: cover;
+}
+
+.home-silk-showcase-copy {
+    min-width: 0;
+    aspect-ratio: 428 / 340;
+    padding: clamp(18px, 3vw, 44px);
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    overflow: hidden;
+    background: #f8f7f2;
+}
+
+.home-silk-showcase-copy h2 {
+    margin: 0 0 7px;
+    font-family: "Noto Serif JP", serif;
+    font-size: clamp(18px, 1.75vw, 25px);
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: 0.04em;
+}
+
+.home-silk-showcase-copy p {
+    margin: 0;
+    font-family: "Noto Serif JP", serif;
+    font-size: clamp(9px, 0.92vw, 13px);
+    font-weight: 300;
+    line-height: 1.9;
+    letter-spacing: 0.025em;
+}
+
+.home-silk-showcase-copy .home-silk-showcase-lead {
+    margin-bottom: 8px;
+    font-size: clamp(10px, 1vw, 14px);
+}
+
+@media (max-width: 767.98px) {
+    .home-silk-showcase {
+        padding: 28px 0 45px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .home-silk-showcase-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .home-silk-showcase-copy {
+        aspect-ratio: auto;
+        padding: 32px 24px;
+    }
+
+    .home-silk-showcase-copy p {
+        font-size: 12px;
+    }
+}
+
 /* ========================================
    Home Business Calendar
 ======================================== */

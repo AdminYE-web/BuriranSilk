@@ -2,33 +2,18 @@
 
 @section('title', 'ThaiSilk')
 
-@section(
-    'meta_description',
-    '伝統的なタイシルクを現代のライフスタイルに合わせたバッグや財布、アクセサリーをご紹介します。'
-)
+@section('meta_description', '伝統的なタイシルクを現代のライフスタイルに合わせたバッグや財布、アクセサリーをご紹介します。')
 
 @section('body-class', 'home-page')
 
 @section('css')
-  {{-- FullCalendar 7 --}}
-    <link
-        href="https://cdn.jsdelivr.net/npm/fullcalendar@7.0.0/skeleton.css"
-        rel="stylesheet"
-    >
+    {{-- FullCalendar 7 --}}
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@7.0.0/skeleton.css" rel="stylesheet">
 
-    <link
-        href="https://cdn.jsdelivr.net/npm/fullcalendar@7.0.0/themes/monarch/theme.css"
-        rel="stylesheet"
-    >
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@7.0.0/themes/monarch/theme.css" rel="stylesheet">
 
-    <link
-        href="https://cdn.jsdelivr.net/npm/fullcalendar@7.0.0/themes/monarch/palettes/purple.css"
-        rel="stylesheet"
-    >
-    <link
-        rel="stylesheet"
-        href="{{ asset('assets/css/home.css') }}"
-    >
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@7.0.0/themes/monarch/palettes/purple.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/css/home.css') }}">
 @endsection
 
 @section('content')
@@ -37,16 +22,9 @@
 
         {{-- Banner Image --}}
         <picture class="home-hero-picture">
-            <source
-                media="(max-width: 767.98px)"
-                srcset="{{ asset('assets/images/home/Rectangle 1.png') }}"
-            >
+            <source media="(max-width: 767.98px)" srcset="{{ asset('assets/images/home/Rectangle 1.png') }}">
 
-            <img
-                src="{{ asset('assets/images/home/Rectangle 1.png') }}"
-                alt="タイシルクを使用したバッグや財布"
-                class="home-hero-image"
-            >
+            <img src="{{ asset('assets/images/home/Rectangle 1.png') }}" alt="タイシルクを使用したバッグや財布" class="home-hero-image">
         </picture>
 
         {{-- Overlay --}}
@@ -67,10 +45,7 @@
                             タイシルクが紡ぐ、新しいエレガンスの形。
                         </p>
 
-                        <a
-                            href="{{ url('/products') }}"
-                            class="btn home-hero-button"
-                        >
+                        <a href="{{ url('/products') }}" class="btn home-hero-button">
                             今すぐ見る
                         </a>
 
@@ -82,19 +57,235 @@
 
     </section>
 
-       <section class="home-concept">
+    <section class="home-card-holder">
+        <div class="home-card-holder-decoration" aria-hidden="true">
+            <img src="{{ asset('assets/images/home/game-icons_vanilla-flower.png') }}" alt="" width="220"
+                height="220">
+        </div>
+
+        <div class="container home-card-holder-inner">
+            <header class="home-card-holder-heading">
+                <p>THE CARD HOLDER</p>
+                <h2>カードホルダー</h2>
+            </header>
+
+            <div class="home-card-holder-layout">
+                <div class="home-card-holder-copy">
+                    <h3>
+                        <a href="{{ url('/products/id-case') }}">シルク製社員証ケース</a>
+                    </h3>
+
+                    <p>
+                        上質なタイシルクを使用した贅沢な社員証ケース。<br>
+                        クリア窓付きで実用性抜群、毎日のお仕事をスタイリッシュに。
+                    </p>
+                </div>
+
+                <a href="{{ url('/products/id-case') }}" class="home-card-holder-image">
+                    <img
+                        src="{{ asset('assets/images/home/image 13.png') }}"
+                        alt="カラフルなタイシルク製社員証ケース"
+                        width="402"
+                        height="320"
+                    >
+                </a>
+            </div>
+        </div>
+
+    </section>
+
+    {{-- ========================================
+    Our Collection Section
+======================================== --}}
+
+    <section class="home-collection d-none" >
+
+        {{-- ลายตกแต่งมุมซ้ายล่าง --}}
+        <div class="home-collection-decoration home-collection-decoration-left" aria-hidden="true">
+            <img src="{{ asset('assets/images/home/ph_flower-lotus-thin.png') }}" alt="" width="227"
+                height="250">
+        </div>
+
+        {{-- ลายตกแต่งด้านขวา --}}
+        <div class="home-collection-decoration home-collection-decoration-right" aria-hidden="true">
+            <img src="{{ asset('assets/images/home/game-icons_vanilla-flower.png') }}" alt="" width="220"
+                height="220">
+        </div>
+
+        <div class="container position-relative">
+
+            {{-- Section Heading --}}
+            <div class="home-collection-heading text-center">
+
+                <p class="home-collection-eyebrow">
+                    OUR COLLECTION
+                </p>
+
+                <h2 class="home-collection-title">
+                    私たちのコレクション
+                </h2>
+
+            </div>
+
+            {{-- Product List --}}
+            <div class="home-collection-grid">
+
+                <div class="row g-3 justify-content-center">
+
+                    {{-- Product 1 --}}
+                    <div class="col-12 col-sm-6 col-lg-4">
+
+                        <article class="collection-product-card h-100">
+
+                            <a href="{{ url('/products/id-case') }}" class="collection-product-image-link">
+                                <img src="{{ asset('assets/images/home/Rectangle 158.png') }}" alt="シルク製IDケース"
+                                    class="collection-product-image collection-product-image-default">
+                                {{-- Mockup hover image: replace src later --}}
+                                <img src="{{ asset('assets/images/home/Rectangle 158 (1).png') }}" alt=""
+                                    class="collection-product-image collection-product-image-hover" aria-hidden="true">
+                            </a>
+
+                            <div class="collection-product-body">
+
+                                <h3 class="collection-product-title">
+                                    <a href="{{ url('/products/id-case') }}">
+                                        ID case
+                                    </a>
+                                </h3>
+
+                                <p class="collection-product-price">
+                                    単価：132円(税込)〜
+                                </p>
+
+                                <span class="collection-product-delivery">
+                                    10営業日〜20営業日
+                                </span>
+
+                            </div>
+
+                        </article>
+
+                    </div>
+
+                    {{-- Product 2 --}}
+                    <div class="col-12 col-sm-6 col-lg-4">
+
+                        <article class="collection-product-card h-100">
+
+                            <a href="{{ url('/products/key-ring') }}" class="collection-product-image-link">
+                                <img src="{{ asset('assets/images/home/Rectangle 160.png') }}" alt="タイシルクのキーホルダー"
+                                    class="collection-product-image collection-product-image-default">
+                                {{-- Mockup hover image: replace src later --}}
+                                <img src="{{ asset('assets/images/home/Rectangle 160 (1).png') }}" alt=""
+                                    class="collection-product-image collection-product-image-hover" aria-hidden="true">
+                            </a>
+
+                            <div class="collection-product-body">
+
+                                <h3 class="collection-product-title">
+                                    <a href="{{ url('/products/key-ring') }}">
+                                        key ring
+                                    </a>
+                                </h3>
+
+                                <p class="collection-product-price">
+                                    単価：132円(税込)〜
+                                </p>
+
+                                <span class="collection-product-delivery">
+                                    10営業日〜20営業日
+                                </span>
+
+                            </div>
+
+                        </article>
+
+                    </div>
+
+                    {{-- Product 3 --}}
+                    <div class="col-12 col-sm-6 col-lg-4">
+
+                        <article class="collection-product-card h-100">
+
+                            <a href="{{ url('/products/business-card-holder') }}" class="collection-product-image-link">
+                                <img src="{{ asset('assets/images/home/Rectangle 162.png') }}" alt="タイシルクの名刺入れ"
+                                    class="collection-product-image collection-product-image-default">
+                                {{-- Mockup hover image: replace src later --}}
+                                <img src="{{ asset('assets/images/home/Rectangle 162 (1).png') }}" alt=""
+                                    class="collection-product-image collection-product-image-hover" aria-hidden="true">
+                            </a>
+
+                            <div class="collection-product-body">
+
+                                <h3 class="collection-product-title">
+                                    <a href="{{ url('/products/business-card-holder') }}">
+                                        Business Card Holder
+                                    </a>
+                                </h3>
+
+                                <p class="collection-product-price">
+                                    単価：132円(税込)〜
+                                </p>
+
+                                <span class="collection-product-delivery">
+                                    10営業日〜20営業日
+                                </span>
+
+                            </div>
+
+                        </article>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    {{-- Thai Silk Showcase --}}
+    <section class="home-silk-showcase">
+        <div class="container">
+            <div class="home-silk-showcase-grid">
+                <figure class="home-silk-showcase-media">
+                    <img src="{{ asset('assets/images/home/image 13 (1).png') }}" alt="タイシルク製カードホルダーのカラーバリエーション">
+                </figure>
+
+                <figure class="home-silk-showcase-media">
+                    <img src="{{ asset('assets/images/home/image 14.png') }}" alt="タイシルク製カードホルダーの着用イメージ">
+                </figure>
+
+                <figure class="home-silk-showcase-media">
+                    <img src="{{ asset('assets/images/home/image 15.png') }}" alt="カードを収納したタイシルク製カードホルダー">
+                </figure>
+
+                <article class="home-silk-showcase-copy">
+                    <h2>世界にひとつ</h2>
+                    <p class="home-silk-showcase-lead">あなたのアートワークで彩るタイシルク</p>
+                    <p>
+                        白い上質なタイシルクに、お客様のオリジナルアートワークを鮮やかにスクリーン印刷した完全オーダーメイドのカードホルダー。熟練の職人が細部まで丁寧に縫製し、抜群の使い心地を実現しました。フロントのクリアポケットは視認性が高く、社員証や交通系ICカードの提示もスムーズです。
+                    </p>
+                </article>
+
+                <figure class="home-silk-showcase-media">
+                    <img src="{{ asset('assets/images/home/image 16.png') }}" alt="タイシルク製カードホルダーの背面デザイン">
+                </figure>
+
+                <figure class="home-silk-showcase-media">
+                    <img src="{{ asset('assets/images/home/image 13 (2).png') }}" alt="象柄のタイシルク製カードホルダー">
+                </figure>
+            </div>
+        </div>
+    </section>
+
+     <section class="home-concept">
 
         {{-- ลายตกแต่งมุมขวาบน --}}
-        <div
-            class="home-concept-decoration"
-            aria-hidden="true"
-        >
-            <img
-                src="{{ asset('assets/images/home/game-icons_vanilla-flower.png') }}"
-                alt=""
-                width="220"
-                height="220"
-            >
+        <div class="home-concept-decoration" aria-hidden="true">
+            <img src="{{ asset('assets/images/home/game-icons_vanilla-flower.png') }}" alt="" width="220"
+                height="220">
         </div>
 
         <div class="container">
@@ -118,13 +309,8 @@
                 <div class="col-12 col-lg-5">
 
                     <div class="home-concept-images">
-                        <img
-                            src="{{ asset('assets/images/home/Group 1659.png') }}"
-                            alt="タイシルクのコンセプト"
-                            class="home-concept-image"
-                            width="370"
-                            height="292"
-                        >
+                        <img src="{{ asset('assets/images/home/Group 1659.png') }}" alt="タイシルクのコンセプト"
+                            class="home-concept-image" width="370" height="292">
                     </div>
 
 
@@ -165,427 +351,127 @@
         </div>
 
     </section>
-
     {{-- ========================================
-    Our Collection Section
-======================================== --}}
-
-<section class="home-collection">
-
-    {{-- ลายตกแต่งมุมซ้ายล่าง --}}
-    <div
-        class="home-collection-decoration home-collection-decoration-left"
-        aria-hidden="true"
-    >
-        <img
-            src="{{ asset('assets/images/home/ph_flower-lotus-thin.png') }}"
-            alt=""
-            width="227"
-            height="250"
-        >
-    </div>
-
-    {{-- ลายตกแต่งด้านขวา --}}
-    <div
-        class="home-collection-decoration home-collection-decoration-right"
-        aria-hidden="true"
-    >
-        <img
-            src="{{ asset('assets/images/home/game-icons_vanilla-flower.png') }}"
-            alt=""
-            width="220"
-            height="220"
-        >
-    </div>
-
-    <div class="container position-relative">
-
-        {{-- Section Heading --}}
-        <div class="home-collection-heading text-center">
-
-            <p class="home-collection-eyebrow">
-                OUR COLLECTION
-            </p>
-
-            <h2 class="home-collection-title">
-                私たちのコレクション
-            </h2>
-
-        </div>
-
-        {{-- Product List --}}
-        <div class="home-collection-grid">
-
-            <div class="row g-3 justify-content-center">
-
-                {{-- Product 1 --}}
-                <div class="col-12 col-sm-6 col-lg-4">
-
-                    <article class="collection-product-card h-100">
-
-                        <a
-                            href="{{ url('/products/id-case') }}"
-                            class="collection-product-image-link"
-                        >
-                            <img
-                                src="{{ asset('assets/images/home/Rectangle 158.png') }}"
-                                alt="シルク製IDケース"
-                                class="collection-product-image collection-product-image-default"
-                            >
-                            {{-- Mockup hover image: replace src later --}}
-                            <img
-                                src="{{ asset('assets/images/home/Rectangle 158 (1).png') }}"
-                                alt=""
-                                class="collection-product-image collection-product-image-hover"
-                                aria-hidden="true"
-                            >
-                        </a>
-
-                        <div class="collection-product-body">
-
-                            <h3 class="collection-product-title">
-                                <a href="{{ url('/products/id-case') }}">
-                                    ID case
-                                </a>
-                            </h3>
-
-                            <p class="collection-product-price">
-                                単価：132円(税込)〜
-                            </p>
-
-                            <span class="collection-product-delivery">
-                                10営業日〜20営業日
-                            </span>
-
-                        </div>
-
-                    </article>
-
-                </div>
-
-                {{-- Product 2 --}}
-                <div class="col-12 col-sm-6 col-lg-4">
-
-                    <article class="collection-product-card h-100">
-
-                        <a
-                            href="{{ url('/products/key-ring') }}"
-                            class="collection-product-image-link"
-                        >
-                            <img
-                                src="{{ asset('assets/images/home/Rectangle 160.png') }}"
-                                alt="タイシルクのキーホルダー"
-                                class="collection-product-image collection-product-image-default"
-                            >
-                            {{-- Mockup hover image: replace src later --}}
-                            <img
-                                src="{{ asset('assets/images/home/Rectangle 160 (1).png') }}"
-                                alt=""
-                                class="collection-product-image collection-product-image-hover"
-                                aria-hidden="true"
-                            >
-                        </a>
-
-                        <div class="collection-product-body">
-
-                            <h3 class="collection-product-title">
-                                <a href="{{ url('/products/key-ring') }}">
-                                    key ring
-                                </a>
-                            </h3>
-
-                            <p class="collection-product-price">
-                                単価：132円(税込)〜
-                            </p>
-
-                            <span class="collection-product-delivery">
-                                10営業日〜20営業日
-                            </span>
-
-                        </div>
-
-                    </article>
-
-                </div>
-
-                {{-- Product 3 --}}
-                <div class="col-12 col-sm-6 col-lg-4">
-
-                    <article class="collection-product-card h-100">
-
-                        <a
-                            href="{{ url('/products/business-card-holder') }}"
-                            class="collection-product-image-link"
-                        >
-                            <img
-                                src="{{ asset('assets/images/home/Rectangle 162.png') }}"
-                                alt="タイシルクの名刺入れ"
-                                class="collection-product-image collection-product-image-default"
-                            >
-                            {{-- Mockup hover image: replace src later --}}
-                            <img
-                                src="{{ asset('assets/images/home/Rectangle 162 (1).png') }}"
-                                alt=""
-                                class="collection-product-image collection-product-image-hover"
-                                aria-hidden="true"
-                            >
-                        </a>
-
-                        <div class="collection-product-body">
-
-                            <h3 class="collection-product-title">
-                                <a href="{{ url('/products/business-card-holder') }}">
-                                    Business Card Holder
-                                </a>
-                            </h3>
-
-                            <p class="collection-product-price">
-                                単価：132円(税込)〜
-                            </p>
-
-                            <span class="collection-product-delivery">
-                                10営業日〜20営業日
-                            </span>
-
-                        </div>
-
-                    </article>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-{{-- Product Stories --}}
-<section class="home-product-stories">
-    <img
-        src="{{ asset('assets/images/home/game-icons_vanilla-flower.png') }}"
-        alt=""
-        class="home-product-stories-decoration"
-        aria-hidden="true"
-    >
-
-    <div class="container home-product-stories-inner">
-        <article class="home-product-story-row">
-            <a
-                href="{{ url('/products/id-case') }}"
-                class="home-product-story-image"
-            >
-                <img
-                    src="{{ asset('assets/images/home/Rectangle 158.png') }}"
-                    alt="シルク製社員証ケース"
-                >
-            </a>
-
-            <div class="home-product-story-content">
-                <h2 class="home-product-story-title">
-                    シルク製社員証ケース
-                </h2>
-
-                <p>
-                    上質なタイシルクを使用した贅沢な社員証ケース。クリア窓付きで実用性も抜群。
-                    毎日の社員証をスタイリッシュに彩ります。
-                </p>
-            </div>
-        </article>
-
-        <article class="home-product-story-row home-product-story-row-reverse">
-            <div class="home-product-story-content">
-                <h2 class="home-product-story-title">
-                    key ring
-                </h2>
-
-                <p>
-                    美しい光沢のタイシルクと、耐久性に優れた高品質な金具を組み合わせたキーホルダー。
-                    シンプルなデザインながらも存在感があり、鍵やバッグに洗練されたアクセントを加えます。
-                </p>
-            </div>
-
-            <a
-                href="{{ url('/products/key-ring') }}"
-                class="home-product-story-image"
-            >
-                <img
-                    src="{{ asset('assets/images/home/Rectangle 160.png') }}"
-                    alt="タイシルクのキーホルダー"
-                >
-            </a>
-        </article>
-
-        <article class="home-product-story-row">
-            <a
-                href="{{ url('/products/business-card-holder') }}"
-                class="home-product-story-image"
-            >
-                <img
-                    src="{{ asset('assets/images/home/Rectangle 162.png') }}"
-                    alt="タイシルクの名刺入れ"
-                >
-            </a>
-
-            <div class="home-product-story-content">
-                <h2 class="home-product-story-title">
-                    Business Card Holder
-                </h2>
-
-                <p>
-                    上質なタイシルクを贅沢に使用し、丁寧に仕立てた布製の名刺入れ。シルクならではの
-                    柔らかな手触りと美しい光沢が、手に取るたびに優雅な印象を与えます。
-                </p>
-
-                <p>
-                    スリムで携帯性に優れながらも、大切な名刺やカードを優しく守る、
-                    ビジネスライフの上質なパートナーです。
-                </p>
-            </div>
-        </article>
-    </div>
-</section>
-{{-- ========================================
     Business Calendar Section
 ======================================== --}}
 
-<section class="home-calendar">
+    <section class="home-calendar">
 
-    {{-- ลายตกแต่งด้านขวา --}}
-    <div
-        class="home-calendar-decoration"
-        aria-hidden="true"
-    >
-        <img
-            src="{{ asset('assets/images/home/ph_flower-tulip-light.png') }}"
-            alt=""
-            width="281"
-            height="347"
-        >
-    </div>
-
-    <div class="container">
-
-        {{-- Heading --}}
-        <div class="home-calendar-heading text-center">
-
-            <p class="home-calendar-eyebrow">
-                CALENDAR
-            </p>
-
-            <h2 class="home-calendar-title">
-                営業日カレンダー
-            </h2>
-
-            <p class="home-calendar-subtitle">
-                タイシルク製品のカスタムオーダー及び発送スケジュールをご確認ください
-            </p>
-
+        {{-- ลายตกแต่งด้านขวา --}}
+        <div class="home-calendar-decoration" aria-hidden="true">
+            <img src="{{ asset('assets/images/home/ph_flower-tulip-light.png') }}" alt="" width="281"
+                height="347">
         </div>
 
-        {{-- Calendars --}}
-        <div class="business-calendar-wrapper">
+        <div class="container">
 
-            <div class="row justify-content-center g-4 g-lg-5">
+            {{-- Heading --}}
+            <div class="home-calendar-heading text-center">
 
-                {{-- June --}}
-                <div class="col-12 col-md-6">
-                    <div class="business-calendar-column">
+                <p class="home-calendar-eyebrow">
+                    CALENDAR
+                </p>
 
-                        <h3
-                            id="businessCalendarCurrentMonth"
-                            class="business-calendar-month"
-                        >
-                        </h3>
+                <h2 class="home-calendar-title">
+                    営業日カレンダー
+                </h2>
 
-                        <div
-                            id="businessCalendarCurrent"
-                            class="business-calendar"
-                        ></div>
+                <p class="home-calendar-subtitle">
+                    タイシルク製品のカスタムオーダー及び発送スケジュールをご確認ください
+                </p>
 
-                        <div class="calendar-legend calendar-legend-left">
+            </div>
 
-                            <div class="calendar-legend-item">
-                                <span class="calendar-legend-color legend-closed"></span>
+            {{-- Calendars --}}
+            <div class="business-calendar-wrapper">
 
-                                <span>
-                                    営業＋生産休業日
-                                </span>
-                            </div>
+                <div class="row justify-content-center g-4 g-lg-5">
 
-                            <div class="calendar-legend-item">
-                                <span class="calendar-legend-color legend-production"></span>
+                    {{-- June --}}
+                    <div class="col-12 col-md-6">
+                        <div class="business-calendar-column">
 
-                                <span>
-                                    営業休業日（生産はあり）
-                                </span>
-                            </div>
+                            <h3 id="businessCalendarCurrentMonth" class="business-calendar-month">
+                            </h3>
 
-                            <div class="calendar-legend-item">
-                                <span class="calendar-legend-color legend-production-open"></span>
+                            <div id="businessCalendarCurrent" class="business-calendar"></div>
 
-                                <span>
-                                    生産休業日（営業はあり）
-                                </span>
-                            </div>
+                            <div class="calendar-legend calendar-legend-left">
 
-                        </div>
+                                <div class="calendar-legend-item">
+                                    <span class="calendar-legend-color legend-closed"></span>
 
-                    </div>
-                </div>
+                                    <span>
+                                        営業＋生産休業日
+                                    </span>
+                                </div>
 
-                {{-- July --}}
-                <div class="col-12 col-md-6">
-                    <div class="business-calendar-column">
+                                <div class="calendar-legend-item">
+                                    <span class="calendar-legend-color legend-production"></span>
 
-                        <h3
-                            id="businessCalendarNextMonth"
-                            class="business-calendar-month"
-                        >
-                        </h3>
+                                    <span>
+                                        営業休業日（生産はあり）
+                                    </span>
+                                </div>
 
-                        <div
-                            id="businessCalendarNext"
-                            class="business-calendar"
-                        ></div>
+                                <div class="calendar-legend-item">
+                                    <span class="calendar-legend-color legend-production-open"></span>
 
-                        <div class="calendar-information">
+                                    <span>
+                                        生産休業日（営業はあり）
+                                    </span>
+                                </div>
 
-                            <p class="calendar-deadline">
-                                データ入稿期限：データ入稿完了
-                            </p>
-
-                            <div class="calendar-information-row">
-                                <span>営業日：</span>
-
-                                <span class="calendar-legend-color legend-closed"></span>
-                                <span class="calendar-legend-color legend-production"></span>
-
-                                <span>を除く日</span>
-                            </div>
-
-                            <div class="calendar-information-row">
-                                <span>営業日：</span>
-
-                                <span class="calendar-legend-color legend-closed"></span>
-                                <span class="calendar-legend-color legend-production-open"></span>
-
-                                <span>を除く日</span>
                             </div>
 
                         </div>
-
                     </div>
+
+                    {{-- July --}}
+                    <div class="col-12 col-md-6">
+                        <div class="business-calendar-column">
+
+                            <h3 id="businessCalendarNextMonth" class="business-calendar-month">
+                            </h3>
+
+                            <div id="businessCalendarNext" class="business-calendar"></div>
+
+                            <div class="calendar-information">
+
+                                <p class="calendar-deadline">
+                                    データ入稿期限：データ入稿完了
+                                </p>
+
+                                <div class="calendar-information-row">
+                                    <span>営業日：</span>
+
+                                    <span class="calendar-legend-color legend-closed"></span>
+                                    <span class="calendar-legend-color legend-production"></span>
+
+                                    <span>を除く日</span>
+                                </div>
+
+                                <div class="calendar-information-row">
+                                    <span>営業日：</span>
+
+                                    <span class="calendar-legend-color legend-closed"></span>
+                                    <span class="calendar-legend-color legend-production-open"></span>
+
+                                    <span>を除く日</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
                 </div>
 
             </div>
 
         </div>
 
-    </div>
-
-</section>
+    </section>
 @endsection
 
 @section('js')
@@ -596,7 +482,7 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@7.0.0/locales/ja/global.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const holidayCalendar = {{ \Illuminate\Support\Js::from($holidayCalendar) }};
 
             const currentMonthDate = new Date();
@@ -699,7 +585,7 @@
                     weekday: 'narrow',
                 },
 
-                dayCellTopContent: function (info) {
+                dayCellTopContent: function(info) {
                     return String(info.date.getDate());
                 },
 
@@ -718,8 +604,7 @@
 
             if (currentCalendarElement) {
                 const currentCalendar = new FullCalendar.Calendar(
-                    currentCalendarElement,
-                    {
+                    currentCalendarElement, {
                         ...commonOptions,
                         initialDate: formatLocalDate(currentMonthDate),
                     }
@@ -740,8 +625,7 @@
 
             if (nextCalendarElement) {
                 const nextCalendar = new FullCalendar.Calendar(
-                    nextCalendarElement,
-                    {
+                    nextCalendarElement, {
                         ...commonOptions,
                         initialDate: formatLocalDate(nextMonthDate),
                     }

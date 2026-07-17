@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class ProductController extends Controller
+class ProductListController extends Controller
 {
     public function index(Request $request): View
     {
@@ -29,6 +29,7 @@ class ProductController extends Controller
                 'price' => 132,
                 'delivery' => '10営業日〜20営業日',
                 'image' => 'assets/images/home/Rectangle 158.png',
+                'hover_image' => 'assets/images/home/Rectangle 158 (1).png',
                 'sort_order' => 1,
                 'is_available' => true,
             ],
@@ -39,6 +40,7 @@ class ProductController extends Controller
                 'price' => 132,
                 'delivery' => '10営業日〜20営業日',
                 'image' => 'assets/images/home/Rectangle 160.png',
+                'hover_image' => 'assets/images/home/Rectangle 160 (1).png',
                 'sort_order' => 2,
                 'is_available' => true,
             ],
@@ -49,6 +51,7 @@ class ProductController extends Controller
                 'price' => 132,
                 'delivery' => '10営業日〜20営業日',
                 'image' => 'assets/images/home/Rectangle 162.png',
+                'hover_image' => 'assets/images/home/Rectangle 162 (1).png',
                 'sort_order' => 3,
                 'is_available' => true,
             ],
@@ -59,6 +62,7 @@ class ProductController extends Controller
                 'price' => 520,
                 'delivery' => '10営業日〜20営業日',
                 'image' => null,
+                'hover_image' => null,
                 'sort_order' => 4,
                 'is_available' => false,
             ],
@@ -81,6 +85,7 @@ class ProductController extends Controller
                 count($selectedCategories) > 0,
                 fn ($items) => $items->whereIn('category', $selectedCategories)
             )
+            ->filter(fn ($product) => $product['is_available'])
             ->filter(fn ($product) => $product['price'] >= $minPrice && $product['price'] <= $maxPrice);
 
         $products = match ($sort) {
@@ -97,6 +102,36 @@ class ProductController extends Controller
             'maxPrice' => $maxPrice,
             'priceLimit' => $priceLimit,
             'sort' => $sort,
+        ]);
+    }
+    public function show(string $slug): View
+    {
+        // รองรับ URL เดิมที่หน้า Home ใช้อยู่
+        if ($slug === 'id-case') {
+            $slug = 'silk-employee-id-case';
+        }
+
+        $products = collect([
+            'silk-employee-id-case' => [
+                'slug' => 'silk-employee-id-case',
+                'name' => 'シルク（タイシルク）製のオリジナルIDカードホルダーの製作',
+                'short_name' => 'シルク製社員証ケース',
+                'description' => 'タイシルク製のカードケースに、お客様のオリジナルデザインをフルカラーで印刷。シルクの質感や高級感を活かしたオリジナルIDカードホルダーを製作いたします。',
+                'unit_price' => 132,
+                'gallery' => [
+                    'assets/images/product/Rectangle 204.png',
+                    'assets/images/product/Rectangle 215.png',
+                    'assets/images/product/Frame 18 (1).png',
+                    'assets/images/product/Frame 18.png',
+                  
+                ],
+            ]
+        ]);
+
+        abort_unless($products->has($slug), 404);
+
+        return view('frontend.products.show', [
+            'product' => $products->get($slug),
         ]);
     }
 }

@@ -1,7 +1,40 @@
 <?php
 
-
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Admin\ProductOptionPriceRuleController;
+use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\ArticleController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ContactSubmissionController;
+use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\GalleryBannerController;
+use App\Http\Controllers\Admin\GalleryController;
+use App\Http\Controllers\Admin\HomeBannerController;
+use App\Http\Controllers\Admin\MaterialController;
+use App\Http\Controllers\Admin\MaterialHomeController;
+use App\Http\Controllers\Admin\OptionDependencyController;
+use App\Http\Controllers\Admin\OptionGroupController;
+use App\Http\Controllers\Admin\OrderAdminController;
+use App\Http\Controllers\Admin\ProductArtworkTemplateController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductDetailController;
+use App\Http\Controllers\Admin\ProductListBannerController;
+use App\Http\Controllers\Admin\ProductOptionAssignmentController;
+use App\Http\Controllers\Admin\ProductOptionController;
+use App\Http\Controllers\Admin\ProductOptionVariantController;
+use App\Http\Controllers\Admin\ProductPriceRuleController;
+use App\Http\Controllers\Admin\ProductPriceTierController;
+use App\Http\Controllers\Admin\ProductTemplateController;
+use App\Http\Controllers\Admin\QuotationController;
+use App\Http\Controllers\Admin\SystemManagementController;
+use App\Http\Controllers\Admin\UserAdminController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\SocialAuthController;
+use App\Http\Controllers\Admin\MenuProductController;
+use App\Http\Controllers\ProductListController;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -44,5 +77,200 @@ Route::get('/', function () {
 })->name('home');
 
 
-Route::get('/products', [ProductController::class, 'index'])
+Route::get('/products', [ProductListController::class, 'index'])
     ->name('products.index');
+    Route::get('/products/{slug}', [ProductListController::class, 'show'])
+    ->name('products.show');
+
+
+
+
+
+
+ Route::prefix('admin-panel')->name('admin.')->group(function () {
+    Route::get('/login', [AdminAuthController::class, 'showLoginForm'])
+        ->name('login');
+
+    Route::post('/login', [AdminAuthController::class, 'login'])
+        ->name('login.submit');
+
+    Route::post('/logout', [AdminAuthController::class, 'logout'])
+        ->name('logout');
+
+    Route::middleware('admin.auth')->group(function () {
+        Route::get('/', [AdminDashboardController::class, 'index'])
+            ->name('dashboard');
+
+        Route::post('products/{product}/duplicate', [ProductController::class, 'duplicate'])
+            ->name('products.duplicate');
+
+        Route::resource('products', ProductController::class);
+        Route::get('products/{product}/options', [ProductOptionAssignmentController::class, 'edit'])
+            ->name('products.options.edit');
+
+        Route::put('products/{product}/options', [ProductOptionAssignmentController::class, 'update'])
+            ->name('products.options.update');
+
+        Route::resource('product-price-tiers', ProductPriceTierController::class);
+
+        Route::resource('option-groups', OptionGroupController::class);
+
+        Route::resource('product-options', ProductOptionController::class);
+
+        Route::resource('option-dependencies', OptionDependencyController::class);
+
+        Route::resource('product-details', ProductDetailController::class);
+
+        Route::resource('categories', CategoryController::class);
+        Route::resource('materials', MaterialController::class);
+        Route::resource('product-list-banners', ProductListBannerController::class);
+
+        Route::get('product-options/{option}/variants', [ProductOptionVariantController::class, 'index'])
+            ->name('product-options.variants.index');
+
+        Route::get('product-options/{option}/variants/create', [ProductOptionVariantController::class, 'create'])
+            ->name('product-options.variants.create');
+
+        Route::post('product-options/{option}/variants', [ProductOptionVariantController::class, 'store'])
+            ->name('product-options.variants.store');
+
+        Route::get('product-option-variants/{variant}/edit', [ProductOptionVariantController::class, 'edit'])
+            ->name('product-option-variants.edit');
+
+        Route::put('product-option-variants/{variant}', [ProductOptionVariantController::class, 'update'])
+            ->name('product-option-variants.update');
+
+        Route::delete('product-option-variants/{variant}', [ProductOptionVariantController::class, 'destroy'])
+            ->name('product-option-variants.destroy');
+
+        Route::get('product-price-rules/{productPriceRule}/duplicate', [ProductPriceRuleController::class, 'duplicate'])
+            ->name('product-price-rules.duplicate');
+        Route::resource('product-price-rules', ProductPriceRuleController::class);
+        Route::resource('product-artwork-templates', ProductArtworkTemplateController::class);
+        Route::resource('material-homes', MaterialHomeController::class);
+        Route::resource('home-banners', HomeBannerController::class);
+
+        // Route::resource('users', UserAdminController::class)->only(['index', 'show']);
+        Route::resource('contact-submissions', ContactSubmissionController::class)->only(['index', 'show']);
+        Route::get('orders', [OrderAdminController::class, 'index'])
+            ->name('orders.index');
+
+        Route::get('orders/{order}/quotation', [OrderAdminController::class, 'downloadQuotation'])
+            ->name('orders.quotation');
+
+        Route::get('orders/{order}/invoice', [OrderAdminController::class, 'downloadInvoice'])
+            ->name('orders.invoice');
+
+        Route::get('orders/{order}', [OrderAdminController::class, 'show'])
+            ->name('orders.show');
+
+        Route::put('orders/{order}/status', [OrderAdminController::class, 'updateStatus'])
+            ->name('orders.updateStatus');
+        Route::resource('galleries', GalleryController::class);
+        Route::resource('gallery-banners', GalleryBannerController::class);
+        Route::get('product-price-rules/product-options/{product}', [ProductPriceRuleController::class, 'getProductOptions'])
+            ->name('product-price-rules.product-options');
+        Route::get('/language/{language}', function ($language) {
+            if (! in_array($language, ['pt', 'ja', 'en'])) {
+                abort(404);
+            }
+
+            session(['admin_product_language' => $language]);
+
+            return back();
+        })->name('product-language.switch');
+        Route::resource('articles', ArticleController::class);
+
+        Route::post('articles/upload-editor-image', [ArticleController::class, 'uploadEditorImage'])
+            ->name('articles.uploadEditorImage');
+        Route::resource('product-templates', ProductTemplateController::class);
+        Route::post('faqs/update-sort', [FaqController::class, 'updateSort'])
+            ->name('faqs.updateSort');
+        Route::resource('faqs', FaqController::class);
+        Route::patch('quotations/{quotation}/status', [QuotationController::class, 'updateStatus'])
+            ->name('quotations.updateStatus');
+        Route::resource('quotations', QuotationController::class);
+
+        Route::get('quotations/product-options/{product}', [QuotationController::class, 'productOptions'])
+            ->name('quotations.productOptions');
+
+        Route::get('quotations/{quotation}/pdf', [QuotationController::class, 'downloadPdf'])
+            ->name('quotations.pdf');
+        Route::post('products/{product}/option-groups/update-sort', [ProductOptionAssignmentController::class, 'updateGroupSort'])
+            ->name('products.option-groups.updateSort');
+        Route::post('/products/{product}/duplicate-translation', [ProductController::class, 'duplicateTranslation'])
+            ->name('products.duplicate-translation');
+        Route::post('option-groups/{optionGroup}/duplicate-translation', [OptionGroupController::class, 'duplicateTranslation'])
+            ->name('option-groups.duplicate-translation');
+        Route::post('categories/{category}/duplicate-translation', [CategoryController::class, 'duplicateTranslation'])
+            ->name('categories.duplicate-translation');
+        Route::post('materials/{material}/duplicate-translation', [MaterialController::class, 'duplicateTranslation'])
+            ->name('materials.duplicate-translation');
+        Route::post('product-options/{productOption}/duplicate-translation', [ProductOptionController::class, 'duplicateTranslation'])
+            ->name('product-options.duplicate-translation');
+        Route::post('option-dependencies/{optionDependency}/duplicate-translation', [OptionDependencyController::class, 'duplicateTranslation'])
+            ->name('option-dependencies.duplicate-translation');
+        Route::post('material-homes/{materialHome}/duplicate-translation', [MaterialHomeController::class, 'duplicateTranslation'])
+            ->name('material-homes.duplicate-translation');
+        Route::post('galleries/{gallery}/duplicate-translation', [GalleryController::class, 'duplicateTranslation'])
+            ->name('galleries.duplicate-translation');
+        Route::post('articles/{article}/duplicate-translation', [ArticleController::class, 'duplicateTranslation'])
+            ->name('articles.duplicate-translation');
+
+        Route::get('contact-submissions/{submission}/reply', [ContactSubmissionController::class, 'reply'])
+            ->name('contact-submissions.reply');
+
+        Route::post('contact-submissions/{submission}/reply', [ContactSubmissionController::class, 'sendReply'])
+            ->name('contact-submissions.send-reply');
+
+        // Route::get('system-management', [SystemManagementController::class, 'index'])
+        //     ->name('system-management.index');
+
+        // Route::post('system-management', [SystemManagementController::class, 'update'])
+        //     ->name('system-management.update');
+        // Route::post('users/{user}/email-change', [UserAdminController::class, 'sendEmailChangeVerification'])
+        //     ->name('users.email-change.send');
+
+        Route::get('/products/{product}/preview', [ProductController::class, 'preview'])
+            ->name('products.preview');
+        Route::get('products/{product}/preview-order', [ProductListController::class, 'previewOrder'])
+            ->name('products.preview-order');
+        Route::get('/articles/{article}/preview', [BlogController::class, 'preview'])
+            ->name('articles.preview');
+            Route::post('/categories/sort', [CategoryController::class, 'updateSort'])
+    ->name('categories.sort');
+    Route::get('menu-products', [MenuProductController::class, 'index'])
+    ->name('menu-products.index');
+
+Route::post('menu-products/add', [MenuProductController::class, 'add'])
+    ->name('menu-products.add');
+
+Route::post('menu-products/{product}/remove', [MenuProductController::class, 'remove'])
+    ->name('menu-products.remove');
+
+    Route::resource('option-price-rules', ProductOptionPriceRuleController::class)
+    ->parameters([
+        'option-price-rules' => 'optionPriceRule',
+    ]);
+
+    Route::get(
+    '/option-price-rules/{optionPriceRule}/duplicate',
+    [ProductOptionPriceRuleController::class, 'duplicate']
+)->name('option-price-rules.duplicate');
+
+
+
+        Route::middleware('super.admin')->group(function () {
+            Route::resource('users', UserAdminController::class)->only(['index', 'show']);
+
+            Route::post('users/{user}/email-change', [UserAdminController::class, 'sendEmailChangeVerification'])
+                ->name('users.email-change.send');
+
+            Route::get('system-management', [SystemManagementController::class, 'index'])
+                ->name('system-management.index');
+
+            Route::post('system-management', [SystemManagementController::class, 'update'])
+                ->name('system-management.update');
+        });
+    });
+});
