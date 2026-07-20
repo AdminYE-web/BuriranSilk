@@ -1,0 +1,406 @@
+.account-modal-trigger {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+body.account-modal-open {
+    overflow: hidden;
+}
+
+.account-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    overflow-y: auto;
+    background: rgba(17, 17, 17, 0.58);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.28s ease, visibility 0.28s ease;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.account-modal-overlay::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+.account-modal-overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.account-modal-dialog {
+    position: relative;
+    width: min(100%, 520px);
+    max-height: calc(100vh - 48px);
+    padding: 58px 54px 60px;
+    overflow: hidden auto;
+    color: #27231f;
+    background: #fffdfb;
+    border-radius: 24px;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.2);
+    outline: none;
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+    transition: opacity 0.28s ease, transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.account-modal-dialog::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+.account-modal-overlay.is-open .account-modal-dialog {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.account-modal-dialog::before,
+.account-modal-dialog::after {
+    position: absolute;
+    z-index: 0;
+    width: 150px;
+    height: 150px;
+    content: '';
+    background: url('../images/home/ph_flower-lotus-thin.png') center / contain no-repeat;
+    opacity: 0.16;
+    pointer-events: none;
+}
+
+.account-modal-dialog::before {
+    top: -35px;
+    right: -24px;
+}
+
+.account-modal-dialog::after {
+    right: -50px;
+    bottom: -47px;
+    transform: rotate(190deg);
+}
+
+.account-modal-dialog > * {
+    position: relative;
+    z-index: 1;
+}
+
+.account-modal-close {
+    position: absolute;
+    z-index: 2;
+    top: 21px;
+    right: 24px;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.account-modal-close::before,
+.account-modal-close::after {
+    position: absolute;
+    top: 16px;
+    left: 3px;
+    width: 29px;
+    height: 1.5px;
+    content: '';
+    background: #77736e;
+}
+
+.account-modal-close::before {
+    transform: rotate(45deg);
+}
+
+.account-modal-close::after {
+    transform: rotate(-45deg);
+}
+
+.account-modal-close:hover {
+    opacity: 0.65;
+    transform: rotate(5deg);
+}
+
+.account-modal-title {
+    margin: 0 0 14px;
+    color: #171411;
+    font-size: clamp(29px, 3vw, 36px);
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: 0.08em;
+    text-align: center;
+}
+
+.account-modal-description {
+    margin: 0 0 16px;
+    font-size: 13px;
+    line-height: 1.8;
+    text-align: center;
+}
+
+.account-modal-error {
+    margin: 0 0 14px;
+    padding: 10px 12px;
+    color: #a13e31;
+    font-size: 12px;
+    line-height: 1.55;
+    text-align: center;
+    background: #fff2ef;
+    border: 1px solid #efd1ca;
+    border-radius: 3px;
+}
+
+.account-login-form {
+    display: grid;
+    gap: 15px;
+}
+
+.account-login-field {
+    position: relative;
+    display: block;
+    margin: 0;
+}
+
+.account-login-field input {
+    width: 100%;
+    height: 49px;
+    padding: 0 19px;
+    color: #332f2b;
+    font-family: inherit;
+    font-size: 15px;
+    background: #fff;
+    border: 1px solid #d4d0cb;
+    border-radius: 2px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.account-login-field input::placeholder {
+    color: #aaa6a1;
+}
+
+.account-login-field input:focus {
+    border-color: #b69251;
+    box-shadow: 0 0 0 3px rgba(182, 146, 81, 0.13);
+}
+
+.account-password-field input {
+    padding-right: 55px;
+}
+
+.account-password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 13px;
+    display: grid;
+    width: 31px;
+    height: 31px;
+    padding: 5px;
+    place-items: center;
+    color: #85817d;
+    background: transparent;
+    border: 0;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.account-password-toggle svg {
+    width: 22px;
+    height: 22px;
+    overflow: visible;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.7;
+}
+
+.account-password-toggle[aria-pressed='true'] .account-password-slash {
+    display: none;
+}
+
+.account-login-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 1px 0 13px;
+}
+
+.account-remember {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin: 0;
+    font-size: 13px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.account-remember input {
+    width: 22px;
+    height: 22px;
+    margin: 0;
+    accent-color: #b69251;
+}
+
+.account-forgot-link,
+.account-register-prompt a {
+    padding: 0;
+    color: #b08b4d;
+    font-family: inherit;
+    font-size: 11px;
+    background: transparent;
+    border: 0;
+    text-decoration: none;
+}
+
+.account-forgot-link {
+    white-space: nowrap;
+}
+
+.account-login-submit {
+    width: 100%;
+    min-height: 49px;
+    padding: 9px 24px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 21px;
+    letter-spacing: 0.08em;
+    background: linear-gradient(90deg, #b18a46, #bf9a59);
+    border: 0;
+    border-radius: 999px;
+    box-shadow: 0 7px 15px rgba(94, 69, 31, 0.18);
+    cursor: pointer;
+    transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.account-login-submit:hover {
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+}
+
+.account-login-divider {
+    display: flex;
+    align-items: center;
+    gap: 17px;
+    margin: 31px 0 27px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.account-login-divider::before,
+.account-login-divider::after {
+    height: 1px;
+    content: '';
+    background: #dedbd7;
+    flex: 1;
+}
+
+.account-social-list {
+    display: grid;
+    gap: 18px;
+}
+
+.account-social-button {
+    display: flex;
+    width: 100%;
+    min-height: 50px;
+    align-items: center;
+    justify-content: center;
+    gap: 13px;
+    padding: 8px 20px;
+    color: #302c28;
+    font-family: inherit;
+    font-size: 17px;
+    background: #fff;
+    border: 1px solid #ddd9d5;
+    border-radius: 2px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.11);
+    opacity: 1;
+}
+
+.account-social-icon {
+    display: inline-grid;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    flex: 0 0 auto;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.account-social-icon-line {
+    object-fit: contain;
+    background: transparent;
+    border-radius: 8px;
+}
+
+.account-social-icon-google {
+    object-fit: contain;
+    background: transparent;
+}
+
+.account-register-prompt {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin: 43px 0 0;
+    font-size: 16px;
+}
+
+.account-register-prompt a {
+    font-size: 15px;
+}
+
+@media (max-width: 575.98px) {
+    .account-modal-overlay {
+        align-items: start;
+        padding: 14px;
+    }
+
+    .account-modal-dialog {
+        max-height: calc(100vh - 28px);
+        padding: 48px 24px 40px;
+        border-radius: 18px;
+    }
+
+    .account-modal-close {
+        top: 14px;
+        right: 15px;
+    }
+
+    .account-login-options {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .account-login-divider {
+        margin: 25px 0 21px;
+    }
+
+    .account-register-prompt {
+        margin-top: 32px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .account-modal-overlay,
+    .account-modal-dialog {
+        transition: none;
+    }
+}

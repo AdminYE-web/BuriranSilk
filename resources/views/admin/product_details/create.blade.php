@@ -194,6 +194,13 @@
         .dynamic-item-header h3 {
             margin: 0;
         }
+        .long-description-editor-wrap .ck-editor__editable_inline {
+    min-height: 320px;
+}
+
+.long-description-editor-wrap .ck-content {
+    line-height: 1.7;
+}
     </style>
 @endsection
 @section('content')
@@ -239,6 +246,47 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="form-group full">
+    <label>Short Description</label>
+
+    <textarea
+        name="short_description"
+        rows="4"
+        maxlength="1000"
+        placeholder="Enter a short product description"
+    >{{ old('short_description') }}</textarea>
+
+    <small>
+        Short description displayed near the product gallery.
+        Maximum 1,000 characters.
+    </small>
+
+    @error('short_description')
+        <small style="color: #dc2626;">
+            {{ $message }}
+        </small>
+    @enderror
+</div>
+<div class="form-group full long-description-editor-wrap">
+    <label>Long Description</label>
+
+    <textarea
+        id="longDescriptionEditor"
+        name="long_description"
+        class="long-description-ckeditor"
+        rows="12"
+    >{{ old('long_description') }}</textarea>
+
+    <small>
+        Detailed description displayed in the product information section.
+    </small>
+
+    @error('long_description')
+        <small style="color: #dc2626;">
+            {{ $message }}
+        </small>
+    @enderror
+</div>
 
                 <div class="form-group">
                     <label>Specification Image</label>
@@ -247,16 +295,17 @@
                 </div>
 
                 <!-- เพิ่มช่องอัปโหลด Sample Image ตรงนี้ -->
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label>Sample Image</label>
                     <input type="file" name="sample_image" accept="image/*">
                     <small>recommend the size 1296x330.</small>
-                </div>
+                </div> --}}
 
 
             </div>
 
-            <div class="section-title">Detail Content</div>
+            <div styld="display:none">
+<div class="section-title">Detail Content</div>
 
             @php
                 $oldDetails = old('detail_content', [
@@ -303,6 +352,8 @@
             <button type="button" id="add-detail-item" class="btn-outline">
                 + Add Detail Set
             </button>
+            </div>
+            
 
             <div class="section-title">Specification Content</div>
 
@@ -422,6 +473,34 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 
     <script>
+        const longDescriptionTextarea = document.querySelector(
+    '.long-description-ckeditor'
+);
+
+if (longDescriptionTextarea) {
+    ClassicEditor
+        .create(longDescriptionTextarea, {
+            toolbar: [
+                'undo',
+                'redo',
+                '|',
+                'heading',
+                '|',
+                'bold',
+                'italic',
+                'link',
+                '|',
+                'bulletedList',
+                'numberedList',
+                '|',
+                'blockQuote',
+                'insertTable'
+            ]
+        })
+        .catch(function (error) {
+            console.error('Long description editor error:', error);
+        });
+}
         let detailIndex = document.querySelectorAll('.detail-item').length;
         let specIndex = document.querySelectorAll('.spec-item').length;
         let accordionIndex = document.querySelectorAll('.accordion-item-admin').length;

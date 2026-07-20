@@ -162,6 +162,12 @@ class ProductController extends Controller
             'product_premium' => 'nullable|boolean',
 
             'images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'second_image' => [
+    'nullable',
+    'image',
+    'mimes:jpg,jpeg,png,webp',
+    'max:2048',
+],
             'gallery_images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'can_upload_artwork' => 'nullable|boolean',
             'artwork_required' => 'nullable|boolean',
@@ -173,6 +179,8 @@ class ProductController extends Controller
 
         ]);
         $language = session('admin_product_language', 'pt');
+
+        
 
         $product = Product::create([
             'product_code' => $request->product_code,
@@ -211,6 +219,20 @@ class ProductController extends Controller
                 ]);
             }
         }
+        // Second image สำหรับแสดงตอน Hover
+if ($request->hasFile('second_image')) {
+    $path = $request->file('second_image')
+        ->store('products/secondary', 'public');
+
+    ProductImage::create([
+        'product_id' => $product->product_id,
+        'image_path' => $path,
+        'image_alt' => $product->product_name,
+        'image_type' => 'secondary',
+        'is_main' => 0,
+        'sort_order' => 1,
+    ]);
+}
 
         // Gallery images
         if ($request->hasFile('gallery_images')) {
@@ -237,7 +259,7 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-        $product->load(['images', 'galleryImages']);
+        $product->load(['images', 'galleryImages', 'secondImage']);
 
         $language = $product->language ?? session('admin_product_language', 'pt');
 
@@ -266,6 +288,17 @@ class ProductController extends Controller
             'category_id' => 'nullable|exists:categories,category_id',
             'material_id' => 'nullable|exists:materials,material_id',
             'main_image_id' => 'nullable|exists:product_images,image_id',
+            'second_image' => [
+    'nullable',
+    'image',
+    'mimes:jpg,jpeg,png,webp',
+    'max:2048',
+],
+
+'remove_second_image' => [
+    'nullable',
+    'boolean',
+],
             'product_type' => 'required|integer|in:1,2',
             'product_name' => 'required|string|max:255',
             'gallery_images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
@@ -310,6 +343,69 @@ class ProductController extends Controller
             'allow_template_select' => $request->has('allow_template_select') ? 1 : 0,
             'translation_key' => $request->translation_key ?: $product->translation_key ?: 'product_'.strtolower(Str::random(12)),
         ]);
+        $secondImage = $product->secondImage()->first();
+
+/*
+ * ลบภาพเดิม กรณีเลือก Remove
+ * และไม่ได้อัปโหลดภาพใหม่
+ */
+if (
+    $request->boolean('remove_second_image')
+    && ! $request->hasFile('second_image')
+) {
+    if (
+        $secondImage
+        && $secondImage->image_path
+        && Storage::disk('public')->exists(
+            $secondImage->image_path
+        )
+    ) {
+        Storage::disk('public')->delete(
+            $secondImage->image_path
+        );
+    }
+
+    $secondImage?->delete();
+}
+
+/*
+ * เพิ่มหรือเปลี่ยนภาพ Second Image
+ */
+if ($request->hasFile('second_image')) {
+    if (
+        $secondImage
+        && $secondImage->image_path
+        && Storage::disk('public')->exists(
+            $secondImage->image_path
+        )
+    ) {
+        Storage::disk('public')->delete(
+            $secondImage->image_path
+        );
+    }
+
+    $path = $request->file('second_image')
+        ->store('products/secondary', 'public');
+
+    if ($secondImage) {
+        $secondImage->update([
+            'image_path' => $path,
+            'image_alt' => $product->product_name,
+            'image_type' => 'secondary',
+            'is_main' => 0,
+            'sort_order' => 1,
+        ]);
+    } else {
+        ProductImage::create([
+            'product_id' => $product->product_id,
+            'image_path' => $path,
+            'image_alt' => $product->product_name,
+            'image_type' => 'secondary',
+            'is_main' => 0,
+            'sort_order' => 1,
+        ]);
+    }
+}
         if ($request->filled('delete_gallery_images')) {
             $galleryImages = ProductImage::where('product_id', $product->product_id)
                 ->where('image_type', 'gallery')

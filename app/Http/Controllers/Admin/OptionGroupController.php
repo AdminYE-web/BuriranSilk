@@ -110,7 +110,7 @@ class OptionGroupController extends Controller
         $request->validate([
             'group_code' => 'required|string|max:100|unique:option_groups,group_code',
             'group_name' => 'required|string|max:255',
-            'display_type' => 'required|string|in:button,image_card,color,select_detail,image_card_variant,image_grid_compact,grouped_buttons,previous_order_design',
+            'display_type' => 'required|string|in:button,image_card,color,select_detail,image_card_variant,image_grid_compact,grouped_buttons,previous_order_design,upload_option,font_option',
             'is_required' => 'nullable|boolean',
             'sort_order' => 'nullable|integer|min:0',
             'help_text' => 'nullable|string',
@@ -158,7 +158,7 @@ class OptionGroupController extends Controller
         $request->validate([
             'group_code' => 'required|string|max:100|unique:option_groups,group_code,'.$optionGroup->option_group_id.',option_group_id',
             'group_name' => 'required|string|max:255',
-            'display_type' => 'required|string|in:button,image_card,color,select_detail,image_card_variant,image_grid_compact,grouped_buttons,previous_order_design',
+            'display_type' => 'required|string|in:button,image_card,color,select_detail,image_card_variant,image_grid_compact,grouped_buttons,previous_order_design,upload_option,font_option',
             'is_required' => 'nullable|boolean',
             'sort_order' => 'nullable|integer|min:0',
             'help_text' => 'nullable|string',

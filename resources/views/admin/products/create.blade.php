@@ -225,6 +225,31 @@
                     <input type="file" name="images[]" multiple accept="image/*">
                     <small>{{ request()->cookie('dev') == '1' ? 'Recommended size: 300x300.' : '推奨サイズ: 300x300。' }}</small>
                 </div>
+                <div class="form-group">
+    <label>
+        {{ request()->cookie('dev') == '1'
+            ? 'Product Second Image (Hover)'
+            : '商品サブ画像（ホバー時）' }}
+    </label>
+
+    <input
+        type="file"
+        name="second_image"
+        accept="image/jpeg,image/png,image/webp"
+    >
+
+    <small>
+        {{ request()->cookie('dev') == '1'
+            ? 'This image appears when the mouse is over the product. Recommended size: 300x300.'
+            : '商品にマウスを合わせた時に表示される画像です。推奨サイズ: 300x300。' }}
+    </small>
+
+    @error('second_image')
+        <small style="color: #dc2626;">
+            {{ $message }}
+        </small>
+    @enderror
+</div>
 
                 <div class="form-group">
                     <label>{{ request()->cookie('dev') == '1' ? 'Product Gallery Images' : '商品ギャラリー画像' }}</label>

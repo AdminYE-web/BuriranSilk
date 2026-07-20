@@ -10,6 +10,8 @@ class ProductDetail extends Model
 
     protected $fillable = [
         'product_id',
+            'short_description',
+    'long_description',
         'sample_image',
         'specification_image',
         'detail_content',

@@ -35,6 +35,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\Admin\MenuProductController;
 use App\Http\Controllers\ProductListController;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -79,8 +80,50 @@ Route::get('/', function () {
 
 Route::get('/products', [ProductListController::class, 'index'])
     ->name('products.index');
-    Route::get('/products/{slug}', [ProductListController::class, 'show'])
+Route::get('/products/{slug}', [ProductListController::class, 'show'])
     ->name('products.show');
+
+Route::get('/cart', [CartController::class, 'index'])
+    ->name('cart.index');
+Route::post('/cart', [CartController::class, 'store'])
+    ->name('cart.store');
+Route::patch('/cart/items/{item}', [CartController::class, 'update'])
+    ->name('cart.items.update');
+Route::delete('/cart/items/{item}', [CartController::class, 'destroy'])
+    ->name('cart.items.destroy');
+
+Route::post('/login', [LoginController::class, 'login'])
+    ->middleware('guest')
+    ->name('login');
+Route::post('/logout', [LoginController::class, 'logout'])
+    ->middleware('auth')
+    ->name('logout');
+
+Route::middleware('guest')->group(function () {
+    Route::get('/register', [RegisterController::class, 'create'])
+        ->name('register');
+    Route::get('/register/step1', [RegisterController::class, 'step1'])
+        ->name('register.step1');
+    Route::post('/register/step1', [RegisterController::class, 'storeStep1'])
+        ->name('register.step1.store');
+    Route::get('/register/step2', [RegisterController::class, 'step2'])
+        ->name('register.step2');
+    Route::post('/register/step2', [RegisterController::class, 'storeStep2'])
+        ->name('register.step2.store');
+    Route::post('/register/postal-code', [RegisterController::class, 'lookupPostalCode'])
+        ->middleware('throttle:20,1')
+        ->name('register.postal-code');
+    Route::get('/register/step3', [RegisterController::class, 'step3'])
+        ->name('register.step3');
+    Route::post('/register', [RegisterController::class, 'store'])
+        ->name('register.store');
+});
+Route::get('/register/complete', [RegisterController::class, 'complete'])
+    ->middleware('guest')
+    ->name('register.complete');
+Route::get('/email/verify/{id}/{hash}', [RegisterController::class, 'verifyEmail'])
+    ->middleware(['signed', 'throttle:6,1'])
+    ->name('verification.verify');
 
 
 

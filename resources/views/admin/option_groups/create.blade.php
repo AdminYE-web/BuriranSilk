@@ -305,6 +305,14 @@
                             {{ old('display_type') == 'previous_order_design' ? 'selected' : '' }}>
                             {{ request()->cookie('dev') === '1' ? 'Previous Order Design' : '前回の注文デザイン' }}
                         </option>
+
+                        <option value="upload_option" {{ old('display_type') == 'upload_option' ? 'selected' : '' }}>
+                            {{ request()->cookie('dev') === '1' ? 'Upload Option' : 'アップロードオプション' }}
+                        </option>
+
+                        <option value="font_option" {{ old('display_type') == 'font_option' ? 'selected' : '' }}>
+                            {{ request()->cookie('dev') === '1' ? 'Font Option' : 'フォントオプション' }}
+                        </option>
                     </select>
                 </div>
 

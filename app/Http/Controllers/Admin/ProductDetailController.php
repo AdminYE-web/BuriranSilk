@@ -46,6 +46,16 @@ class ProductDetailController extends Controller
     {
         $request->validate([
             'product_id' => 'required|exists:products,product_id|unique:product_details,product_id',
+              'short_description' => [
+        'nullable',
+        'string',
+        'max:1000',
+    ],
+
+    'long_description' => [
+        'nullable',
+        'string',
+    ],
             'sample_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'detail_content' => 'nullable|array',
             'detail_content.*.headline' => 'nullable|string|max:255',
@@ -113,6 +123,8 @@ class ProductDetailController extends Controller
 
         ProductDetail::create([
             'product_id' => $request->product_id,
+              'short_description' => $request->short_description,
+    'long_description' => $request->long_description,
             'sample_image' => $sampleImagePath,
             'specification_image' => $specificationImagePath,
             'detail_content' => $detailContent,
@@ -142,6 +154,16 @@ class ProductDetailController extends Controller
     {
         $request->validate([
             'product_id' => 'required|exists:products,product_id|unique:product_details,product_id,'.$productDetail->product_detail_id.',product_detail_id',
+             'short_description' => [
+        'nullable',
+        'string',
+        'max:1000',
+    ],
+
+    'long_description' => [
+        'nullable',
+        'string',
+    ],
             'sample_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'detail_content' => 'nullable|array',
             'detail_content.*.headline' => 'nullable|string|max:255',
@@ -215,6 +237,8 @@ class ProductDetailController extends Controller
 
         $productDetail->update([
             'product_id' => $request->product_id,
+             'short_description' => $request->short_description,
+    'long_description' => $request->long_description,
             'sample_image' => $sampleImagePath,
             'specification_image' => $specificationImagePath,
             'detail_content' => $detailContent,

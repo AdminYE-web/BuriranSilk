@@ -172,4 +172,14 @@ class Product extends Model
             ->where('is_active', 1)
             ->orderBy('option_price_rule_id');
     }
+    public function secondImage()
+{
+    return $this->hasOne(
+        ProductImage::class,
+        'product_id',
+        'product_id'
+    )
+        ->where('image_type', 'secondary')
+        ->orderBy('sort_order');
+}
 }

@@ -315,6 +315,70 @@
                     @endforelse
                 </div>
             </div>
+            <div class="image-panel">
+    <label>
+        {{ request()->cookie('dev') == '1'
+            ? 'Current Second Image (Hover)'
+            : '現在のサブ画像（ホバー時）' }}
+    </label>
+
+    @if ($product->secondImage)
+        <div class="image-grid">
+            <div class="image-box">
+                <img
+                    src="{{ asset(
+                        'storage/'.$product->secondImage->image_path
+                    ) }}"
+                    alt="{{ $product->product_name }}"
+                >
+
+                <label class="delete-image-label">
+                    <input
+                        type="checkbox"
+                        name="remove_second_image"
+                        value="1"
+                    >
+
+                    {{ request()->cookie('dev') == '1'
+                        ? 'Remove'
+                        : '削除' }}
+                </label>
+            </div>
+        </div>
+    @else
+        <p class="muted-text">
+            {{ request()->cookie('dev') == '1'
+                ? 'No second image'
+                : 'サブ画像がありません' }}
+        </p>
+    @endif
+</div>
+
+<div class="form-group">
+    <label>
+        {{ request()->cookie('dev') == '1'
+            ? 'Upload New Second Image'
+            : '新しいサブ画像をアップロード' }}
+    </label>
+
+    <input
+        type="file"
+        name="second_image"
+        accept="image/jpeg,image/png,image/webp"
+    >
+
+    <small>
+        {{ request()->cookie('dev') == '1'
+            ? 'Uploading a new image will replace the current second image.'
+            : '新しい画像をアップロードすると、現在のサブ画像が置き換えられます。' }}
+    </small>
+
+    @error('second_image')
+        <small style="color: #dc2626;">
+            {{ $message }}
+        </small>
+    @enderror
+</div>
 
             <div class="form-group">
                 <label>{{ request()->cookie('dev') == '1' ? 'Add New Product Images' : '追加する画像' }}</label>

@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'google' => [
+        'geocode_key' => env('GOOGLE_GEOCODE_KEY'),
+    ],
+
 ];
