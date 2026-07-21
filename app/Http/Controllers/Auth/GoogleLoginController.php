@@ -15,16 +15,19 @@ use Throwable;
 
 class GoogleLoginController extends Controller
 {
-    public function redirect(): RedirectResponse
-    {
-        return Socialite::driver('google')
-            ->scopes([
-                'openid',
-                'profile',
-                'email',
-            ])
-            ->redirect();
-    }
+   public function redirect(): RedirectResponse
+{
+    return Socialite::driver('google')
+        ->scopes([
+            'openid',
+            'profile',
+            'email',
+        ])
+        ->with([
+            'prompt' => 'select_account',
+        ])
+        ->redirect();
+}
 
     public function callback(Request $request): RedirectResponse
     {
