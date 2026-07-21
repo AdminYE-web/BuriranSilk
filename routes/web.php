@@ -1,5 +1,7 @@
 <?php
 
+
+use App\Http\Controllers\Auth\GoogleLoginController;
 use App\Http\Controllers\Admin\ProductOptionPriceRuleController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminDashboardController;
@@ -36,6 +38,7 @@ use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\Admin\MenuProductController;
 use App\Http\Controllers\ProductListController;
 use App\Http\Controllers\CartController;
+use App\Models\HomeBanner;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -74,7 +77,14 @@ Route::get('/', function () {
         $holidayCalendar = [];
     }
 
-    return view('frontend.home.index', compact('holidayCalendar'));
+    $heroBanner = HomeBanner::query()
+        ->where('is_active', 1)
+        ->whereNotNull('image_pc')
+        ->orderBy('sort_order')
+        ->orderBy('home_banner_id')
+        ->first();
+
+    return view('frontend.home.index', compact('holidayCalendar', 'heroBanner'));
 })->name('home');
 
 
@@ -91,6 +101,8 @@ Route::patch('/cart/items/{item}', [CartController::class, 'update'])
     ->name('cart.items.update');
 Route::delete('/cart/items/{item}', [CartController::class, 'destroy'])
     ->name('cart.items.destroy');
+Route::get('/checkout', [CartController::class, 'checkout'])
+    ->name('checkout.index');
 
 Route::post('/login', [LoginController::class, 'login'])
     ->middleware('guest')
@@ -98,8 +110,35 @@ Route::post('/login', [LoginController::class, 'login'])
 Route::post('/logout', [LoginController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'store'])
+    ->middleware(['guest', 'throttle:6,1'])
+    ->name('password.email');
+Route::get('/reset-password/{token}', [ResetPasswordController::class, 'create'])
+    ->middleware('guest')
+    ->name('password.reset');
+Route::post('/reset-password', [ResetPasswordController::class, 'store'])
+    ->middleware(['guest', 'throttle:6,1'])
+    ->name('password.update');
 
 Route::middleware('guest')->group(function () {
+    
+  /*
+    |--------------------------------------------------------------------------
+    | Google Login
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/auth/google', [GoogleLoginController::class, 'redirect'])
+        ->name('google.redirect');
+
+    Route::get('/auth/google/callback', [GoogleLoginController::class, 'callback'])
+        ->name('google.callback');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Register
+    |--------------------------------------------------------------------------
+    */
     Route::get('/register', [RegisterController::class, 'create'])
         ->name('register');
     Route::get('/register/step1', [RegisterController::class, 'step1'])
@@ -278,8 +317,8 @@ Route::get('/email/verify/{id}/{hash}', [RegisterController::class, 'verifyEmail
             ->name('products.preview');
         Route::get('products/{product}/preview-order', [ProductListController::class, 'previewOrder'])
             ->name('products.preview-order');
-        Route::get('/articles/{article}/preview', [BlogController::class, 'preview'])
-            ->name('articles.preview');
+        // Route::get('/articles/{article}/preview', [BlogController::class, 'preview'])
+        //     ->name('articles.preview');
             Route::post('/categories/sort', [CategoryController::class, 'updateSort'])
     ->name('categories.sort');
     Route::get('menu-products', [MenuProductController::class, 'index'])

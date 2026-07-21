@@ -8,9 +8,17 @@
             </a>
 
             {{-- Mobile Menu Button --}}
-            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
-                data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="メニューを開く">
-                <span class="navbar-toggler-icon"></span>
+            <div class="header-mobile-actions">
+                <button type="button" class="header-action-link account-modal-trigger" aria-label="アカウント" aria-haspopup="dialog" aria-controls="accountLoginModal" aria-expanded="false" data-login-modal-open>
+                    <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="15" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.5" /><path d="M4 28C4 20.7 8.7 16.5 15 16.5C21.3 16.5 26 20.7 26 28" fill="none" stroke="currentColor" stroke-width="1.5" /></svg>
+                </button>
+                <a href="{{ url('/cart') }}" class="header-action-link position-relative" aria-label="ショッピングカート">
+                    <svg viewBox="0 0 30 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M6 10H24L25.5 30H4.5L6 10Z" fill="none" stroke="currentColor" stroke-width="1.5" /><path d="M10 11V6.5C10 3 12 1 15 1C18 1 20 3 20 6.5V11" fill="none" stroke="currentColor" stroke-width="1.5" /></svg>
+                    @if (($cartCount ?? 0) > 0)<span class="header-cart-count">{{ $cartCount }}</span>@endif
+                </a>
+            </div>
+            <button class="navbar-toggler border-0 shadow-none" type="button" aria-controls="mobileNavigation" aria-expanded="false" aria-label="メニューを開く" data-mobile-menu-open>
+                <span class="mobile-menu-icon" aria-hidden="true"><i></i><i></i><i></i></span>
             </button>
 
             {{-- Navigation --}}
@@ -18,7 +26,7 @@
                 <ul class="navbar-nav ms-auto align-items-lg-center">
 
                      <li class="nav-item">
-                        <a href="{{ url('/contact') }}"
+                        <a href="{{ url('/products/thaisilk_01') }}"
                             class="nav-link header-pill-link {{ request()->is('contact') ? 'active' : '' }}">
                             シルク製社員証ケース
                         </a>
@@ -155,8 +163,24 @@
         </div>
     </nav>
 </header>
-
+<div class="mobile-navigation" id="mobileNavigation" aria-hidden="true" data-mobile-navigation>
+    <div class="mobile-navigation-panel" role="dialog" aria-modal="true" aria-label="メニュー" tabindex="-1">
+        <div class="mobile-navigation-top">
+            <a href="{{ url('/') }}" class="mobile-navigation-mark" aria-label="ThaiSilk Home"></a>
+            <button type="button" class="mobile-navigation-close" aria-label="メニューを閉じる" data-mobile-menu-close></button>
+        </div>
+        <nav aria-label="モバイルメニュー">
+            <ul class="mobile-navigation-list">
+                <li><a href="{{ url('/products/thaisilk_01') }}">シルク製社員証ケース</a></li>
+                <li><a href="{{ url('/about') }}">私たちについて</a></li>
+                <li><a href="{{ url('/guide') }}" class="mobile-navigation-guide">ご利用ガイド <span aria-hidden="true">›</span></a></li>
+                <li><a href="{{ url('/contact') }}">お問い合わせ</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
 @php($loginErrors = $errors->getBag('login'))
+@php($passwordResetErrors = $errors->getBag('passwordReset'))
 
 <div
     id="accountLoginModal"
@@ -234,7 +258,7 @@
                         <input type="checkbox" name="remember" value="1">
                         <span>メールアドレスを保存する</span>
                     </label>
-                    <button type="button" class="account-forgot-link">パスワードをお忘れですか？</button>
+                    <button type="button" class="account-forgot-link" data-password-reset-open>パスワードをお忘れですか？</button>
                 </div>
 
                 <button type="submit" class="account-login-submit">サインイン</button>
@@ -251,14 +275,17 @@
                     >
                     <span>LINEでログイン</span>
                 </button>
-               <button type="button" class="account-social-button" disabled>
-                    <img
-                        class="account-social-icon account-social-icon-google"
-                        src="{{ asset('assets/images/home/material-icon-theme_google.png') }}"
-                        alt="Google"
-                    >
-                   <span>Googleでサインイン</span>
-               </button>
+               <a
+    href="{{ route('google.redirect') }}"
+    class="account-social-button account-google-login"
+>
+    <img
+        class="account-social-icon account-social-icon-google"
+        src="{{ asset('assets/images/home/material-icon-theme_google.png') }}"
+        alt="Google"
+    >
+    <span>Googleでサインイン</span>
+</a>
             </div>
 
             <p class="account-register-prompt">
@@ -276,6 +303,32 @@
     </section>
 </div>
 
+<div id="passwordResetModal" class="account-modal-overlay" data-password-reset-modal role="presentation" aria-hidden="true">
+    <section class="account-modal-dialog password-reset-dialog" role="dialog" aria-modal="true" aria-labelledby="passwordResetTitle" tabindex="-1">
+        <button type="button" class="account-modal-close" aria-label="閉じる" data-password-reset-close></button>
+        @if (session('password_reset_sent'))
+            <div class="password-reset-success-icon" aria-hidden="true">✓</div>
+            <h2 id="passwordResetTitle" class="account-modal-title">再設定メールを送信しました</h2>
+            <p class="account-modal-description">ご登録いただいたメールアドレス宛に、パスワード再設定用URLを記載したメールを送信しました。<br>メール内のリンクから、新しいパスワードの設定を行ってください。</p>
+            <a href="{{ route('home') }}" class="account-login-submit password-reset-home">トップページへ</a>
+        @else
+            <h2 id="passwordResetTitle" class="account-modal-title">パスワードの再設定</h2>
+            <p class="account-modal-description">ご登録いただいているメールアドレスを入力してください。<br>パスワード再設定用ページのURLをお送りします。</p>
+            @if ($passwordResetErrors->any())
+                <div class="account-modal-error" role="alert">{{ $passwordResetErrors->first() }}</div>
+            @endif
+            <form action="{{ route('password.email') }}" method="POST" class="account-login-form">
+                @csrf
+                <label class="account-login-field">
+                    <span>メールアドレス</span>
+                    <input type="email" name="email" value="{{ old('email') }}" placeholder="example@sample.com" autocomplete="email" required>
+                </label>
+                <button type="submit" class="account-login-submit">送信する</button>
+            </form>
+            <button type="button" class="password-reset-back" data-password-reset-close>＜ ログイン画面に戻る</button>
+        @endif
+    </section>
+</div>
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -293,6 +346,37 @@
             window.addEventListener('scroll', updateHeader, {
                 passive: true
             });
+            const mobileNavigation = document.querySelector('[data-mobile-navigation]');
+            const mobileNavigationPanel = mobileNavigation?.querySelector('.mobile-navigation-panel');
+            const mobileNavigationOpen = document.querySelector('[data-mobile-menu-open]');
+            const mobileNavigationClose = mobileNavigation?.querySelector('[data-mobile-menu-close]');
+            const openMobileNavigation = function() {
+                if (!mobileNavigation) return;
+                mobileNavigation.classList.add('is-open');
+                mobileNavigation.setAttribute('aria-hidden', 'false');
+                mobileNavigationOpen?.setAttribute('aria-expanded', 'true');
+                document.body.classList.add('mobile-navigation-open');
+                window.requestAnimationFrame(() => mobileNavigationPanel?.focus());
+            };
+            const closeMobileNavigation = function() {
+                if (!mobileNavigation) return;
+                mobileNavigation.classList.remove('is-open');
+                mobileNavigation.setAttribute('aria-hidden', 'true');
+                mobileNavigationOpen?.setAttribute('aria-expanded', 'false');
+                document.body.classList.remove('mobile-navigation-open');
+                mobileNavigationOpen?.focus();
+            };
+            mobileNavigationOpen?.addEventListener('click', openMobileNavigation);
+            mobileNavigationClose?.addEventListener('click', closeMobileNavigation);
+            mobileNavigation?.addEventListener('click', function(event) {
+                if (event.target === mobileNavigation) closeMobileNavigation();
+            });
+            mobileNavigation?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMobileNavigation));
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && mobileNavigation?.classList.contains('is-open')) {
+                    closeMobileNavigation();
+                }
+            });
 
             const modal = document.querySelector('[data-login-modal]');
             const dialog = modal?.querySelector('.account-modal-dialog');
@@ -300,6 +384,10 @@
             const closeButtons = modal?.querySelectorAll('[data-login-modal-close]') ?? [];
             const password = modal?.querySelector('[data-login-password]');
             const passwordToggle = modal?.querySelector('[data-login-password-toggle]');
+            const passwordResetModal = document.querySelector('[data-password-reset-modal]');
+            const passwordResetDialog = passwordResetModal?.querySelector('.password-reset-dialog');
+            const passwordResetOpenButtons = document.querySelectorAll('[data-password-reset-open]');
+            const passwordResetCloseButtons = passwordResetModal?.querySelectorAll('[data-password-reset-close]') ?? [];
             let lastFocusedElement = null;
 
             const openModal = function() {
@@ -331,6 +419,25 @@
                 }
             };
 
+            const openPasswordResetModal = function() {
+                if (!passwordResetModal || !passwordResetDialog) return;
+                modal?.classList.remove('is-open');
+                passwordResetModal.classList.add('is-open');
+                passwordResetModal.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('account-modal-open');
+                window.requestAnimationFrame(() => passwordResetDialog.focus());
+            };
+            const closePasswordResetModal = function() {
+                if (!passwordResetModal) return;
+                passwordResetModal.classList.remove('is-open');
+                passwordResetModal.setAttribute('aria-hidden', 'true');
+                document.body.classList.remove('account-modal-open');
+            };
+            passwordResetOpenButtons.forEach((button) => button.addEventListener('click', openPasswordResetModal));
+            passwordResetCloseButtons.forEach((button) => button.addEventListener('click', closePasswordResetModal));
+            passwordResetModal?.addEventListener('click', function(event) {
+                if (event.target === passwordResetModal) closePasswordResetModal();
+            });
             openButtons.forEach((button) => button.addEventListener('click', openModal));
             closeButtons.forEach((button) => button.addEventListener('click', closeModal));
 
@@ -379,6 +486,10 @@
                     firstElement?.focus();
                 }
             });
+
+            @if (session('open_password_reset_modal') || session('password_reset_sent') || $passwordResetErrors->any())
+                openPasswordResetModal();
+            @endif
 
             @if (session('open_login_modal') || $loginErrors->any())
                 openModal();

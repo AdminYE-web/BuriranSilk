@@ -6,17 +6,14 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class VerifyEmailCustom extends Notification
+class ResetPasswordCustom extends Notification
 {
     use Queueable;
 
-    public function __construct(private readonly string $verificationUrl)
+    public function __construct(private readonly string $token)
     {
     }
 
-    /**
-     * @return array<int, string>
-     */
     public function via(object $notifiable): array
     {
         return ['mail'];
@@ -24,11 +21,16 @@ class VerifyEmailCustom extends Notification
 
     public function toMail(object $notifiable): MailMessage
     {
+        $url = route('password.reset', [
+            'token' => $this->token,
+            'email' => $notifiable->getEmailForPasswordReset(),
+        ]);
+
         return (new MailMessage)
-            ->subject('【ThaiSilk】メールアドレスの確認')
-            ->markdown('emails.verify-email', [
+            ->subject('【ThaiSilk】パスワード再設定のお知らせ')
+            ->markdown('emails.reset-password', [
                 'user' => $notifiable,
-                'verificationUrl' => $this->verificationUrl,
+                'resetUrl' => $url,
             ]);
     }
 }

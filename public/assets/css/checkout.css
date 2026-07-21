@@ -1,0 +1,53 @@
+:root { --checkout-brown: #ae552d; --checkout-ink: #292826; --checkout-paper: #fcfbf7; --checkout-line: #e5dfd3; }
+.checkout-choice-page { color: var(--checkout-ink); background: var(--checkout-paper); }
+.checkout-choice-container { width: min(calc(100% - 48px), 1240px); margin-inline: auto; }
+.checkout-choice-header { background: #efefef; }
+.checkout-choice-header-inner { min-height: 126px; display: flex; align-items: center; justify-content: space-between; gap: 30px; }
+.checkout-choice-header h1 { margin: 0; font-size: clamp(25px, 2.1vw, 34px); font-weight: 500; letter-spacing: .08em; }
+.checkout-choice-progress { display: flex; margin: 0; padding: 0; list-style: none; color: #595754; font-size: 17px; }
+.checkout-choice-progress li + li::before { margin: 0 8px; color: #888; content: "→"; }
+.checkout-choice-progress .is-current { color: var(--checkout-brown); font-weight: 600; }
+.checkout-choice-main { min-height: 620px; padding: 58px 0 110px; }
+.checkout-choice-main h2 { margin: 0 0 78px; font-size: 26px; font-weight: 600; letter-spacing: .08em; }
+.checkout-choice-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+.checkout-choice-column { min-height: 315px; padding: 24px 44px 35px; display: flex; flex-direction: column; align-items: center; text-align: center; border-left: 1px solid var(--checkout-line); }
+.checkout-choice-column:first-child { border-left: 0; }
+.checkout-choice-column h3 { margin: 0 0 27px; font-size: 21px; font-weight: 600; }
+.checkout-choice-copy { max-width: 310px; min-height: 79px; margin: 0 0 25px; text-align: left; font-size: 15px; font-weight: 600; line-height: 1.75; }
+.checkout-login-form { width: 100%; }
+.checkout-login-form input { width: 100%; height: 38px; margin-bottom: 10px; padding: 8px 16px; color: var(--checkout-ink); background: #fff; border: 1px solid #e8e4dc; border-radius: 2px; font-size: 14px; }
+.checkout-choice-button { width: 100%; min-height: 38px; display: flex; align-items: center; justify-content: center; margin-top: auto; color: #fff; background: var(--checkout-brown); border: 1px solid var(--checkout-brown); border-radius: 2px; font-size: 15px; font-weight: 600; text-decoration: none; }
+button.checkout-choice-button { margin-top: 20px; }
+.checkout-choice-button:hover { color: #fff; background: #8f4321; }
+.checkout-choice-button-outline { color: var(--checkout-brown); background: transparent; }
+.checkout-choice-button-outline:hover { color: #fff; }
+.checkout-forgot-password { margin-top: 13px; padding: 0; color: #876a38; font: inherit; font-size: 13px; background: transparent; border: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+.checkout-choice-error { margin: 0; color: #b42318; font-size: 13px; text-align: left; }
+@media (max-width: 991px) { .checkout-choice-header-inner { min-height: 110px; flex-direction: column; align-items: flex-start; justify-content: center; gap: 12px; } .checkout-choice-grid { grid-template-columns: 1fr; } .checkout-choice-column { min-height: auto; padding: 34px 18px; border-top: 1px solid var(--checkout-line); border-left: 0; } .checkout-choice-column:first-child { border-top: 0; } .checkout-choice-copy { min-height: 0; } }
+@media (max-width: 700px) { .checkout-choice-container { width: min(calc(100% - 28px), 1240px); } .checkout-choice-progress { font-size: 11px; } .checkout-choice-progress li + li::before { margin: 0 4px; } .checkout-choice-main { padding-top: 36px; } .checkout-choice-main h2 { margin-bottom: 35px; font-size: 21px; } }
+/* Keep every primary checkout action on one horizontal line. */
+.checkout-choice-column { position: relative; }
+.checkout-choice-column > .checkout-choice-button,
+.checkout-login-form .checkout-choice-button {
+    position: absolute;
+    right: 44px;
+    bottom: 35px;
+    left: 44px;
+    width: auto;
+    margin-top: 0;
+}
+.checkout-forgot-password {
+    position: absolute;
+    right: 44px;
+    bottom: 8px;
+    left: 44px;
+}
+@media (max-width: 991px) {
+    .checkout-choice-column > .checkout-choice-button,
+    .checkout-login-form .checkout-choice-button,
+    .checkout-forgot-password {
+        position: static;
+        width: 100%;
+    }
+    .checkout-login-form .checkout-choice-button { margin-top: 20px; }
+}

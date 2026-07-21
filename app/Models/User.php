@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\ResetPasswordCustom;
 use App\Notifications\VerifyEmailCustom;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -13,6 +14,9 @@ use Illuminate\Support\Facades\URL;
 class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
+    public const SOCIAL_GOOGLE = 1;
+
+public const SOCIAL_LINE = 2;
 
     protected $primaryKey = 'user_id';
 
@@ -25,6 +29,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'avatar',
         'status',
+          'identify_id',
+    'social_type',
         'term_policy',
         'receive_email',
         'email_verified_at',
@@ -61,6 +67,10 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->notify(new VerifyEmailCustom($url));
     }
 
+    public function sendPasswordResetNotification($token): void
+    {
+        $this->notify(new ResetPasswordCustom($token));
+    }
     public function socialAccounts()
     {
         return $this->hasMany(SocialAccount::class, 'user_id', 'user_id');

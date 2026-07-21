@@ -33,6 +33,17 @@ class CartController extends Controller
         ]);
     }
 
+    /** Show the account choice before the checkout information step. */
+    public function checkout(Request $request): View|RedirectResponse
+    {
+        if (empty($request->session()->get('cart.items', []))) {
+            return redirect()
+                ->route('cart.index')
+                ->with('cart_success', 'カートに商品を追加してからご注文手続きへお進みください。');
+        }
+
+        return view('frontend.checkout.index');
+    }
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([

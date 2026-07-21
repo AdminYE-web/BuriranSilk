@@ -20,11 +20,20 @@
 
     <section class="home-hero">
 
-        {{-- Banner Image --}}
+        {{-- Banner image: image_pc on desktop, image_mobile on mobile. --}}
+        @php
+            $fallbackHeroImage = asset('assets/images/home/Rectangle 1.png');
+            $heroPcImage = $heroBanner?->image_pc
+                ? asset('storage/'.$heroBanner->image_pc)
+                : $fallbackHeroImage;
+            $heroMobileImage = $heroBanner?->image_mobile
+                ? asset('storage/'.$heroBanner->image_mobile)
+                : $heroPcImage;
+            $heroAlt = $heroBanner?->title ?: 'タイシルクを使用したバッグや財布';
+        @endphp
         <picture class="home-hero-picture">
-            <source media="(max-width: 767.98px)" srcset="{{ asset('assets/images/home/Rectangle 1.png') }}">
-
-            <img src="{{ asset('assets/images/home/Rectangle 1.png') }}" alt="タイシルクを使用したバッグや財布" class="home-hero-image">
+            <source media="(max-width: 767.98px)" srcset="{{ $heroMobileImage }}">
+            <img src="{{ $heroPcImage }}" alt="{{ $heroAlt }}" class="home-hero-image">
         </picture>
 
         {{-- Overlay --}}

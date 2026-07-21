@@ -194,7 +194,7 @@
                     >
                     見積書作成
                 </button>
-                <button type="button" class="cart-action cart-action-primary" @disabled(empty($items))>
+                <a href="{{ empty($items) ? '#' : route('checkout.index') }}" class="cart-action cart-action-primary {{ empty($items) ? 'is-disabled' : '' }}" @if (empty($items)) aria-disabled="true" tabindex="-1" @endif>
                     ご注文手続きへ進む
                     <img
                         src="{{ asset('assets/images/product/Vector (10).png') }}"
@@ -202,7 +202,7 @@
                         class="cart-action-arrow"
                         aria-hidden="true"
                     >
-                </button>
+                </a>
                 <a href="{{ route('products.index') }}" class="cart-action cart-action-outline">
                     <img
                         src="{{ asset('assets/images/product/Vector (11).png') }}"

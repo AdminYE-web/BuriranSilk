@@ -404,3 +404,58 @@ body.account-modal-open {
         transition: none;
     }
 }
+/* Password reset modal, available from the global header on every page. */
+.password-reset-dialog {
+    /* width: min(100%, 390px); */
+    padding: 45px 35px 38px;
+}
+
+.password-reset-dialog .account-modal-title {
+    font-size: 25px;
+}
+
+.password-reset-dialog .account-login-field > span {
+    display: block;
+    margin-bottom: 7px;
+    color: #a77d34;
+    font-size: 11px;
+}
+
+.password-reset-back {
+    display: block;
+    margin: 16px auto 0;
+    padding: 0;
+    color: #a77d34;
+    font: inherit;
+    font-size: 12px;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+}
+
+.password-reset-back:hover {
+    color: #7f5d24;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.password-reset-home {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.password-reset-success-icon {
+    display: grid;
+    width: 46px;
+    height: 46px;
+    margin: 0 auto 16px;
+    color: #fff;
+    font-size: 28px;
+    background: linear-gradient(135deg, #e8c981, #b18a46);
+    border: 3px solid #fff4dc;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px #d0ad6d;
+    place-items: center;
+}
