@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
@@ -31,6 +32,10 @@ class RegisterController extends Controller
     {
         $validated = $request->validate($this->accountRules(), $this->messages());
 
+        $request->session()->forget([
+            'registration.customer',
+            'registration.google',
+        ]);
         $request->session()->put('registration.account', [
             'email' => $validated['email'],
             'password' => $validated['password'],
@@ -231,6 +236,18 @@ class RegisterController extends Controller
         }
 
         $user = $this->createUser($registration);
+        $isGoogleRegistration = filled(data_get($registration, 'google.identify_id'));
+
+        if ($isGoogleRegistration) {
+            Auth::login($user, true);
+            $request->session()->forget('registration');
+            $request->session()->regenerate();
+
+            return redirect()
+                ->route('home')
+                ->with('login_success', 'Googleアカウントで会員登録が完了しました。');
+        }
+
         $user->sendEmailVerificationNotification();
 
         $request->session()->forget('registration');
@@ -281,24 +298,52 @@ class RegisterController extends Controller
     {
         $account = $registration['account'];
         $customer = $registration['customer'];
+        $google = $registration['google'] ?? null;
+        $isGoogleRegistration = is_array($google) && filled($google['identify_id'] ?? null);
 
-        return DB::transaction(function () use ($account, $customer): User {
-            $pendingUser = User::query()
-                ->where('email', $account['email'])
-                ->lockForUpdate()
-                ->first();
+        return DB::transaction(function () use ($account, $customer, $google, $isGoogleRegistration): User {
+            $user = null;
 
-            if ($pendingUser) {
-                if ((string) $pendingUser->status !== '2') {
-                    throw ValidationException::withMessages([
-                        'email' => 'このメールアドレスはすでに登録されています。',
-                    ]);
+            if ($isGoogleRegistration) {
+                $user = filled($google['existing_user_id'] ?? null)
+                    ? User::query()->lockForUpdate()->find($google['existing_user_id'])
+                    : User::query()->where('email', $account['email'])->lockForUpdate()->first();
+
+                if ($user) {
+                    if (strcasecmp((string) $user->email, (string) $account['email']) !== 0) {
+                        throw ValidationException::withMessages([
+                            'email' => 'Googleアカウントのメールアドレスが一致しません。',
+                        ]);
+                    }
+
+                    if (
+                        filled($user->identify_id)
+                        && ((int) $user->social_type !== User::SOCIAL_GOOGLE
+                            || ! hash_equals((string) $user->identify_id, (string) $google['identify_id']))
+                    ) {
+                        throw ValidationException::withMessages([
+                            'email' => 'このメールアドレスは別のSNSアカウントに連携されています。',
+                        ]);
+                    }
                 }
+            } else {
+                $pendingUser = User::query()
+                    ->where('email', $account['email'])
+                    ->lockForUpdate()
+                    ->first();
 
-                $pendingUser->delete();
+                if ($pendingUser) {
+                    if ((string) $pendingUser->status !== '2') {
+                        throw ValidationException::withMessages([
+                            'email' => 'このメールアドレスはすでに登録されています。',
+                        ]);
+                    }
+
+                    $pendingUser->delete();
+                }
             }
 
-            $user = User::create([
+            $attributes = [
                 'first_name' => $customer['first_name'],
                 'last_name' => $customer['last_name'],
                 'customer_type' => $customer['customer_type'] ?? 'individual',
@@ -309,27 +354,46 @@ class RegisterController extends Controller
                 'name' => $customer['last_name'].' '.$customer['first_name'],
                 'email' => $account['email'],
                 'phone' => $customer['phone'],
-                'password' => $account['password'],
-                'status' => '2',
+                'status' => $isGoogleRegistration ? '1' : '2',
                 'term_policy' => true,
                 'receive_email' => (bool) ($customer['receive_email'] ?? false),
-            ]);
+            ];
+
+            if ($isGoogleRegistration) {
+                $attributes = array_merge($attributes, [
+                    'identify_id' => $google['identify_id'],
+                    'social_type' => User::SOCIAL_GOOGLE,
+                    'avatar' => $google['avatar'] ?? null,
+                    'email_verified_at' => $user?->email_verified_at ?: now(),
+                ]);
+            }
+
+            if ($user) {
+                $user->forceFill($attributes)->save();
+            } else {
+                $user = User::create(array_merge($attributes, [
+                    'password' => $account['password'],
+                ]));
+            }
 
             if (Schema::hasTable('user_contacts')) {
-                $user->contacts()->create([
+                $user->contacts()->updateOrCreate([
+                    'is_main' => true,
+                ], [
                     'first_name' => $customer['first_name'],
                     'last_name' => $customer['last_name'],
                     'phone' => $customer['phone'],
                     'email' => $account['email'],
-                    'is_main' => true,
                     'receive_email' => (bool) ($customer['receive_email'] ?? false),
                     'is_active' => true,
                 ]);
             }
 
             if (Schema::hasTable('user_addresses') && filled($customer['address'])) {
-                $user->addresses()->create([
+                $user->addresses()->updateOrCreate([
                     'address_type' => 'shipping',
+                    'is_main' => true,
+                ], [
                     'label' => 'main',
                     'first_name' => $customer['first_name'],
                     'last_name' => $customer['last_name'],
@@ -340,7 +404,6 @@ class RegisterController extends Controller
                     'city' => $customer['city'],
                     'state' => $customer['prefecture'],
                     'zip_code' => $customer['postal_code'],
-                    'is_main' => true,
                     'is_active' => true,
                 ]);
             }

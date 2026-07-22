@@ -390,54 +390,115 @@
 }
 
 .contact-information>section {
-    padding: 34px 62px 38px;
+    min-width: 0;
+    padding: 42px 50px 44px;
 }
 
 .contact-information>section+section {
-    border-left: 1px solid #eee7e3;
+    border-left: 1px dashed #e2d9d4;
 }
 
 .contact-information h3 {
-    margin: 0 0 18px;
-    font-size: 12px;
+    margin: 0 0 20px;
+    color: #27211e;
+    font-size: 15px;
     font-weight: 600;
 }
 
-.contact-information dl,
-.contact-information dd,
-.contact-information p {
-    margin: 0;
-}
-
-.contact-information dl {
+.contact-method-list {
     display: grid;
     gap: 13px;
 }
 
-.contact-information dt,
-.contact-information dd,
-.contact-information address,
-.contact-company {
-    color: #584f4a;
-    font-size: 10px;
-    font-style: normal;
-    line-height: 1.7;
+.contact-method-item {
+    display: grid;
+    grid-template-columns: 24px minmax(0, 1fr);
+    gap: 14px;
+    align-items: start;
 }
 
-.contact-information a {
-    color: inherit;
+.contact-method-item img,
+.contact-location-company img {
+    display: block;
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+}
+
+.contact-method-item h4,
+.contact-method-item p,
+.contact-location-company p,
+.contact-office p {
+    margin: 0;
+}
+
+.contact-method-item h4 {
+    margin-bottom: 2px;
+    color: #302926;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+.contact-method-item h4 span,
+.contact-method-item a {
+    color: #9d625a;
+}
+
+.contact-method-item a,
+.contact-method-item p {
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+.contact-method-item a {
     text-decoration: none;
+    overflow-wrap: anywhere;
 }
 
-.contact-information a:hover {
-    color: #956d54;
+.contact-method-item a:hover {
+    color: #78453f;
     text-decoration: underline;
 }
 
-.contact-company {
-    margin-bottom: 9px !important;
+.contact-method-item p {
+    color: #665d58;
 }
 
+.contact-location-company {
+    display: grid;
+    grid-template-columns: 24px minmax(0, 1fr);
+    gap: 14px;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.contact-location-company p {
+    color: #302926;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.contact-offices {
+    margin: 0;
+    color: #302926;
+    font-size: 12px;
+    font-style: normal;
+    line-height: 1.55;
+}
+
+.contact-office strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.contact-office+.contact-office {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #e7dfdb;
+}
 .contact-honeypot {
     position: absolute !important;
     left: -10000px !important;

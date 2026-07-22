@@ -9,15 +9,29 @@
 
             {{-- Mobile Menu Button --}}
             <div class="header-mobile-actions">
-                <button type="button" class="header-action-link account-modal-trigger" aria-label="アカウント" aria-haspopup="dialog" aria-controls="accountLoginModal" aria-expanded="false" data-login-modal-open>
-                    <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="15" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.5" /><path d="M4 28C4 20.7 8.7 16.5 15 16.5C21.3 16.5 26 20.7 26 28" fill="none" stroke="currentColor" stroke-width="1.5" /></svg>
+                <button type="button" class="header-action-link account-modal-trigger" aria-label="アカウント"
+                    aria-haspopup="dialog" aria-controls="accountLoginModal" aria-expanded="false"
+                    data-login-modal-open>
+                    <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <circle cx="15" cy="8" r="5.5" fill="none" stroke="currentColor"
+                            stroke-width="1.5" />
+                        <path d="M4 28C4 20.7 8.7 16.5 15 16.5C21.3 16.5 26 20.7 26 28" fill="none"
+                            stroke="currentColor" stroke-width="1.5" />
+                    </svg>
                 </button>
                 <a href="{{ url('/cart') }}" class="header-action-link position-relative" aria-label="ショッピングカート">
-                    <svg viewBox="0 0 30 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M6 10H24L25.5 30H4.5L6 10Z" fill="none" stroke="currentColor" stroke-width="1.5" /><path d="M10 11V6.5C10 3 12 1 15 1C18 1 20 3 20 6.5V11" fill="none" stroke="currentColor" stroke-width="1.5" /></svg>
-                    @if (($cartCount ?? 0) > 0)<span class="header-cart-count">{{ $cartCount }}</span>@endif
+                    <svg viewBox="0 0 30 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M6 10H24L25.5 30H4.5L6 10Z" fill="none" stroke="currentColor" stroke-width="1.5" />
+                        <path d="M10 11V6.5C10 3 12 1 15 1C18 1 20 3 20 6.5V11" fill="none" stroke="currentColor"
+                            stroke-width="1.5" />
+                    </svg>
+                    @if (($cartCount ?? 0) > 0)
+                        <span class="header-cart-count">{{ $cartCount }}</span>
+                    @endif
                 </a>
             </div>
-            <button class="navbar-toggler border-0 shadow-none" type="button" aria-controls="mobileNavigation" aria-expanded="false" aria-label="メニューを開く" data-mobile-menu-open>
+            <button class="navbar-toggler border-0 shadow-none" type="button" aria-controls="mobileNavigation"
+                aria-expanded="false" aria-label="メニューを開く" data-mobile-menu-open>
                 <span class="mobile-menu-icon" aria-hidden="true"><i></i><i></i><i></i></span>
             </button>
 
@@ -25,7 +39,7 @@
             <div class="collapse navbar-collapse" id="mainNavbar">
                 <ul class="navbar-nav ms-auto align-items-lg-center">
 
-                     <li class="nav-item">
+                    <li class="nav-item">
                         <a href="{{ url('/products/thaisilk_01') }}"
                             class="nav-link header-pill-link {{ request()->is('contact') ? 'active' : '' }}">
                             シルク製社員証ケース
@@ -122,15 +136,9 @@
                 <div class="header-actions">
 
                     {{-- Account --}}
-                    <button
-                        type="button"
-                        class="header-action-link account-modal-trigger"
-                        aria-label="アカウント"
-                        aria-haspopup="dialog"
-                        aria-controls="accountLoginModal"
-                        aria-expanded="false"
-                        data-login-modal-open
-                    >
+                    <button type="button" class="header-action-link account-modal-trigger" aria-label="アカウント"
+                        aria-haspopup="dialog" aria-controls="accountLoginModal" aria-expanded="false"
+                        data-login-modal-open>
                         <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <circle cx="15" cy="8" r="5.5" fill="none" stroke="currentColor"
                                 stroke-width="1.5" />
@@ -146,8 +154,8 @@
                             <path d="M6 10H24L25.5 30H4.5L6 10Z" fill="none" stroke="currentColor"
                                 stroke-width="1.5" />
 
-                            <path d="M10 11V6.5C10 3 12 1 15 1C18 1 20 3 20 6.5V11" fill="none" stroke="currentColor"
-                                stroke-width="1.5" />
+                            <path d="M10 11V6.5C10 3 12 1 15 1C18 1 20 3 20 6.5V11" fill="none"
+                                stroke="currentColor" stroke-width="1.5" />
                         </svg>
 
                         @if (($cartCount ?? 0) > 0)
@@ -167,13 +175,15 @@
     <div class="mobile-navigation-panel" role="dialog" aria-modal="true" aria-label="メニュー" tabindex="-1">
         <div class="mobile-navigation-top">
             <a href="{{ url('/') }}" class="mobile-navigation-mark" aria-label="ThaiSilk Home"></a>
-            <button type="button" class="mobile-navigation-close" aria-label="メニューを閉じる" data-mobile-menu-close></button>
+            <button type="button" class="mobile-navigation-close" aria-label="メニューを閉じる"
+                data-mobile-menu-close></button>
         </div>
         <nav aria-label="モバイルメニュー">
             <ul class="mobile-navigation-list">
                 <li><a href="{{ url('/products/thaisilk_01') }}">シルク製社員証ケース</a></li>
                 <li><a href="{{ url('/about') }}">私たちについて</a></li>
-                <li><a href="{{ url('/guide') }}" class="mobile-navigation-guide">ご利用ガイド <span aria-hidden="true">›</span></a></li>
+                <li><a href="{{ url('/guide') }}" class="mobile-navigation-guide">ご利用ガイド <span
+                            aria-hidden="true">›</span></a></li>
                 <li><a href="{{ url('/contact') }}">お問い合わせ</a></li>
             </ul>
         </nav>
@@ -182,26 +192,10 @@
 @php($loginErrors = $errors->getBag('login'))
 @php($passwordResetErrors = $errors->getBag('passwordReset'))
 
-<div
-    id="accountLoginModal"
-    class="account-modal-overlay"
-    data-login-modal
-    role="presentation"
-    aria-hidden="true"
->
-    <section
-        class="account-modal-dialog"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="accountLoginTitle"
-        tabindex="-1"
-    >
-        <button
-            type="button"
-            class="account-modal-close"
-            aria-label="閉じる"
-            data-login-modal-close
-        ></button>
+<div id="accountLoginModal" class="account-modal-overlay" data-login-modal role="presentation" aria-hidden="true">
+    <section class="account-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="accountLoginTitle"
+        tabindex="-1">
+        <button type="button" class="account-modal-close" aria-label="閉じる" data-login-modal-close></button>
 
         @guest
             <h2 id="accountLoginTitle" class="account-modal-title">サインイン</h2>
@@ -218,33 +212,16 @@
 
                 <label class="account-login-field">
                     <span class="visually-hidden">メールアドレス</span>
-                    <input
-                        type="email"
-                        name="email"
-                        value="{{ old('email') }}"
-                        placeholder="メールアドレス"
-                        autocomplete="email"
-                        required
-                    >
+                    <input type="email" name="email" value="{{ old('email') }}" placeholder="メールアドレス"
+                        autocomplete="email" required>
                 </label>
 
                 <label class="account-login-field account-password-field">
                     <span class="visually-hidden">パスワード</span>
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="パスワード"
-                        autocomplete="current-password"
-                        required
-                        data-login-password
-                    >
-                    <button
-                        type="button"
-                        class="account-password-toggle"
-                        aria-label="パスワードを表示"
-                        aria-pressed="false"
-                        data-login-password-toggle
-                    >
+                    <input type="password" name="password" placeholder="パスワード" autocomplete="current-password" required
+                        data-login-password>
+                    <button type="button" class="account-password-toggle" aria-label="パスワードを表示" aria-pressed="false"
+                        data-login-password-toggle>
                         <svg viewBox="0 0 24 24" aria-hidden="true">
                             <path d="M2.5 12s3.5-5 9.5-5 9.5 5 9.5 5-3.5 5-9.5 5-9.5-5-9.5-5Z" />
                             <circle cx="12" cy="12" r="2.7" />
@@ -275,17 +252,11 @@
                     >
                     <span>LINEでログイン</span>
                 </button> --}}
-               <a
-    href="{{ route('google.redirect') }}"
-    class="account-social-button account-google-login"
->
-    <img
-        class="account-social-icon account-social-icon-google"
-        src="{{ asset('assets/images/home/material-icon-theme_google.png') }}"
-        alt="Google"
-    >
-    <span>Googleでサインイン</span>
-</a>
+                <a href="{{ route('google.redirect') }}" class="account-social-button account-google-login">
+                    <img class="account-social-icon account-social-icon-google"
+                        src="{{ asset('assets/images/home/material-icon-theme_google.png') }}" alt="Google">
+                    <span>Googleでサインイン</span>
+                </a>
             </div>
 
             <p class="account-register-prompt">
@@ -303,13 +274,16 @@
     </section>
 </div>
 
-<div id="passwordResetModal" class="account-modal-overlay" data-password-reset-modal role="presentation" aria-hidden="true">
-    <section class="account-modal-dialog password-reset-dialog" role="dialog" aria-modal="true" aria-labelledby="passwordResetTitle" tabindex="-1">
+<div id="passwordResetModal" class="account-modal-overlay" data-password-reset-modal role="presentation"
+    aria-hidden="true">
+    <section class="account-modal-dialog password-reset-dialog" role="dialog" aria-modal="true"
+        aria-labelledby="passwordResetTitle" tabindex="-1">
         <button type="button" class="account-modal-close" aria-label="閉じる" data-password-reset-close></button>
         @if (session('password_reset_sent'))
             <div class="password-reset-success-icon" aria-hidden="true">✓</div>
             <h2 id="passwordResetTitle" class="account-modal-title">再設定メールを送信しました</h2>
-            <p class="account-modal-description">ご登録いただいたメールアドレス宛に、パスワード再設定用URLを記載したメールを送信しました。<br>メール内のリンクから、新しいパスワードの設定を行ってください。</p>
+            <p class="account-modal-description">
+                ご登録いただいたメールアドレス宛に、パスワード再設定用URLを記載したメールを送信しました。<br>メール内のリンクから、新しいパスワードの設定を行ってください。</p>
             <a href="{{ route('home') }}" class="account-login-submit password-reset-home">トップページへ</a>
         @else
             <h2 id="passwordResetTitle" class="account-modal-title">パスワードの再設定</h2>
@@ -321,7 +295,8 @@
                 @csrf
                 <label class="account-login-field">
                     <span>メールアドレス</span>
-                    <input type="email" name="email" value="{{ old('email') }}" placeholder="example@sample.com" autocomplete="email" required>
+                    <input type="email" name="email" value="{{ old('email') }}"
+                        placeholder="example@sample.com" autocomplete="email" required>
                 </label>
                 <button type="submit" class="account-login-submit">送信する</button>
             </form>
@@ -371,7 +346,8 @@
             mobileNavigation?.addEventListener('click', function(event) {
                 if (event.target === mobileNavigation) closeMobileNavigation();
             });
-            mobileNavigation?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMobileNavigation));
+            mobileNavigation?.querySelectorAll('a').forEach((link) => link.addEventListener('click',
+                closeMobileNavigation));
             document.addEventListener('keydown', function(event) {
                 if (event.key === 'Escape' && mobileNavigation?.classList.contains('is-open')) {
                     closeMobileNavigation();
@@ -387,7 +363,8 @@
             const passwordResetModal = document.querySelector('[data-password-reset-modal]');
             const passwordResetDialog = passwordResetModal?.querySelector('.password-reset-dialog');
             const passwordResetOpenButtons = document.querySelectorAll('[data-password-reset-open]');
-            const passwordResetCloseButtons = passwordResetModal?.querySelectorAll('[data-password-reset-close]') ?? [];
+            const passwordResetCloseButtons = passwordResetModal?.querySelectorAll('[data-password-reset-close]') ??
+                [];
             let lastFocusedElement = null;
 
             const openModal = function() {
@@ -434,7 +411,8 @@
                 document.body.classList.remove('account-modal-open');
             };
             passwordResetOpenButtons.forEach((button) => button.addEventListener('click', openPasswordResetModal));
-            passwordResetCloseButtons.forEach((button) => button.addEventListener('click', closePasswordResetModal));
+            passwordResetCloseButtons.forEach((button) => button.addEventListener('click',
+            closePasswordResetModal));
             passwordResetModal?.addEventListener('click', function(event) {
                 if (event.target === passwordResetModal) closePasswordResetModal();
             });

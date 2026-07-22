@@ -14,7 +14,7 @@
                 <h1>お問い合わせ</h1>
                 <p>不明な点がございましたら、お気軽にお問い合わせください。</p>
                 <p>通常1〜2営業日以内にご返信いたします。</p>
-                <small>お急ぎの場合はこちら：{{ config('quotation.company.email') }}</small>
+                <small>お急ぎの場合はこちら：contact@silicone-wristband-studio.jp</small>
             </header>
 
             <div class="contact-content-card">
@@ -118,34 +118,48 @@
                     </form>
 
                     <div class="contact-information">
-                        <section>
+                        <section class="contact-information-methods">
                             <h3>その他の連絡方法</h3>
-                            <dl>
-                                <div>
-                                    <dt>メールでのお問い合わせ</dt>
-                                    <dd><a href="mailto:{{ config('quotation.company.email') }}">{{ config('quotation.company.email') }}</a></dd>
+                            <div class="contact-method-list">
+                                <div class="contact-method-item">
+                                    <img src="{{ asset('assets/images/contact/mdi-light_email.png') }}" alt="">
+                                    <div>
+                                        <h4>メールでのお問い合わせ</h4>
+                                        <a href="mailto:contact@silicone-wristband-studio.jp">contact@silicone-wristband-studio.jp</a>
+                                    </div>
                                 </div>
-                                <div>
-                                    <dt>専用電話番号</dt>
-                                    <dd><a href="tel:05068657753">050-6865-7753</a></dd>
+                                <div class="contact-method-item">
+                                    <img src="{{ asset('assets/images/contact/solar_phone-linear.png') }}" alt="">
+                                    <div>
+                                        <h4>専用電話番号</h4>
+                                        <a href="tel:05068657753">050-6865-7753</a>
+                                    </div>
                                 </div>
-                                <div>
-                                    <dt>営業時間：10:00〜18:00</dt>
-                                    <dd>（土日祝休業）</dd>
+                                <div class="contact-method-item">
+                                    <img src="{{ asset('assets/images/contact/mingcute_time-line.png') }}" alt="">
+                                    <div>
+                                        <h4>営業時間：<span>10:00〜18:00</span></h4>
+                                        <p>（土日祝休業）</p>
+                                    </div>
                                 </div>
-                            </dl>
+                            </div>
                         </section>
 
-                        <section>
+                        <section class="contact-information-location">
                             <h3>所在地</h3>
-                            <p class="contact-company">ユー・アンド・アース株式会社</p>
-                            <address>
-                                <strong>【東京オフィス】</strong><br>
-                                〒135-0064 東京都江東区青海<br>
-                                2-4-32 TIME24ビル 10階 東1<br><br>
-                                <strong>【大阪オフィス】</strong><br>
-                                〒559-0034 大阪府大阪市住之江区<br>
-                                南港北2-1-10 ATCビル ITM棟 3階 E-3C
+                            <div class="contact-location-company">
+                                <img src="{{ asset('assets/images/contact/mingcute_location-line.png') }}" alt="">
+                                <p>ユー・アンド・アース株式会社</p>
+                            </div>
+                            <address class="contact-offices">
+                                <div class="contact-office">
+                                    <strong>【東京オフィス】</strong>
+                                    <p>〒135-0064 東京都江東区青海<br>2-4-32 TIME24ビル 10階 東1</p>
+                                </div>
+                                <div class="contact-office">
+                                    <strong>【大阪オフィス】</strong>
+                                    <p>〒559-0034 大阪府大阪市住之江区南港北<br>2-1-10 ATCビル ITM棟 3階 E-3C</p>
+                                </div>
                             </address>
                         </section>
                     </div>
