@@ -59,16 +59,19 @@
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 18px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            column-gap: 24px;
+            row-gap: 20px;
+            align-items: start;
         }
 
         .form-group {
-            margin-bottom: 18px;
+            min-width: 0;
+            margin-bottom: 0;
         }
 
-        .form-group.full {
-            grid-column: 1 / -1;
+        .form-grid>.form-group.full {
+            grid-column: 1 / -1 !important;
         }
 
         .form-group label {
@@ -96,6 +99,7 @@
 
         .form-group textarea {
             resize: vertical;
+            line-height: 1.6;
         }
 
         .section-title {
@@ -196,6 +200,17 @@
             background: transparent;
             padding: 0;
             cursor: pointer;
+        }
+
+        .option-detail-field textarea {
+            min-height: 180px;
+        }
+
+        .price-mode-field {
+            padding: 18px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
         }
 
         @media (max-width: 900px) {
@@ -335,7 +350,7 @@
                         value="{{ old('translation_key', $translationKey ?? '') }}" placeholder=" opt_xxxxxxxx">
                     <small>ใช้สำหรับผูก option เดียวกันข้ามภาษา</small>
                 </div>
-                <div class="form-group">
+                <div class="form-group full">
                     <label>{{ request()->cookie('dev') === '1' ? 'Option Name' : 'オプション名' }}</label>
                     <textarea name="option_name" rows="4" class="form-control" placeholder="For example, a rigid type.">{{ old('option_name') }}</textarea>
 
@@ -353,7 +368,7 @@
                     <input type="number" step="0.01" name="additional_price_with_tax"
                         value="{{ old('additional_price_with_tax') }}" min="0" placeholder="For example 220">
                 </div>
-                <div class="form-group full">
+                <div class="form-group full price-mode-field">
                     <label>{{ request()->cookie('dev') === '1' ? 'Additional Price Mode' : '追加料金モード' }}</label>
 
                     <div class="price-mode-box">
@@ -440,7 +455,7 @@
                     </select>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group full color-code-field">
                     <label>{{ request()->cookie('dev') === '1' ? 'Color Code' : '色コード' }}</label>
 
                     <div class="color-picker-group">
@@ -452,13 +467,13 @@
                     </div>
                 </div>
 
-                <div class="form-group full">
+                <div class="form-group full option-detail-field">
                     <label>{{ request()->cookie('dev') === '1' ? 'Option Detail' : 'オプション詳細' }}</label>
 
                     <textarea name="option_detail" rows="8"
                         placeholder="{{ request()->cookie('dev') === '1'
-                            ? '&#10;Model: ID-6_N&#10;Type: Soft Card Holder&#10;Card Size: 91 mm (H) x 55 mm (W)'
-                            : '&#10;モデル: ID-6_N&#10;タイプ: ソフトカードホルダー&#10;カードサイズ: 91 mm (高さ) x 55 mm (幅)' }}">{{ old('option_detail') }}</textarea>
+                            ? 'Model: ID-6_N / Type: Soft Card Holder / Card Size: 91 mm (H) x 55 mm (W)'
+                            : 'モデル: ID-6_N / タイプ: ソフトカードホルダー / カードサイズ: 91 mm (高さ) x 55 mm (幅)' }}">{{ old('option_detail') }}</textarea>
                 </div>
             </div>
 

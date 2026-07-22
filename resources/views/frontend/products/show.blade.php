@@ -100,8 +100,12 @@
                     {{ $product['name'] }}
                 </h1>
 
+                @php
+                    $displayOptionNumber = 0;
+                @endphp
+
                 @if (!empty($optionGroups))
-                    @foreach ($optionGroups as $groupIndex => $optionGroup)
+                    @foreach ($optionGroups as $optionGroup)
                         @php
                             $displayType = $optionGroup['display_type'];
                             $groupInputName = 'options[' . $optionGroup['id'] . ']';
@@ -115,8 +119,11 @@
                             data-display-type="{{ $displayType }}"
                         >
                             @if (!in_array($displayType, ['upload_option', 'font_option'], true))
+                                @php
+                                    $displayOptionNumber++;
+                                @endphp
                                 <legend class="product-option-heading">
-                                    <span class="product-option-number">{{ $groupIndex + 1 }}</span>
+                                    <span class="product-option-number">{{ $displayOptionNumber }}</span>
                                     <span>{{ $optionGroup['name'] }}</span>
                                 </legend>
                             @endif
@@ -624,7 +631,7 @@
                  <fieldset class="product-option-group">
                     <legend class="product-option-heading">
                         <span class="product-option-number">
-                            {{ empty($optionGroups) ? 6 : count($optionGroups) + 1 }}
+                            {{ empty($optionGroups) ? 6 : $displayOptionNumber + 1 }}
                         </span>
                         <span>数量</span>
                     </legend>
