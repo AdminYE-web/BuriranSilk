@@ -10,24 +10,41 @@ class Order extends Model
 
     protected $fillable = [
         'order_no',
+        'checkout_token',
         'user_id',
+        'total_items',
+        'total_quantity',
         'qty',
         'base_unit_price',
         'option_total',
         'subtotal',
-        'vat_amount',
         'shipping_fee',
+        'tax_amount',
+        'vat_amount',
         'grand_total',
+        'currency',
         'status',
         'order_status',
         'payment_status',
-           'shipping_date',
+        'shipping_date',
         'payment_date',
-
+        'info_method',
+        'signature_text',
+        'delivery_option',
+        'publish_website',
+        'newsletter',
+        'notes',
+        'checkout_data',
+        'confirmation_email_sent_at',
     ];
-       protected $casts = [
+
+    protected $casts = [
         'shipping_date' => 'datetime',
         'payment_date' => 'datetime',
+        'publish_website' => 'boolean',
+        'newsletter' => 'boolean',
+        'checkout_data' => 'array',
+        'confirmation_email_sent_at' => 'datetime',
     ];
 
     public function items()

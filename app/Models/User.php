@@ -14,23 +14,29 @@ use Illuminate\Support\Facades\URL;
 class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
+
     public const SOCIAL_GOOGLE = 1;
 
-public const SOCIAL_LINE = 2;
+    public const SOCIAL_LINE = 2;
 
     protected $primaryKey = 'user_id';
 
     protected $fillable = [
         'first_name',
         'last_name',
+        'customer_type',
+        'last_name_kana',
+        'first_name_kana',
+        'company_name',
+        'company_name_kana',
         'name',
         'email',
         'phone',
         'password',
         'avatar',
         'status',
-          'identify_id',
-    'social_type',
+        'identify_id',
+        'social_type',
         'term_policy',
         'receive_email',
         'email_verified_at',
@@ -71,6 +77,7 @@ public const SOCIAL_LINE = 2;
     {
         $this->notify(new ResetPasswordCustom($token));
     }
+
     public function socialAccounts()
     {
         return $this->hasMany(SocialAccount::class, 'user_id', 'user_id');

@@ -7,7 +7,11 @@
     <link rel="stylesheet" href="{{ asset('assets/css/cart.css') }}">
 @endsection
 
+
 @section('content')
+@php
+    $isEnglish = request()->cookie('dev') === '1';
+@endphp
     <header class="cart-page-header">
         <div class="cart-container cart-page-header-inner">
             <h1>ショッピングカート</h1>
@@ -41,11 +45,8 @@
 
             @forelse ($items as $item)
                 <article class="cart-item">
-                    <form
-                        action="{{ route('cart.items.destroy', $item['id']) }}"
-                        method="POST"
-                        class="cart-item-remove-form"
-                    >
+                    <form action="{{ route('cart.items.destroy', $item['id']) }}" method="POST"
+                        class="cart-item-remove-form">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="cart-item-remove" aria-label="商品を削除">×</button>
@@ -108,26 +109,17 @@
                                 単価 {{ number_format($item['base_unit_price']) }}円（税別）
                             </span>
 
-                            <form
-                                action="{{ route('cart.items.update', $item['id']) }}"
-                                method="POST"
-                                class="cart-quantity-form"
-                                data-cart-quantity-form
-                            >
+                            <form action="{{ route('cart.items.update', $item['id']) }}" method="POST"
+                                class="cart-quantity-form" data-cart-quantity-form>
                                 @csrf
                                 @method('PATCH')
                                 @php($quantityLimits = $item['quantity_limits'] ?? ['min' => null, 'max' => null, 'note' => null])
                                 <label>
                                     <span>数量</span>
-                                    <input
-                                        type="number"
-                                        name="quantity"
-                                        value="{{ $item['quantity'] }}"
+                                    <input type="number" name="quantity" value="{{ $item['quantity'] }}"
                                         @if ($quantityLimits['min'] !== null) min="{{ $quantityLimits['min'] }}" @endif
                                         @if ($quantityLimits['max'] !== null) max="{{ $quantityLimits['max'] }}" @endif
-                                        step="1"
-                                        required
-                                    >
+                                        step="1" required>
                                 </label>
                                 <button type="submit" class="visually-hidden">数量を更新</button>
                             </form>
@@ -136,15 +128,10 @@
                                 {{ number_format($item['line_subtotal']) }}円
                                 <small>（税別）</small>
                             </strong>
-                            <small
-                                class="cart-quantity-rule-note"
-                                data-cart-quantity-rule-note
-                                @if (empty($quantityLimits['note'])) hidden @endif
-                            >{{ $quantityLimits['note'] }}</small>
-                            <a
-                                href="{{ route('products.show', ['slug' => $item['product_slug'], 'edit_cart' => $item['id']]) }}"
-                                class="cart-item-edit"
-                            >
+                            <small class="cart-quantity-rule-note" data-cart-quantity-rule-note
+                                @if (empty($quantityLimits['note'])) hidden @endif>{{ $quantityLimits['note'] }}</small>
+                            <a href="{{ route('products.show', ['slug' => $item['product_slug'], 'edit_cart' => $item['id']]) }}"
+                                class="cart-item-edit">
                                 修正
                             </a>
                         </div>
@@ -172,7 +159,8 @@
                     </div>
                     <div>
                         <dt>送料（税別）</dt>
-                        <dd data-cart-summary-shipping>{{ $summary['shipping'] ? number_format($summary['shipping']).'円' : '無料' }}</dd>
+                        <dd data-cart-summary-shipping>
+                            {{ $summary['shipping'] ? number_format($summary['shipping']) . '円' : '無料' }}</dd>
                     </div>
                     <div>
                         <dt>消費税（10%）</dt>
@@ -185,31 +173,23 @@
                     <strong data-cart-summary-total aria-live="polite">{{ number_format($summary['total']) }}円</strong>
                 </div>
 
-                <button type="button" class="cart-action cart-action-secondary" @disabled(empty($items))>
-                    <img
-                        src="{{ asset('assets/images/product/Group 1654.png') }}"
-                        alt=""
-                        class="cart-action-icon"
-                        aria-hidden="true"
-                    >
-                    見積書作成
+                <button type="button" class="cart-action cart-action-secondary" data-quotation-open
+                    @disabled(empty($items))>
+                    <img src="{{ asset('assets/images/product/Group 1654.png') }}" alt="" class="cart-action-icon"
+                        aria-hidden="true">
+
+                    {{ $isEnglish ? 'Create quotation' : '見積書作成' }}
                 </button>
-                <a href="{{ empty($items) ? '#' : route('checkout.index') }}" class="cart-action cart-action-primary {{ empty($items) ? 'is-disabled' : '' }}" @if (empty($items)) aria-disabled="true" tabindex="-1" @endif>
+                <a href="{{ empty($items) ? '#' : route(auth()->check() ? 'checkout.information' : 'checkout.index') }}"
+                    class="cart-action cart-action-primary {{ empty($items) ? 'is-disabled' : '' }}"
+                    @if (empty($items)) aria-disabled="true" tabindex="-1" @endif>
                     ご注文手続きへ進む
-                    <img
-                        src="{{ asset('assets/images/product/Vector (10).png') }}"
-                        alt=""
-                        class="cart-action-arrow"
-                        aria-hidden="true"
-                    >
+                    <img src="{{ asset('assets/images/product/Vector (10).png') }}" alt=""
+                        class="cart-action-arrow" aria-hidden="true">
                 </a>
                 <a href="{{ route('products.index') }}" class="cart-action cart-action-outline">
-                    <img
-                        src="{{ asset('assets/images/product/Vector (11).png') }}"
-                        alt=""
-                        class="cart-action-arrow"
-                        aria-hidden="true"
-                    >
+                    <img src="{{ asset('assets/images/product/Vector (11).png') }}" alt=""
+                        class="cart-action-arrow" aria-hidden="true">
                     買い物を続ける
                 </a>
             </div>
@@ -226,11 +206,14 @@
             @endif
         </aside>
     </div>
+    @include('frontend.cart.partials.quotation-modal', [
+        'isEnglish' => $isEnglish,
+    ])
 @endsection
 
 @section('js')
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const formatter = new Intl.NumberFormat('ja-JP');
             const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
             const subtotalElement = document.querySelector('[data-cart-summary-subtotal]');
@@ -239,11 +222,11 @@
             const totalElement = document.querySelector('[data-cart-summary-total]');
             const shippingNote = document.querySelector('[data-cart-shipping-note]');
 
-            const updateSummary = function (summary) {
+            const updateSummary = function(summary) {
                 subtotalElement.textContent = formatter.format(summary.subtotal) + '円';
-                shippingElement.textContent = summary.shipping
-                    ? formatter.format(summary.shipping) + '円'
-                    : '無料';
+                shippingElement.textContent = summary.shipping ?
+                    formatter.format(summary.shipping) + '円' :
+                    '無料';
                 vatElement.textContent = formatter.format(summary.vat) + '円';
                 totalElement.textContent = formatter.format(summary.total) + '円';
 
@@ -251,14 +234,14 @@
                     return;
                 }
 
-                shippingNote.textContent = summary.shipping === 0
-                    ? 'ご注文金額が10,000円以上のため、送料は無料です。'
-                    : 'ご注文金額が10,000円未満の場合は、通常送料800円（税別）が必要となります。'
-                        + ' あと' + formatter.format(summary.amount_until_free_shipping)
-                        + '円で送料無料です。';
+                shippingNote.textContent = summary.shipping === 0 ?
+                    'ご注文金額が10,000円以上のため、送料は無料です。' :
+                    'ご注文金額が10,000円未満の場合は、通常送料800円（税別）が必要となります。' +
+                    ' あと' + formatter.format(summary.amount_until_free_shipping) +
+                    '円で送料無料です。';
             };
 
-            document.querySelectorAll('[data-cart-quantity-form]').forEach(function (form) {
+            document.querySelectorAll('[data-cart-quantity-form]').forEach(function(form) {
                 const input = form.querySelector('input[name="quantity"]');
                 const cartItem = form.closest('.cart-item');
                 const lineTotal = cartItem.querySelector('[data-cart-line-total]');
@@ -266,7 +249,7 @@
                 let debounceTimer = null;
                 let requestNumber = 0;
 
-                const saveQuantity = async function (currentRequest) {
+                const saveQuantity = async function(currentRequest) {
                     input.setCustomValidity('');
 
                     if (!input.value || !input.checkValidity()) {
@@ -296,8 +279,8 @@
                         }
 
                         if (!response.ok) {
-                            const message = data.errors?.quantity?.[0]
-                                || '数量を更新できませんでした。';
+                            const message = data.errors?.quantity?.[0] ||
+                                '数量を更新できませんでした。';
                             input.setCustomValidity(message);
                             input.reportValidity();
                             return;
@@ -320,8 +303,8 @@
 
                         quantityRuleNote.textContent = limits.note || '';
                         quantityRuleNote.hidden = !limits.note;
-                        lineTotal.innerHTML = formatter.format(data.item.line_subtotal)
-                            + '円 <small>（税別）</small>';
+                        lineTotal.innerHTML = formatter.format(data.item.line_subtotal) +
+                            '円 <small>（税別）</small>';
                         updateSummary(data.summary);
                     } catch (error) {
                         if (currentRequest === requestNumber) {
@@ -335,25 +318,153 @@
                     }
                 };
 
-                const scheduleSave = function () {
+                const scheduleSave = function() {
                     input.setCustomValidity('');
                     window.clearTimeout(debounceTimer);
                     const currentRequest = ++requestNumber;
-                    debounceTimer = window.setTimeout(function () {
+                    debounceTimer = window.setTimeout(function() {
                         saveQuantity(currentRequest);
                     }, 350);
                 };
 
                 input.addEventListener('input', scheduleSave);
-                input.addEventListener('change', function () {
+                input.addEventListener('change', function() {
                     window.clearTimeout(debounceTimer);
                     saveQuantity(++requestNumber);
                 });
-                form.addEventListener('submit', function (event) {
+                form.addEventListener('submit', function(event) {
                     event.preventDefault();
                     window.clearTimeout(debounceTimer);
                     saveQuantity(++requestNumber);
                 });
+            });
+            const quotationModal = document.querySelector('[data-quotation-modal]');
+            const quotationDialog = quotationModal?.querySelector(
+                '.quotation-modal-dialog'
+            );
+            const quotationOpenButton = document.querySelector(
+                '[data-quotation-open]'
+            );
+            const quotationCloseButton = quotationModal?.querySelector(
+                '[data-quotation-close]'
+            );
+            const postalButton = quotationModal?.querySelector(
+                '[data-quotation-address-search]'
+            );
+            const postalInput = quotationModal?.querySelector(
+                '[data-quotation-postal-code]'
+            );
+            const prefectureInput = quotationModal?.querySelector(
+                '[data-quotation-prefecture]'
+            );
+            const addressInput = quotationModal?.querySelector(
+                '[data-quotation-address]'
+            );
+            const postalMessage = quotationModal?.querySelector(
+                '[data-quotation-postal-message]'
+            );
+
+            const openQuotationModal = function() {
+                if (!quotationModal) {
+                    return;
+                }
+
+                quotationModal.classList.add('is-open');
+                quotationModal.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('quotation-modal-open');
+
+                window.requestAnimationFrame(function() {
+                    quotationDialog?.focus();
+                });
+            };
+
+            const closeQuotationModal = function() {
+                if (!quotationModal) {
+                    return;
+                }
+
+                quotationModal.classList.remove('is-open');
+                quotationModal.setAttribute('aria-hidden', 'true');
+                document.body.classList.remove('quotation-modal-open');
+            };
+
+            quotationOpenButton?.addEventListener(
+                'click',
+                openQuotationModal
+            );
+
+            quotationCloseButton?.addEventListener(
+                'click',
+                closeQuotationModal
+            );
+
+            quotationModal?.addEventListener('click', function(event) {
+                if (event.target === quotationModal) {
+                    closeQuotationModal();
+                }
+            });
+
+            document.addEventListener('keydown', function(event) {
+                if (
+                    event.key === 'Escape' &&
+                    quotationModal?.classList.contains('is-open')
+                ) {
+                    closeQuotationModal();
+                }
+            });
+
+            if (quotationModal?.dataset.openOnLoad === '1') {
+                openQuotationModal();
+            }
+
+            postalButton?.addEventListener('click', async function() {
+                const postalCode = postalInput?.value.trim();
+
+                if (!postalCode) {
+                    postalMessage.textContent = @json($isEnglish ? 'Please enter a postal code.' : '郵便番号を入力してください。');
+                    postalMessage.hidden = false;
+                    return;
+                }
+
+                postalButton.disabled = true;
+
+                postalMessage.textContent = @json($isEnglish ? 'Searching...' : '住所を検索しています。');
+                postalMessage.hidden = false;
+
+                try {
+                    const response = await fetch(
+                        @json(route('cart.quotation.postal-code')), {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrfToken,
+                                'X-Requested-With': 'XMLHttpRequest',
+                            },
+                            body: JSON.stringify({
+                                postal_code: postalCode,
+                            }),
+                        }
+                    );
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(
+                            data.message ||
+                            @json($isEnglish ? 'Address not found.' : '住所が見つかりませんでした。')
+                        );
+                    }
+
+                    prefectureInput.value = data.prefecture || '';
+                    addressInput.value = data.address || '';
+
+                    postalMessage.textContent = @json($isEnglish ? 'The address has been entered.' : '住所を入力しました。');
+                } catch (error) {
+                    postalMessage.textContent = error.message;
+                } finally {
+                    postalButton.disabled = false;
+                }
             });
         });
     </script>

@@ -2,13 +2,13 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\URL;
 use App\Models\User;
 use App\Notifications\VerifyEmailCustom;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 
 class FrontendRegistrationTest extends TestCase
@@ -21,6 +21,11 @@ class FrontendRegistrationTest extends TestCase
             $table->id('user_id');
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
+            $table->string('customer_type', 20)->nullable();
+            $table->string('last_name_kana')->nullable();
+            $table->string('first_name_kana')->nullable();
+            $table->string('company_name')->nullable();
+            $table->string('company_name_kana')->nullable();
             $table->string('name')->nullable();
             $table->string('email')->unique();
             $table->string('phone')->nullable();
@@ -46,10 +51,31 @@ class FrontendRegistrationTest extends TestCase
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
+
+        Schema::create('user_addresses', function (Blueprint $table) {
+            $table->id('user_address_id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('address_type');
+            $table->string('label')->nullable();
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('phone', 50)->nullable();
+            $table->string('company_name')->nullable();
+            $table->string('address');
+            $table->string('apartment')->nullable();
+            $table->string('country', 2)->default('JP');
+            $table->string('city');
+            $table->string('state');
+            $table->string('zip_code', 20);
+            $table->boolean('is_main')->default(false);
+            $table->boolean('is_active')->default(true);
+            $table->timestamps();
+        });
     }
 
     protected function tearDown(): void
     {
+        Schema::dropIfExists('user_addresses');
         Schema::dropIfExists('user_contacts');
         Schema::dropIfExists('users');
 
@@ -65,6 +91,71 @@ class FrontendRegistrationTest extends TestCase
         $response->assertSee('お客様情報');
         $response->assertSee('入力内容確認');
         $response->assertSee('登録完了');
+    }
+
+    public function test_logged_in_customer_with_a_complete_profile_sees_the_customer_card(): void
+    {
+        $user = User::create([
+            'first_name' => '太郎',
+            'last_name' => '山田',
+            'customer_type' => 'individual',
+            'last_name_kana' => 'ヤマダ',
+            'first_name_kana' => 'タロウ',
+            'name' => '山田 太郎',
+            'email' => 'member@example.com',
+            'phone' => '0123456789',
+            'password' => 'Secret123',
+            'status' => '1',
+        ]);
+
+        $user->addresses()->create([
+            'address_type' => 'shipping',
+            'label' => 'main',
+            'first_name' => '太郎',
+            'last_name' => '山田',
+            'phone' => '0123456789',
+            'address' => '六本木1-2-3',
+            'country' => 'JP',
+            'city' => '港区',
+            'state' => '東京都',
+            'zip_code' => '106-0032',
+            'is_main' => true,
+            'is_active' => true,
+        ]);
+
+        $response = $this->actingAs($user)->get(route('checkout.information'));
+
+        $response->assertOk();
+        $response->assertViewHas('showRegisteredCustomerCard', true);
+        $response->assertSee('<div class="registered-customer-card">', false);
+        $response->assertSee('member@example.com');
+        $response->assertSee('ヤマダ タロウ');
+        $response->assertSee('106-0032');
+        $response->assertSee('六本木1-2-3');
+        $response->assertSee('name="name"', false);
+        $response->assertSee('value="山田 太郎"', false);
+    }
+
+    public function test_logged_in_customer_always_sees_the_read_only_customer_card(): void
+    {
+        $user = User::create([
+            'first_name' => '太郎',
+            'last_name' => '山田',
+            'name' => '山田 太郎',
+            'email' => 'incomplete@example.com',
+            'phone' => '0123456789',
+            'password' => 'Secret123',
+            'status' => '1',
+        ]);
+
+        $response = $this->actingAs($user)->get(route('checkout.information'));
+
+        $response->assertOk();
+        $response->assertViewHas('showRegisteredCustomerCard', true);
+        $response->assertSee('<div class="registered-customer-card">', false);
+        $response->assertSee('incomplete@example.com');
+        $response->assertSee('<dd>-</dd>', false);
+        $response->assertSee('type="hidden" name="name"', false);
     }
 
     public function test_customer_can_register_and_is_logged_in(): void

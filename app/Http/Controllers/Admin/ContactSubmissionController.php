@@ -24,6 +24,7 @@ class ContactSubmissionController extends Controller
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
                     ->orWhere('phone', 'like', "%{$search}%")
+                    ->orWhere('order_number', 'like', "%{$search}%")
                     ->orWhere('subject', 'like', "%{$search}%")
                     ->orWhere('message', 'like', "%{$search}%");
             });

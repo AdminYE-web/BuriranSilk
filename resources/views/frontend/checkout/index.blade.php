@@ -25,7 +25,7 @@
                     <h3 id="checkoutLoginTitle">会員の方（ログイン）</h3>
                     @auth
                         <p class="checkout-choice-copy">ログイン済みです。お客様情報の入力へお進みください。</p>
-                        <a href="#" class="checkout-choice-button">お客様情報の入力へ</a>
+                        <a href="{{ route('checkout.information') }}" class="checkout-choice-button">お客様情報の入力へ</a>
                     @else
                         <form action="{{ route('login') }}" method="POST" class="checkout-login-form">
                             @csrf
@@ -47,7 +47,7 @@
                 <section class="checkout-choice-column" aria-labelledby="checkoutGuestTitle">
                     <h3 id="checkoutGuestTitle">会員登録せずに進む</h3>
                     <p class="checkout-choice-copy">会員登録をせずに、データ入稿とお客様情報の入力へ進めます。</p>
-                    <a href="#" class="checkout-choice-button checkout-choice-button-outline">ゲストとして次へ</a>
+                    <a href="{{ route('checkout.information') }}" class="checkout-choice-button checkout-choice-button-outline">ゲストとして次へ</a>
                 </section>
             </div>
         </div>

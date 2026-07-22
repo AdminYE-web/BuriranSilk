@@ -158,7 +158,7 @@
 
             <select name="contact_method">
                 <option value="">{{ request()->cookie('dev') == '1' ? 'All Contact Methods' : 'すべての連絡方法' }}</option>
-                @foreach(['whatsapp', 'line', 'phone'] as $method)
+                @foreach(['email', 'whatsapp', 'line', 'phone'] as $method)
                     <option value="{{ $method }}" {{ request('contact_method') === $method ? 'selected' : '' }}>
                         {{ ucfirst($method) }}
                     </option>

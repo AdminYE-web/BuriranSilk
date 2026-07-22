@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -12,6 +13,16 @@ class CartPageTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        Schema::create('users', function (Blueprint $table) {
+            $table->id('user_id');
+            $table->string('name')->nullable();
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->string('status')->default('1');
+            $table->rememberToken();
+            $table->timestamps();
+        });
 
         Schema::create('product_option_assignments', function (Blueprint $table) {
             $table->id('assignment_id');
@@ -28,6 +39,7 @@ class CartPageTest extends TestCase
     protected function tearDown(): void
     {
         Schema::dropIfExists('product_option_assignments');
+        Schema::dropIfExists('users');
 
         parent::tearDown();
     }
@@ -39,6 +51,37 @@ class CartPageTest extends TestCase
         $response->assertOk();
         $response->assertSee('ショッピングカート');
         $response->assertSee('カートに商品は入っていません。');
+    }
+
+    public function test_checkout_button_skips_account_choice_for_a_logged_in_customer(): void
+    {
+        $user = User::create([
+            'name' => 'Test Customer',
+            'email' => 'member@example.com',
+            'password' => 'Secret123',
+            'status' => '1',
+        ]);
+
+        $response = $this->actingAs($user)->withSession([
+            'cart.items' => [
+                'test-item' => $this->cartItem(),
+            ],
+        ])->get('/cart');
+
+        $response->assertOk();
+        $response->assertSee('href="'.route('checkout.information').'"', false);
+    }
+
+    public function test_checkout_button_keeps_account_choice_for_a_guest(): void
+    {
+        $response = $this->withSession([
+            'cart.items' => [
+                'test-item' => $this->cartItem(),
+            ],
+        ])->get('/cart');
+
+        $response->assertOk();
+        $response->assertSee('href="'.route('checkout.index').'"', false);
     }
 
     public function test_cart_quantity_can_be_updated_and_price_is_recalculated(): void

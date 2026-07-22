@@ -215,6 +215,10 @@
                 <th>{{ request()->cookie('dev') == '1' ? 'Subject' : '件名' }}</th>
                 <td><span class="status-pill">{{ $contactSubmission->subject }}</span></td>
             </tr>
+            <tr>
+                <th>{{ request()->cookie('dev') == '1' ? 'Order Number' : '注文番号' }}</th>
+                <td>{{ $contactSubmission->order_number ?: '-' }}</td>
+            </tr>
         </table>
 
         <div class="section-title">{{ request()->cookie('dev') == '1' ? 'Message' : 'メッセージ' }}</div>

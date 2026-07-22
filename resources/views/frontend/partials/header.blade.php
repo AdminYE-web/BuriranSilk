@@ -267,14 +267,14 @@
             <div class="account-login-divider"><span>または</span></div>
 
             <div class="account-social-list">
-                <button type="button" class="account-social-button" disabled>
+                {{-- <button type="button" class="account-social-button" disabled>
                     <img
                         class="account-social-icon account-social-icon-line"
                         src="{{ asset('assets/images/home/streamline-logos_line-app-logo-block.png') }}"
                         alt="LINE"
                     >
                     <span>LINEでログイン</span>
-                </button>
+                </button> --}}
                <a
     href="{{ route('google.redirect') }}"
     class="account-social-button account-google-login"

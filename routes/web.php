@@ -1,8 +1,5 @@
 <?php
 
-
-use App\Http\Controllers\Auth\GoogleLoginController;
-use App\Http\Controllers\Admin\ProductOptionPriceRuleController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\ArticleController;
@@ -14,6 +11,7 @@ use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\HomeBannerController;
 use App\Http\Controllers\Admin\MaterialController;
 use App\Http\Controllers\Admin\MaterialHomeController;
+use App\Http\Controllers\Admin\MenuProductController;
 use App\Http\Controllers\Admin\OptionDependencyController;
 use App\Http\Controllers\Admin\OptionGroupController;
 use App\Http\Controllers\Admin\OrderAdminController;
@@ -23,6 +21,7 @@ use App\Http\Controllers\Admin\ProductDetailController;
 use App\Http\Controllers\Admin\ProductListBannerController;
 use App\Http\Controllers\Admin\ProductOptionAssignmentController;
 use App\Http\Controllers\Admin\ProductOptionController;
+use App\Http\Controllers\Admin\ProductOptionPriceRuleController;
 use App\Http\Controllers\Admin\ProductOptionVariantController;
 use App\Http\Controllers\Admin\ProductPriceRuleController;
 use App\Http\Controllers\Admin\ProductPriceTierController;
@@ -31,13 +30,15 @@ use App\Http\Controllers\Admin\QuotationController;
 use App\Http\Controllers\Admin\SystemManagementController;
 use App\Http\Controllers\Admin\UserAdminController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\GoogleLoginController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\SocialAuthController;
-use App\Http\Controllers\Admin\MenuProductController;
-use App\Http\Controllers\ProductListController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CartQuotationController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ProductListController;
 use App\Models\HomeBanner;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
@@ -65,8 +66,7 @@ Route::get('/', function () {
                     })
                     ->mapWithKeys(function ($holiday) {
                         return [
-                            data_get($holiday, 'start') =>
-                                (int) data_get($holiday, 'extendedProps.type'),
+                            data_get($holiday, 'start') => (int) data_get($holiday, 'extendedProps.type'),
                         ];
                     })
                     ->all();
@@ -87,6 +87,13 @@ Route::get('/', function () {
     return view('frontend.home.index', compact('holidayCalendar', 'heroBanner'));
 })->name('home');
 
+Route::get('/contact', [ContactController::class, 'index'])
+    ->name('contact.index');
+Route::post('/contact', [ContactController::class, 'store'])
+    ->middleware('throttle:5,1')
+    ->name('contact.store');
+Route::get('/contact/complete', [ContactController::class, 'complete'])
+    ->name('contact.complete');
 
 Route::get('/products', [ProductListController::class, 'index'])
     ->name('products.index');
@@ -103,6 +110,28 @@ Route::delete('/cart/items/{item}', [CartController::class, 'destroy'])
     ->name('cart.items.destroy');
 Route::get('/checkout', [CartController::class, 'checkout'])
     ->name('checkout.index');
+Route::get('/checkout/information', [CartController::class, 'information'])
+    ->name('checkout.information');
+Route::match(['get', 'post'], '/checkout/confirmation', [CartController::class, 'confirmation'])
+    ->name('checkout.confirmation');
+Route::post('/checkout/orders', [CartController::class, 'placeOrder'])
+    ->middleware('throttle:10,1')
+    ->name('checkout.orders.store');
+Route::get('/checkout/complete', [CartController::class, 'complete'])
+    ->name('checkout.complete');
+Route::post(
+    '/cart/quotation/postal-code',
+    [CartQuotationController::class, 'postalCode']
+)
+    ->middleware('throttle:20,1')
+    ->name('cart.quotation.postal-code');
+
+Route::post(
+    '/cart/quotation/pdf',
+    [CartQuotationController::class, 'download']
+)
+    ->middleware('throttle:10,1')
+    ->name('cart.quotation.download');
 
 Route::post('/login', [LoginController::class, 'login'])
     ->middleware('guest')
@@ -121,12 +150,12 @@ Route::post('/reset-password', [ResetPasswordController::class, 'store'])
     ->name('password.update');
 
 Route::middleware('guest')->group(function () {
-    
-  /*
-    |--------------------------------------------------------------------------
-    | Google Login
-    |--------------------------------------------------------------------------
-    */
+
+    /*
+      |--------------------------------------------------------------------------
+      | Google Login
+      |--------------------------------------------------------------------------
+      */
 
     Route::get('/auth/google', [GoogleLoginController::class, 'redirect'])
         ->name('google.redirect');
@@ -164,12 +193,7 @@ Route::get('/email/verify/{id}/{hash}', [RegisterController::class, 'verifyEmail
     ->middleware(['signed', 'throttle:6,1'])
     ->name('verification.verify');
 
-
-
-
-
-
- Route::prefix('admin-panel')->name('admin.')->group(function () {
+Route::prefix('admin-panel')->name('admin.')->group(function () {
     Route::get('/login', [AdminAuthController::class, 'showLoginForm'])
         ->name('login');
 
@@ -319,28 +343,26 @@ Route::get('/email/verify/{id}/{hash}', [RegisterController::class, 'verifyEmail
             ->name('products.preview-order');
         // Route::get('/articles/{article}/preview', [BlogController::class, 'preview'])
         //     ->name('articles.preview');
-            Route::post('/categories/sort', [CategoryController::class, 'updateSort'])
-    ->name('categories.sort');
-    Route::get('menu-products', [MenuProductController::class, 'index'])
-    ->name('menu-products.index');
+        Route::post('/categories/sort', [CategoryController::class, 'updateSort'])
+            ->name('categories.sort');
+        Route::get('menu-products', [MenuProductController::class, 'index'])
+            ->name('menu-products.index');
 
-Route::post('menu-products/add', [MenuProductController::class, 'add'])
-    ->name('menu-products.add');
+        Route::post('menu-products/add', [MenuProductController::class, 'add'])
+            ->name('menu-products.add');
 
-Route::post('menu-products/{product}/remove', [MenuProductController::class, 'remove'])
-    ->name('menu-products.remove');
+        Route::post('menu-products/{product}/remove', [MenuProductController::class, 'remove'])
+            ->name('menu-products.remove');
 
-    Route::resource('option-price-rules', ProductOptionPriceRuleController::class)
-    ->parameters([
-        'option-price-rules' => 'optionPriceRule',
-    ]);
+        Route::resource('option-price-rules', ProductOptionPriceRuleController::class)
+            ->parameters([
+                'option-price-rules' => 'optionPriceRule',
+            ]);
 
-    Route::get(
-    '/option-price-rules/{optionPriceRule}/duplicate',
-    [ProductOptionPriceRuleController::class, 'duplicate']
-)->name('option-price-rules.duplicate');
-
-
+        Route::get(
+            '/option-price-rules/{optionPriceRule}/duplicate',
+            [ProductOptionPriceRuleController::class, 'duplicate']
+        )->name('option-price-rules.duplicate');
 
         Route::middleware('super.admin')->group(function () {
             Route::resource('users', UserAdminController::class)->only(['index', 'show']);

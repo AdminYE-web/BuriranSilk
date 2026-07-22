@@ -4,14 +4,14 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
@@ -301,6 +301,11 @@ class RegisterController extends Controller
             $user = User::create([
                 'first_name' => $customer['first_name'],
                 'last_name' => $customer['last_name'],
+                'customer_type' => $customer['customer_type'] ?? 'individual',
+                'last_name_kana' => $customer['last_name_kana'] ?? null,
+                'first_name_kana' => $customer['first_name_kana'] ?? null,
+                'company_name' => $customer['company_name'] ?? null,
+                'company_name_kana' => $customer['company_name_kana'] ?? null,
                 'name' => $customer['last_name'].' '.$customer['first_name'],
                 'email' => $account['email'],
                 'phone' => $customer['phone'],

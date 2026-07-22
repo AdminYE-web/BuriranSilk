@@ -84,7 +84,7 @@ if ($request->filled('shipping_date_to')) {
     public function show(Order $order)
     {
         $order->load([
-            'items',
+            'items.optionDetails',
             'customer',
             'payment',
             'artworks',

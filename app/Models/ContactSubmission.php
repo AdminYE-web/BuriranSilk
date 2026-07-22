@@ -14,6 +14,7 @@ class ContactSubmission extends Model
     protected $fillable = [
         'contact_method',
         'subject',
+        'order_number',
         'name',
         'email',
         'line_id',
