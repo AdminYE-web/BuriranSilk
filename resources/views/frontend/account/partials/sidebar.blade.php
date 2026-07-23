@@ -149,11 +149,36 @@
 <aside class="account-sidebar">
     <div class="sidebar-profile">
         <div class="sidebar-avatar">
-            @if (!empty($user->avatar))
-                <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name }}">
+            @php
+                $rawAvatar = $user->avatar ?? null;
+                $avatarPath = ltrim(str_replace('\\', '/', (string) $rawAvatar), '/');
+                $avatarUrl = null;
+
+                if (filled($avatarPath)) {
+                    if (\Illuminate\Support\Str::startsWith($avatarPath, ['http://', 'https://'])) {
+                        $avatarUrl = $avatarPath;
+                    } elseif (\Illuminate\Support\Str::startsWith($avatarPath, ['storage/', 'assets/'])) {
+                        $avatarUrl = asset($avatarPath);
+                    } else {
+                        $avatarUrl = asset('storage/' . $avatarPath);
+                    }
+                }
+            @endphp
+
+            @if ($avatarUrl)
+                <img src="{{ $avatarUrl }}" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="sidebar-avatar-placeholder" style="display: none;">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </div>
             @else
                 <div class="sidebar-avatar-placeholder">
-                    {{ strtoupper(substr($user->first_name ?? ($user->name ?? 'U'), 0, 1)) }}
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
                 </div>
             @endif
         </div>
