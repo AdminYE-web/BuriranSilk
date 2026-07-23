@@ -163,80 +163,96 @@
             }
         }
         .contact-actions-image-style {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 14px;
-}
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 12px;
+        }
 
-.contact-top-actions {
-    display: flex;
-    align-items: center;
-    gap: 26px;
-}
+        .contact-top-actions {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
 
-.contact-text-action {
-    border: 0;
-    background: transparent;
-    padding: 0;
-    color: #2f8cff;
-    font-size: 14px;
-    line-height: 1;
-    font-weight: 400;
-    text-decoration: none;
-    cursor: pointer;
-}
+        .contact-text-action {
+            border: 0;
+            background: transparent;
+            padding: 0;
+            color: #2563eb;
+            font-size: 14px;
+            line-height: 1;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+        }
 
-.contact-text-action:hover {
-    color: #176fd1;
-}
+        .contact-text-action:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
 
-.contact-delete-action {
-    font-family: inherit;
-}
+        .contact-delete-action {
+            color: #dc2626;
+        }
 
-.set-default-btn {
-    min-width: 112px;
-    height: 30px;
-    border: 2px solid #777;
-    border-radius: 10px;
-    background: #fff;
-    color: #111;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1;
-    cursor: pointer;
-}
+        .contact-delete-action:hover {
+            color: #b91c1c;
+        }
 
-.set-default-btn:hover {
-    background: #f8f8f8;
-}
+        .set-default-btn {
+            min-width: 100px;
+            height: 34px;
+            padding: 0 14px;
+            border: 1px solid #2563eb;
+            border-radius: 6px;
+            background: #fff;
+            color: #2563eb;
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 1;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
 
-.set-default-btn.is-current {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: default;
-    color: #000000;
-    border-color: #00000080;
-    font-size: 14px;
-}
+        .set-default-btn:hover {
+            background: #eff6ff;
+        }
 
-@media (max-width: 900px) {
-    .contact-actions-image-style {
-        align-items: flex-start;
-    }
+        .set-default-btn.is-current {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: default;
+            color: #2563eb;
+            border-color: #2563eb;
+            background: #eff6ff;
+            font-size: 13px;
+            font-weight: 600;
+        }
 
-    .contact-text-action {
-        font-size: 14px;
-    }
+        @media (max-width: 991px) {
+            .contact-actions-image-style {
+                align-items: flex-start;
+                gap: 10px;
+                margin-top: 10px;
+            }
 
-    .set-default-btn {
-        min-width: 160px;
-        height: 52px;
-        font-size: 22px;
-    }
-}
+            .contact-top-actions {
+                gap: 16px;
+            }
+
+            .contact-text-action {
+                font-size: 14px;
+            }
+
+            .set-default-btn {
+                min-width: auto;
+                height: 34px;
+                font-size: 13px;
+                padding: 0 14px;
+            }
+        }
     </style>
 @endsection
 

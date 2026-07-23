@@ -17,6 +17,102 @@
 @endsection
 
 @section('content')
+    {{-- Banner Carousel --}}
+    @if (isset($banners) && $banners->count() > 0)
+        <div class="product-list-banner-wrapper">
+            <div id="productListBannerCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+                @if ($banners->count() > 1)
+                    <div class="carousel-indicators">
+                        @foreach ($banners as $index => $banner)
+                            <button type="button" data-bs-target="#productListBannerCarousel"
+                                data-bs-slide-to="{{ $index }}" class="{{ $loop->first ? 'active' : '' }}"
+                                aria-current="{{ $loop->first ? 'true' : 'false' }}"
+                                aria-label="Slide {{ $index + 1 }}"></button>
+                        @endforeach
+                    </div>
+                @endif
+
+                <div class="carousel-inner">
+                    @foreach ($banners as $banner)
+                        @php
+                            $pcPath = ltrim(str_replace('\\', '/', (string) $banner->image_path), '/');
+                            $pcUrl = null;
+                            if (filled($pcPath)) {
+                                if (\Illuminate\Support\Str::startsWith($pcPath, ['http://', 'https://'])) {
+                                    $pcUrl = $pcPath;
+                                } elseif (\Illuminate\Support\Str::startsWith($pcPath, ['storage/', 'assets/'])) {
+                                    $pcUrl = asset($pcPath);
+                                } else {
+                                    $pcUrl = asset('storage/' . $pcPath);
+                                }
+                            }
+
+                            $mobilePath = ltrim(str_replace('\\', '/', (string) $banner->image_mobile), '/');
+                            $mobileUrl = null;
+                            if (filled($mobilePath)) {
+                                if (\Illuminate\Support\Str::startsWith($mobilePath, ['http://', 'https://'])) {
+                                    $mobileUrl = $mobilePath;
+                                } elseif (\Illuminate\Support\Str::startsWith($mobilePath, ['storage/', 'assets/'])) {
+                                    $mobileUrl = asset($mobilePath);
+                                } else {
+                                    $mobileUrl = asset('storage/' . $mobilePath);
+                                }
+                            }
+                            $mobileUrl = $mobileUrl ?: $pcUrl;
+                        @endphp
+
+                        @if ($pcUrl)
+                            <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                                @if (filled($banner->link_url))
+                                    <a href="{{ $banner->link_url }}" class="product-list-banner-link">
+                                @endif
+
+                                <picture class="product-list-banner-picture">
+                                    @if ($mobileUrl && $mobileUrl !== $pcUrl)
+                                        <source media="(max-width: 767.98px)" srcset="{{ $mobileUrl }}">
+                                    @endif
+                                    <img src="{{ $pcUrl }}" class="d-block w-100 product-list-banner-img"
+                                        alt="{{ $banner->title ?: 'Product Banner' }}">
+                                </picture>
+
+                                @if (filled($banner->title) || filled($banner->subtitle) || filled($banner->button_text))
+                                    <div class="carousel-caption product-list-banner-caption">
+                                        @if (filled($banner->title))
+                                            <h2 class="product-list-banner-title">{{ $banner->title }}</h2>
+                                        @endif
+                                        @if (filled($banner->subtitle))
+                                            <p class="product-list-banner-subtitle">{{ $banner->subtitle }}</p>
+                                        @endif
+                                        @if (filled($banner->button_text))
+                                            <span class="btn product-list-banner-btn">{{ $banner->button_text }}</span>
+                                        @endif
+                                    </div>
+                                @endif
+
+                                @if (filled($banner->link_url))
+                                    </a>
+                                @endif
+                            </div>
+                        @endif
+                    @endforeach
+                </div>
+
+                @if ($banners->count() > 1)
+                    <button class="carousel-control-prev" type="button" data-bs-target="#productListBannerCarousel"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">前へ</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#productListBannerCarousel"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">次へ</span>
+                    </button>
+                @endif
+            </div>
+        </div>
+    @endif
+
     <div class="product-list-layout">
         <aside
             id="productFilter"

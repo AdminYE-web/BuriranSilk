@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\OptionDependency;
 use App\Models\Product;
+use App\Models\ProductListBanner;
 use App\Models\ProductOptionGroupOrder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -288,7 +289,14 @@ class ProductListController extends Controller
                 $products->sortByDesc('sort_order'),
         };
 
+        $banners = ProductListBanner::query()
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->orderBy('banner_id')
+            ->get();
+
         return view('frontend.products.index', [
+            'banners' => $banners,
             'categories' => $categories,
             'products' => $products->values(),
             'selectedCategories' =>
