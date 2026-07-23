@@ -49,7 +49,7 @@ img {
     isolation: isolate;
     min-height: var(--header-height);
     color: var(--header-text);
-    background: rgba(72, 71, 67, 0.42);
+    background: rgb(33 33 33);
     border-top: 1px solid rgba(255, 255, 255, 0.35);
     transition:
         border-color 0.8s ease,
