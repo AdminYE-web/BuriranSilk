@@ -12,10 +12,6 @@
     background: #fff;
 }
 
-.product-detail-page .site-footer {
-    display: none;
-}
-
 .product-detail-page #mainContent {
     min-height: calc(100vh - var(--header-height));
     padding-bottom: var(--detail-bottom-bar-height);
