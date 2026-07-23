@@ -137,6 +137,10 @@ Route::post(
     ->middleware('throttle:10,1')
     ->name('cart.quotation.download');
 
+Route::get('/login', function () {
+    return redirect()->route('home');
+})->middleware('guest');
+
 Route::post('/login', [LoginController::class, 'login'])
     ->middleware('guest')
     ->name('login');
