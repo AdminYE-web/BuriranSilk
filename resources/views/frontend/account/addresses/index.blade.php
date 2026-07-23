@@ -142,13 +142,20 @@
         margin-bottom: 16px;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 991px) {
+        .account-page {
+            padding: 16px 0;
+            min-height: auto;
+        }
+
         .account-layout {
             grid-template-columns: 1fr;
+            gap: 16px;
         }
 
         .address-card {
-            padding: 28px 22px;
+            padding: 24px 20px;
+            min-height: auto;
         }
 
         .address-item {

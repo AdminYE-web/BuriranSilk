@@ -15,16 +15,22 @@
             grid-template-columns: 280px 1fr;
             gap: 36px;
             align-items: start;
+            width: 100%;
+            max-width: 100%;
         }
 
-
+        .account-layout > * {
+            min-width: 0;
+        }
 
         .account-card {
             background: #fff;
             border-radius: 8px;
             padding: 36px 46px;
             min-height: 360px;
-            /* max-width: 780px; */
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
         }
 
         .account-card h1 {
@@ -126,21 +132,30 @@
             font-size: 14px;
         }
 
-        @media (max-width: 900px) {
-            .account-layout {
-                grid-template-columns: 1fr;
+        @media (max-width: 991px) {
+            .account-page {
+                padding: 16px 0;
+                min-height: auto;
             }
 
-            .account-sidebar {
+            .account-layout {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .account-card {
+                padding: 24px 20px;
                 min-height: auto;
+                max-width: 100%;
             }
 
             .account-content {
                 grid-template-columns: 1fr;
+                gap: 20px;
             }
 
-            .account-card {
-                max-width: 100%;
+            .account-info-item {
+                margin-bottom: 20px;
             }
         }
 

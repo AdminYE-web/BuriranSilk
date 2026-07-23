@@ -3,6 +3,10 @@
         background: #fff;
         min-height: 560px;
         padding: 42px 34px;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
     }
 
     .sidebar-profile {
@@ -144,6 +148,27 @@
         border-left: 2px solid #1683ff;
         padding-left: 40px;
         margin-left: -44px;
+    }
+
+    @media (max-width: 991px) {
+        .account-sidebar {
+            min-height: auto;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .sidebar-profile {
+            margin-bottom: 14px;
+            padding-bottom: 14px;
+        }
+
+        .account-menu li {
+            margin-bottom: 12px;
+        }
+
+        .sign-out-box {
+            margin-top: 24px;
+        }
     }
 </style>
 <aside class="account-sidebar">
