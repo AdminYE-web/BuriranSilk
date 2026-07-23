@@ -76,6 +76,20 @@ class CartController extends Controller
 
         if ($request->isMethod('post')) {
             $customer = $request->except('_token');
+
+            if (blank($customer['name_kana'] ?? null) && filled($customer['name'] ?? null)) {
+                $customer['name_kana'] = $customer['name'];
+            }
+            if (blank($customer['company_name_kana'] ?? null) && filled($customer['company_name'] ?? null)) {
+                $customer['company_name_kana'] = $customer['company_name'];
+            }
+            if (blank($customer['shipping_name_kana'] ?? null) && filled($customer['shipping_name'] ?? null)) {
+                $customer['shipping_name_kana'] = $customer['shipping_name'];
+            }
+            if (blank($customer['billing_name_kana'] ?? null) && filled($customer['billing_name'] ?? null)) {
+                $customer['billing_name_kana'] = $customer['billing_name'];
+            }
+
             $validator = $this->checkoutValidator($customer);
 
             if ($validator->fails()) {
@@ -451,7 +465,7 @@ class CartController extends Controller
         $nameKana = trim(implode(' ', array_filter([
             $user->last_name_kana,
             $user->first_name_kana,
-        ])));
+        ]))) ?: ($previousCustomer?->personal_name_kana ?: $name);
         $companyName = $user->company_name
             ?: $address?->company_name
             ?: $previousCustomer?->company_name;
@@ -467,9 +481,9 @@ class CartController extends Controller
         return [
             'customer_type' => $customerType,
             'name' => $name ?: $previousCustomer?->personal_name,
-            'name_kana' => $nameKana ?: $previousCustomer?->personal_name_kana,
+            'name_kana' => $nameKana,
             'company_name' => $companyName,
-            'company_name_kana' => $user->company_name_kana ?: $previousCustomer?->company_name_kana,
+            'company_name_kana' => $user->company_name_kana ?: $previousCustomer?->company_name_kana ?: $companyName,
             'email' => $user->email ?: $contact?->email ?: $previousCustomer?->personal_email,
             'phone' => $user->phone ?: $contact?->phone ?: $address?->phone ?: $previousCustomer?->personal_phone,
             'postal_code_front' => strlen($postalCode) === 7 ? substr($postalCode, 0, 3) : '',
@@ -493,9 +507,9 @@ class CartController extends Controller
         return Validator::make($customer, [
             'customer_type' => ['required', 'in:corporate,individual'],
             'name' => ['required', 'string', 'max:255'],
-            'name_kana' => ['required', 'string', 'max:255'],
+            'name_kana' => ['nullable', 'string', 'max:255'],
             'company_name' => [($customer['customer_type'] ?? '') === 'corporate' && $detailsRequired ? 'required' : 'nullable', 'string', 'max:255'],
-            'company_name_kana' => [($customer['customer_type'] ?? '') === 'corporate' && $detailsRequired ? 'required' : 'nullable', 'string', 'max:255'],
+            'company_name_kana' => ['nullable', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
             'phone' => ['required', 'string', 'max:50'],
             'info_method' => ['required', 'in:詳細情報を全て入力する,入力省略(営業より連絡します),メールの署名等をコピーする'],
@@ -506,7 +520,7 @@ class CartController extends Controller
             'city' => [$detailsRequired ? 'required' : 'nullable', 'string', 'max:150'],
             'address' => [$detailsRequired ? 'required' : 'nullable', 'string', 'max:255'],
             'shipping_name' => [$shippingRequired ? 'required' : 'nullable', 'string', 'max:255'],
-            'shipping_name_kana' => [$shippingRequired ? 'required' : 'nullable', 'string', 'max:255'],
+            'shipping_name_kana' => ['nullable', 'string', 'max:255'],
             'shipping_postal_code_front' => [$shippingRequired ? 'required' : 'nullable', 'digits:3'],
             'shipping_postal_code_back' => [$shippingRequired ? 'required' : 'nullable', 'digits:4'],
             'shipping_prefecture' => [$shippingRequired ? 'required' : 'nullable', 'string', 'max:100'],
@@ -514,7 +528,7 @@ class CartController extends Controller
             'shipping_address' => [$shippingRequired ? 'required' : 'nullable', 'string', 'max:255'],
             'billing_address_type' => ['nullable', 'in:same_as_customer,same_as_shipping,different'],
             'billing_name' => [$billingRequired ? 'required' : 'nullable', 'string', 'max:255'],
-            'billing_name_kana' => [$billingRequired ? 'required' : 'nullable', 'string', 'max:255'],
+            'billing_name_kana' => ['nullable', 'string', 'max:255'],
             'billing_postal_code_front' => [$billingRequired ? 'required' : 'nullable', 'digits:3'],
             'billing_postal_code_back' => [$billingRequired ? 'required' : 'nullable', 'digits:4'],
             'billing_prefecture' => [$billingRequired ? 'required' : 'nullable', 'string', 'max:100'],

@@ -136,17 +136,29 @@
                 <div class="header-actions">
 
                     {{-- Account --}}
-                    <button type="button" class="header-action-link account-modal-trigger" aria-label="アカウント"
-                        aria-haspopup="dialog" aria-controls="accountLoginModal" aria-expanded="false"
-                        data-login-modal-open>
-                        <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <circle cx="15" cy="8" r="5.5" fill="none" stroke="currentColor"
-                                stroke-width="1.5" />
+                    @auth
+                        <a href="{{ route('account.index') }}" class="header-action-link" aria-label="アカウント">
+                            <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <circle cx="15" cy="8" r="5.5" fill="none" stroke="currentColor"
+                                    stroke-width="1.5" />
 
-                            <path d="M4 28C4 20.7 8.7 16.5 15 16.5C21.3 16.5 26 20.7 26 28" fill="none"
-                                stroke="currentColor" stroke-width="1.5" />
-                        </svg>
-                    </button>
+                                <path d="M4 28C4 20.7 8.7 16.5 15 16.5C21.3 16.5 26 20.7 26 28" fill="none"
+                                    stroke="currentColor" stroke-width="1.5" />
+                            </svg>
+                        </a>
+                    @else
+                        <button type="button" class="header-action-link account-modal-trigger" aria-label="アカウント"
+                            aria-haspopup="dialog" aria-controls="accountLoginModal" aria-expanded="false"
+                            data-login-modal-open>
+                            <svg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <circle cx="15" cy="8" r="5.5" fill="none" stroke="currentColor"
+                                    stroke-width="1.5" />
+
+                                <path d="M4 28C4 20.7 8.7 16.5 15 16.5C21.3 16.5 26 20.7 26 28" fill="none"
+                                    stroke="currentColor" stroke-width="1.5" />
+                            </svg>
+                        </button>
+                    @endauth
 
                     {{-- Cart --}}
                     <a href="{{ url('/cart') }}" class="header-action-link position-relative" aria-label="ショッピングカート">

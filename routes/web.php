@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\UserAddressController;
+use App\Http\Controllers\UserContactController;
+use App\Http\Controllers\UserOrderController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\ArticleController;
@@ -149,6 +153,33 @@ Route::post('/reset-password', [ResetPasswordController::class, 'store'])
     ->middleware(['guest', 'throttle:6,1'])
     ->name('password.update');
 
+Route::middleware('auth')->prefix('account')->name('account.')->group(function () {
+    Route::get('/', [AccountController::class, 'index'])->name('index');
+    Route::put('/name', [AccountController::class, 'updateName'])->name('name.update');
+    Route::put('/password', [AccountController::class, 'updatePassword'])->name('password.update');
+    Route::post('/avatar', [AccountController::class, 'updateAvatar'])->name('avatar.update');
+    Route::get('/contacts', [UserContactController::class, 'index'])->name('contacts.index');
+    Route::get('/contacts/create', [UserContactController::class, 'create'])->name('contacts.create');
+    Route::post('/contacts', [UserContactController::class, 'store'])->name('contacts.store');
+    Route::get('/contacts/{contact}/edit', [UserContactController::class, 'edit'])->name('contacts.edit');
+    Route::put('/contacts/{contact}', [UserContactController::class, 'update'])->name('contacts.update');
+    Route::delete('/contacts/{contact}', [UserContactController::class, 'destroy'])->name('contacts.destroy');
+    Route::put('/contacts/{contact}/set-main', [UserContactController::class, 'setMain'])->name('contacts.setMain');
+    Route::get('/addresses/{type?}', [UserAddressController::class, 'index'])->name('addresses.index');
+    Route::get('/addresses/{type}/create', [UserAddressController::class, 'create'])->name('addresses.create');
+    Route::post('/addresses/{type}', [UserAddressController::class, 'store'])->name('addresses.store');
+    Route::get('/addresses/{address}/edit', [UserAddressController::class, 'edit'])->name('addresses.edit');
+    Route::put('/addresses/{address}', [UserAddressController::class, 'update'])->name('addresses.update');
+    Route::delete('/addresses/{address}', [UserAddressController::class, 'destroy'])->name('addresses.destroy');
+    Route::put('/addresses/{address}/set-main', [UserAddressController::class, 'setMain'])->name('addresses.setMain');
+    Route::get('/orders', [UserOrderController::class, 'index'])->name('orders.index');
+});
+
+// Both guests registering and authenticated customers adding an address use this lookup.
+Route::post('/register/postal-code', [RegisterController::class, 'lookupPostalCode'])
+    ->middleware('throttle:20,1')
+    ->name('register.postal-code');
+
 Route::middleware('guest')->group(function () {
 
     /*
@@ -178,9 +209,6 @@ Route::middleware('guest')->group(function () {
         ->name('register.step2');
     Route::post('/register/step2', [RegisterController::class, 'storeStep2'])
         ->name('register.step2.store');
-    Route::post('/register/postal-code', [RegisterController::class, 'lookupPostalCode'])
-        ->middleware('throttle:20,1')
-        ->name('register.postal-code');
     Route::get('/register/step3', [RegisterController::class, 'step3'])
         ->name('register.step3');
     Route::post('/register', [RegisterController::class, 'store'])

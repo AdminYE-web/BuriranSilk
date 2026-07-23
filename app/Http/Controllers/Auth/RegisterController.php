@@ -118,7 +118,11 @@ class RegisterController extends Controller
 
     public function lookupPostalCode(Request $request): JsonResponse
     {
-        $zipcode = preg_replace('/\D/', '', (string) $request->input('zipcode', ''));
+        $zipcode = preg_replace(
+            '/\D/',
+            '',
+            (string) ($request->input('zipcode') ?: $request->input('postal_code'))
+        );
 
         if (strlen($zipcode) !== 7) {
             return response()->json([
@@ -130,72 +134,89 @@ class RegisterController extends Controller
 
         $token = config('services.google.geocode_key');
 
-        if (blank($token)) {
-            return response()->json([
-                'mainArea' => '',
-                'subArea' => '',
-                'message' => '住所検索を現在利用できません。',
-            ], 503);
+        if (filled($token)) {
+            try {
+                $response = Http::withoutVerifying()
+                    ->acceptJson()
+                    ->timeout(10)
+                    ->get('https://maps.googleapis.com/maps/api/geocode/json', [
+                        'key' => $token,
+                        'address' => $zipcode,
+                        'language' => 'ja',
+                        'sensor' => 'false',
+                    ]);
+
+                $result = $response->json();
+                $data = [
+                    'mainArea' => '',
+                    'subArea' => '',
+                ];
+
+                if (data_get($result, 'status') === 'OK' && filled(data_get($result, 'results.0.address_components'))) {
+                    $fallbackSubArea = '';
+
+                    collect(data_get($result, 'results.0.address_components'))
+                        ->each(function (array $component) use (&$data, &$fallbackSubArea): void {
+                            $types = $component['types'] ?? [];
+                            $name = $component['long_name'] ?? '';
+
+                            if (in_array('administrative_area_level_1', $types, true)) {
+                                $data['mainArea'] = $name;
+                            }
+
+                            if (in_array('locality', $types, true)) {
+                                $data['subArea'] = $name;
+                            }
+
+                            if (
+                                blank($fallbackSubArea)
+                                && (
+                                    in_array('sublocality', $types, true)
+                                    || in_array('sublocality_level_1', $types, true)
+                                )
+                            ) {
+                                $fallbackSubArea = $name;
+                            }
+                        });
+
+                    $data['subArea'] = $data['subArea'] ?: $fallbackSubArea;
+
+                    if (filled($data['mainArea'])) {
+                        return response()->json($data);
+                    }
+                }
+            } catch (\Throwable $exception) {
+                report($exception);
+            }
         }
 
+        // Fallback to Zipcloud public Japan postal code API (no API key required)
         try {
-            $response = Http::acceptJson()
+            $response = Http::withoutVerifying()
+                ->acceptJson()
                 ->timeout(10)
-                ->get('https://maps.googleapis.com/maps/api/geocode/json', [
-                    'key' => $token,
-                    'address' => $zipcode,
-                    'language' => 'ja',
-                    'sensor' => 'false',
+                ->get('https://zipcloud.ibsnet.co.jp/api/search', [
+                    'zipcode' => $zipcode,
                 ]);
 
             $result = $response->json();
-            $data = [
-                'mainArea' => '',
-                'subArea' => '',
-            ];
+            $addressInfo = data_get($result, 'results.0');
 
-            if (data_get($result, 'status') === 'OK' && filled(data_get($result, 'results.0.address_components'))) {
-                $fallbackSubArea = '';
-
-                collect(data_get($result, 'results.0.address_components'))
-                    ->each(function (array $component) use (&$data, &$fallbackSubArea): void {
-                        $types = $component['types'] ?? [];
-                        $name = $component['long_name'] ?? '';
-
-                        if (in_array('administrative_area_level_1', $types, true)) {
-                            $data['mainArea'] = $name;
-                        }
-
-                        // locality is the municipality/ward (e.g. 新宿区) and must
-                        // take precedence over smaller address components such as 8.
-                        if (in_array('locality', $types, true)) {
-                            $data['subArea'] = $name;
-                        }
-
-                        if (
-                            blank($fallbackSubArea)
-                            && (
-                                in_array('sublocality', $types, true)
-                                || in_array('sublocality_level_1', $types, true)
-                            )
-                        ) {
-                            $fallbackSubArea = $name;
-                        }
-                    });
-
-                $data['subArea'] = $data['subArea'] ?: $fallbackSubArea;
+            if ($addressInfo) {
+                return response()->json([
+                    'mainArea' => data_get($addressInfo, 'address1', ''),
+                    'subArea' => data_get($addressInfo, 'address2', '').data_get($addressInfo, 'address3', ''),
+                ]);
             }
-
-            return response()->json($data);
         } catch (\Throwable $exception) {
             report($exception);
-
-            return response()->json([
-                'mainArea' => '',
-                'subArea' => '',
-                'message' => '住所検索に失敗しました。',
-            ], 502);
         }
+
+        return response()->json([
+            'mainArea' => '',
+            'subArea' => '',
+            'message' => '住所検索に失敗しました。',
+        ], 404);
     }
 
     public function store(Request $request): RedirectResponse

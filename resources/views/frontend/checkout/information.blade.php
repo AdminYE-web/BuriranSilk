@@ -896,9 +896,7 @@
 
                         <div class="styled-input-group">
                             <input type="text" name="name_kana" placeholder="フリガナ"
-                                value="{{ old('name_kana', $registeredCustomer['name_kana'] ?? '') }}" required>
-
-                            <span class="required-badge">必須</span>
+                                value="{{ old('name_kana', $registeredCustomer['name_kana'] ?? '') }}">
                         </div>
 
                         <div class="styled-input-group">

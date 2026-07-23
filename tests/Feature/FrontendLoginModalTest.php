@@ -47,7 +47,8 @@ class FrontendLoginModalTest extends TestCase
     {
         $user = User::create([
             'email' => 'customer@example.com',
-            'password' => 'secret-password',
+            'password' => bcrypt('secret-password'),
+            'status' => '1',
         ]);
 
         $response = $this->from('/cart')->post('/login', [
