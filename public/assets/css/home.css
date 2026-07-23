@@ -171,7 +171,7 @@
 }
 
 .home-card-holder-copy {
-    width: min(100%, 370px);
+    /* width: min(100%, 370px); */
     justify-self: start;
 }
 
@@ -192,7 +192,7 @@
 .home-card-holder-copy p {
     margin: 0;
     font-family: "Noto Serif JP", serif;
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 300;
     line-height: 2;
     letter-spacing: 0.025em;
@@ -236,7 +236,7 @@
     }
 
     .home-card-holder-copy p {
-        font-size: 12px;
+        font-size: 14px;
     }
 }
 
@@ -509,7 +509,7 @@
     }
 
     .home-concept-eyebrow {
-        font-size: 15px;
+        font-size: 16px;
     }
 
     .home-concept-title {
@@ -999,7 +999,7 @@
 .home-silk-showcase-copy h2 {
     margin: 0 0 7px;
     font-family: "Noto Serif JP", serif;
-    font-size: clamp(18px, 1.75vw, 25px);
+    font-size: 26px;
     font-weight: 400;
     line-height: 1.4;
     letter-spacing: 0.04em;
@@ -1008,7 +1008,7 @@
 .home-silk-showcase-copy p {
     margin: 0;
     font-family: "Noto Serif JP", serif;
-    font-size: clamp(9px, 0.92vw, 13px);
+    font-size: 16px;
     font-weight: 300;
     line-height: 1.9;
     letter-spacing: 0.025em;
@@ -1438,7 +1438,7 @@
     }
 
     .home-calendar-eyebrow {
-        font-size: 15px;
+        font-size: 16px;
     }
 
     .home-calendar-title {
@@ -1720,18 +1720,18 @@
 
     .home-silk-showcase-copy h2 {
         margin-bottom: 8px;
-        font-size: 14px;
+        font-size: 16px;
         line-height: 1.4;
     }
 
     .home-silk-showcase-copy .home-silk-showcase-lead {
         margin-bottom: 8px;
-        font-size: 13px;
+        font-size: 16px;
         line-height: 1.55;
     }
 
     .home-silk-showcase-copy p {
-        font-size: 10px;
+        font-size: 14px;
         line-height: 1.8;
         letter-spacing: .02em;
     }

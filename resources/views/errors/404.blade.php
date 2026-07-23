@@ -85,7 +85,7 @@
                 inset 0 0 0 3px var(--maintenance-background),
                 inset 0 0 0 4px rgba(167, 131, 77, .55);
             padding: 34px 42px;
-            font-size: 11px;
+            font-size: 16px;
             font-weight: 300;
             line-height: 2.15;
             letter-spacing: .045em;
@@ -95,7 +95,7 @@
             margin: 0;
         }
 
-        .maintenance-message p + p {
+        .maintenance-message p+p {
             margin-top: 12px;
         }
 
@@ -204,7 +204,7 @@
                 line-height: 2;
             }
 
-            .maintenance-message p + p {
+            .maintenance-message p+p {
                 margin-top: 6px;
             }
 
@@ -232,16 +232,23 @@
 
 @section('content')
     <section class="maintenance-page">
-        <img class="maintenance-decoration maintenance-decoration-top-left" src="{{ asset('assets/images/ph_flower-lotus-thin (1).png') }}" alt="" aria-hidden="true">
-        <img class="maintenance-decoration maintenance-decoration-top-right" src="{{ asset('assets/images/game-icons_vanilla-flower (1).png') }}" alt="" aria-hidden="true">
-        <img class="maintenance-decoration maintenance-decoration-middle-right" src="{{ asset('assets/images/ph_flower-lotus-thin (2).png') }}" alt="" aria-hidden="true">
-        <img class="maintenance-decoration maintenance-decoration-middle-left" src="{{ asset('assets/images/game-icons_vanilla-flower (2).png') }}" alt="" aria-hidden="true">
-        <img class="maintenance-decoration maintenance-decoration-bottom-right" src="{{ asset('assets/images/ph_flower-tulip-light (1).png') }}" alt="" aria-hidden="true">
-        <img class="maintenance-decoration maintenance-decoration-bottom-center" src="{{ asset('assets/images/ph_flower-lotus-thin (1).png') }}" alt="" aria-hidden="true">
+        <img class="maintenance-decoration maintenance-decoration-top-left"
+            src="{{ asset('assets/images/ph_flower-lotus-thin (1).png') }}" alt="" aria-hidden="true">
+        <img class="maintenance-decoration maintenance-decoration-top-right"
+            src="{{ asset('assets/images/game-icons_vanilla-flower (1).png') }}" alt="" aria-hidden="true">
+        <img class="maintenance-decoration maintenance-decoration-middle-right"
+            src="{{ asset('assets/images/ph_flower-lotus-thin (2).png') }}" alt="" aria-hidden="true">
+        <img class="maintenance-decoration maintenance-decoration-middle-left"
+            src="{{ asset('assets/images/game-icons_vanilla-flower (2).png') }}" alt="" aria-hidden="true">
+        <img class="maintenance-decoration maintenance-decoration-bottom-right"
+            src="{{ asset('assets/images/ph_flower-tulip-light (1).png') }}" alt="" aria-hidden="true">
+        <img class="maintenance-decoration maintenance-decoration-bottom-center"
+            src="{{ asset('assets/images/ph_flower-lotus-thin (1).png') }}" alt="" aria-hidden="true">
 
         <div class="maintenance-content">
             <img class="maintenance-logo" src="{{ asset('assets/images/logo/logo_thaisilk.png') }}" alt="ThaiSilk">
-            <img class="maintenance-illustration" src="{{ asset('assets/images/image-Photoroom (26) 1.png') }}" alt="" aria-hidden="true">
+            <img class="maintenance-illustration" src="{{ asset('assets/images/image-Photoroom (26) 1.png') }}"
+                alt="" aria-hidden="true">
 
             <h1 class="maintenance-title">ただいまサイトメンテナンス中です</h1>
             <p class="maintenance-lead">より良いサービス向上のため、一時的にサイトを停止しております。</p>
