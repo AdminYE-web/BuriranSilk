@@ -166,18 +166,21 @@
             @endphp
 
             @if ($avatarUrl)
-                <img src="{{ $avatarUrl }}" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <img src="{{ $avatarUrl }}" alt=""
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                 <div class="sidebar-avatar-placeholder" style="display: none;">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                        <circle cx="12" cy="7" r="4"/>
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff"
+                        stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
                     </svg>
                 </div>
             @else
                 <div class="sidebar-avatar-placeholder">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                        <circle cx="12" cy="7" r="4"/>
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff"
+                        stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
                     </svg>
                 </div>
             @endif
@@ -236,7 +239,7 @@
                 注文履歴
             </a>
         </li>
-        <li><a href="#">リワード</a></li>
+        {{-- <li><a href="#">リワード</a></li> --}}
     </ul>
 
     <div class="sign-out-box">
