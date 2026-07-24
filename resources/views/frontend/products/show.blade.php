@@ -38,6 +38,8 @@
                     @for ($placeholder = count($product['gallery']); $placeholder < 9; $placeholder++)
                         <span class="product-gallery-thumbnail-placeholder" aria-hidden="true"></span>
                     @endfor
+
+                    <span class="product-gallery-thumbnail-indicator" aria-hidden="true"></span>
                 </div>
 
                 <p class="product-gallery-description">
@@ -797,24 +799,97 @@
             const orderSummaryButton = document.getElementById('orderSummaryButton');
             const featureToggles = document.querySelectorAll('.product-feature-toggle');
             let activeImageIndex = 0;
+            let isSliding = false;
 
-            const selectGalleryImage = function(index) {
-                if (!thumbnails.length) return;
+            const selectGalleryImage = function(index, direction) {
+                if (!thumbnails.length || isSliding) return;
 
-                activeImageIndex = (index + thumbnails.length) % thumbnails.length;
+                const previousIndex = activeImageIndex;
+                const targetIndex = (index + thumbnails.length) % thumbnails.length;
+
+                if (previousIndex === targetIndex && mainImage.src) return;
+
+                activeImageIndex = targetIndex;
                 const activeThumbnail = thumbnails[activeImageIndex];
-                mainImage.classList.add('is-changing');
+                const newSrc = activeThumbnail.dataset.image;
 
-                window.setTimeout(function() {
-                    mainImage.src = activeThumbnail.dataset.image;
-                    mainImage.classList.remove('is-changing');
-                }, 120);
+                if (!direction) {
+                    if (previousIndex === thumbnails.length - 1 && activeImageIndex === 0) {
+                        direction = 'next';
+                    } else if (previousIndex === 0 && activeImageIndex === thumbnails.length - 1) {
+                        direction = 'prev';
+                    } else {
+                        direction = activeImageIndex > previousIndex ? 'next' : 'prev';
+                    }
+                }
+
+                isSliding = true;
+
+                const clone = document.createElement('img');
+                clone.src = newSrc;
+                clone.alt = mainImage.alt || '';
+                clone.className = 'product-gallery-slide-clone';
+
+                const startX = direction === 'next' ? '100%' : '-100%';
+                const exitX = direction === 'next' ? '-100%' : '100%';
+
+                clone.style.transition = 'none';
+                clone.style.transform = 'translate(calc(-50% + ' + startX + '), -50%)';
+                clone.style.opacity = '0';
+
+                mainImage.parentNode.appendChild(clone);
+                clone.offsetHeight; // Force reflow
+
+                const duration = 320;
+                const easing = 'cubic-bezier(0.25, 1, 0.5, 1)';
+
+                mainImage.style.transition = 'transform ' + duration + 'ms ' + easing + ', opacity ' + duration + 'ms ease';
+                clone.style.transition = 'transform ' + duration + 'ms ' + easing + ', opacity ' + duration + 'ms ease';
+
+                mainImage.style.transform = 'translateX(' + exitX + ')';
+                mainImage.style.opacity = '0';
+
+                clone.style.transform = 'translate(-50%, -50%)';
+                clone.style.opacity = '1';
+
+                setTimeout(function() {
+                    mainImage.src = newSrc;
+                    mainImage.style.transition = 'none';
+                    mainImage.style.transform = '';
+                    mainImage.style.opacity = '1';
+
+                    if (clone.parentNode) {
+                        clone.parentNode.removeChild(clone);
+                    }
+
+                    isSliding = false;
+                }, duration);
 
                 thumbnails.forEach(function(thumbnail, thumbnailIndex) {
                     const isActive = thumbnailIndex === activeImageIndex;
                     thumbnail.classList.toggle('is-active', isActive);
                     thumbnail.setAttribute('aria-current', String(isActive));
                 });
+
+                updateThumbnailIndicator();
+            };
+
+            const updateThumbnailIndicator = function() {
+                const activeThumbnail = thumbnails[activeImageIndex];
+                const indicator = document.querySelector('.product-gallery-thumbnail-indicator');
+                const container = document.querySelector('.product-gallery-thumbnails');
+
+                if (!activeThumbnail || !indicator || !container) return;
+
+                const thumbnailRect = activeThumbnail.getBoundingClientRect();
+                const containerRect = container.getBoundingClientRect();
+
+                const left = thumbnailRect.left - containerRect.left;
+                const width = thumbnailRect.width;
+
+                indicator.style.width = width + 'px';
+                indicator.style.transform = 'translateX(' + left + 'px)';
+                indicator.style.opacity = '1';
             };
 
             const updateOrderSummary = function() {
@@ -1217,13 +1292,39 @@
                 });
             });
 
-            previousButton.addEventListener('click', function() {
-                selectGalleryImage(activeImageIndex - 1);
-            });
+            if (previousButton) {
+                previousButton.addEventListener('click', function() {
+                    selectGalleryImage(activeImageIndex - 1, 'prev');
+                });
+            }
 
-            nextButton.addEventListener('click', function() {
-                selectGalleryImage(activeImageIndex + 1);
-            });
+            if (nextButton) {
+                nextButton.addEventListener('click', function() {
+                    selectGalleryImage(activeImageIndex + 1, 'next');
+                });
+            }
+
+            const galleryMain = document.querySelector('.product-gallery-main');
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            if (galleryMain) {
+                galleryMain.addEventListener('touchstart', function(e) {
+                    touchStartX = e.changedTouches[0].screenX;
+                }, { passive: true });
+
+                galleryMain.addEventListener('touchend', function(e) {
+                    touchEndX = e.changedTouches[0].screenX;
+                    const diff = touchEndX - touchStartX;
+                    if (Math.abs(diff) > 40) {
+                        if (diff < 0) {
+                            selectGalleryImage(activeImageIndex + 1, 'next');
+                        } else {
+                            selectGalleryImage(activeImageIndex - 1, 'prev');
+                        }
+                    }
+                }, { passive: true });
+            }
 
             form.querySelectorAll('input[type="radio"]').forEach(function(radio) {
                 radio.addEventListener('change', function() {
@@ -1456,6 +1557,8 @@
             updateFontOptionDetails();
             updateQuantityLimits(true);
             updatePrice();
+            updateThumbnailIndicator();
+            window.addEventListener('resize', updateThumbnailIndicator);
         });
     </script>
 @endsection
