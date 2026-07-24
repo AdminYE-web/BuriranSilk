@@ -93,8 +93,8 @@
 
                     {{-- About --}}
                     <li class="nav-item">
-                        <a href="{{ url('/about') }}"
-                            class="nav-link header-pill-link {{ request()->is('about') ? 'active' : '' }}">
+                        <a href="{{ url('/about-company') }}"
+                            class="nav-link header-pill-link {{ request()->is('about-company') ? 'active' : '' }}">
                             私たちについて
                         </a>
                     </li>
@@ -204,7 +204,7 @@
         <nav aria-label="モバイルメニュー">
             <ul class="mobile-navigation-list">
                 <li><a href="{{ url('/products/thaisilk_01') }}">シルク製社員証ケース</a></li>
-                <li><a href="{{ url('/about') }}">私たちについて</a></li>
+                <li><a href="{{ url('/about-company') }}">私たちについて</a></li>
                 <li><a href="{{ url('/guide') }}" class="mobile-navigation-guide">ご利用ガイド <span
                             aria-hidden="true">›</span></a></li>
                 <li><a href="{{ url('/contact') }}">お問い合わせ</a></li>

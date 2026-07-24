@@ -91,6 +91,10 @@ Route::get('/', function () {
     return view('frontend.home.index', compact('holidayCalendar', 'heroBanner'));
 })->name('home');
 
+Route::get('/about-company', function () {
+    return view('frontend.about.index');
+})->name('about');
+
 Route::get('/contact', [ContactController::class, 'index'])
     ->name('contact.index');
 Route::post('/contact', [ContactController::class, 'store'])

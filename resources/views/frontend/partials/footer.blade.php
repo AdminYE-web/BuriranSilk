@@ -293,7 +293,7 @@
         <nav class="footer-bottom-navigation" aria-label="Footer Navigation">
             <ul>
                 <li>
-                    <a href="{{ url('/about') }}">
+                    <a href="{{ url('/about-company') }}">
                         私たちについて
                     </a>
                 </li>
