@@ -104,6 +104,16 @@ class ContactPageTest extends TestCase
         $complete->assertSee('トップページへ');
     }
 
+    public function test_faq_page_shows_public_faq_layout(): void
+    {
+        $response = $this->get(route('faq.index'));
+
+        $response->assertOk();
+        $response->assertSee('faq-card', false);
+        $response->assertSee('faq-trigger', false);
+        $response->assertSee('/contact', false);
+    }
+
     public function test_contact_complete_page_cannot_be_opened_directly(): void
     {
         $this->get(route('contact.complete'))

@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\UserAddressController;
 use App\Http\Controllers\UserContactController;
 use App\Http\Controllers\UserOrderController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AboutUsPageController;
 use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ContactSubmissionController;
@@ -42,6 +44,7 @@ use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartQuotationController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\FaqPageController;
 use App\Http\Controllers\ProductListController;
 use App\Models\HomeBanner;
 use Illuminate\Support\Facades\Cache;
@@ -95,6 +98,9 @@ Route::get('/about-company', function () {
     return view('frontend.about.index');
 })->name('about');
 
+Route::get('/about-us', [AboutUsController::class, 'index'])
+    ->name('about-us');
+
 Route::get('/contact', [ContactController::class, 'index'])
     ->name('contact.index');
 Route::post('/contact', [ContactController::class, 'store'])
@@ -102,6 +108,9 @@ Route::post('/contact', [ContactController::class, 'store'])
     ->name('contact.store');
 Route::get('/contact/complete', [ContactController::class, 'complete'])
     ->name('contact.complete');
+
+Route::get('/faq', [FaqPageController::class, 'index'])
+    ->name('faq.index');
 
 Route::get('/products', [ProductListController::class, 'index'])
     ->name('products.index');
@@ -291,6 +300,12 @@ Route::prefix('admin-panel')->name('admin.')->group(function () {
         Route::resource('product-artwork-templates', ProductArtworkTemplateController::class);
         Route::resource('material-homes', MaterialHomeController::class);
         Route::resource('home-banners', HomeBannerController::class);
+        Route::get('about-us', [AboutUsPageController::class, 'edit'])
+            ->name('about-us.edit');
+        Route::put('about-us', [AboutUsPageController::class, 'update'])
+            ->name('about-us.update');
+        Route::post('about-us/upload-editor-image', [AboutUsPageController::class, 'uploadEditorImage'])
+            ->name('about-us.upload-editor-image');
 
         // Route::resource('users', UserAdminController::class)->only(['index', 'show']);
         Route::resource('contact-submissions', ContactSubmissionController::class)->only(['index', 'show']);

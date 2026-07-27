@@ -35,7 +35,7 @@
                         @endforeach
                     </div>
 
-                    <a href="#contactForm" class="contact-faq-more">お問い合わせフォームへ <span>→</span></a>
+                    <a href="{{ route('faq.index') }}" class="contact-faq-more">お問い合わせフォームへ <span>→</span></a>
                 </section>
 
                 <section class="contact-form-card" id="contactForm" aria-labelledby="contactFormTitle">

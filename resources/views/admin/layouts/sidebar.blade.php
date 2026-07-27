@@ -113,7 +113,7 @@
 
 
         @php
-            $homepageMenuActive = request()->routeIs('admin.home-banners.*', 'admin.material-homes.*');
+            $homepageMenuActive = request()->routeIs('admin.home-banners.*', 'admin.material-homes.*', 'admin.about-us.*');
         @endphp
 
         <li class="nav-item has-dropdown {{ $homepageMenuActive ? 'open' : '' }}">
@@ -136,6 +136,13 @@
                     <a href="{{ route('admin.material-homes.index') }}"
                         class="sub-nav-link {{ request()->routeIs('admin.material-homes.*') ? 'active' : '' }}">
                         {{ request()->cookie('dev') == '1' ? 'Material Homes' : 'マテリアルホーム' }}
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('admin.about-us.edit') }}"
+                        class="sub-nav-link {{ request()->routeIs('admin.about-us.*') ? 'active' : '' }}">
+                        {{ request()->cookie('dev') == '1' ? 'About Us CMS' : '私たちについて CMS' }}
                     </a>
                 </li>
 

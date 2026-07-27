@@ -8,13 +8,14 @@ use App\Models\Product;
 use App\Models\ProductListBanner;
 use App\Models\ProductOptionGroupOrder;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class ProductListController extends Controller
 {
-    public function index(Request $request): View
+    public function index(Request $request): View|RedirectResponse
     {
         /*
          * dev=1 แสดงข้อมูลภาษาอังกฤษ
@@ -288,6 +289,13 @@ class ProductListController extends Controller
             default =>
                 $products->sortByDesc('sort_order'),
         };
+
+        if ($products->count() === 1) {
+            return redirect()->route(
+                'products.show',
+                ['slug' => $products->first()['slug']]
+            );
+        }
 
         $banners = ProductListBanner::query()
             ->where('is_active', true)
