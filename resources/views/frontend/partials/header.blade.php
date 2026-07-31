@@ -108,26 +108,32 @@
 
                         <ul class="dropdown-menu product-dropdown-menu">
                             <li>
-                                <a href="{{ url('/guide') }}" class="dropdown-item">
-                                    ご利用方法
+                                <a href="{{ route('guide.order') }}" class="dropdown-item">
+                                    ご注文の流れ
                                 </a>
                             </li>
 
                             <li>
-                                <a href="{{ url('/shipping') }}" class="dropdown-item">
-                                    配送について
+                                <a href="{{ route('guide.payment') }}" class="dropdown-item">
+                                    お支払い方法
                                 </a>
                             </li>
 
                             <li>
-                                <a href="{{ url('/payment') }}" class="dropdown-item">
-                                    お支払いについて
+                                <a href="{{ url('/guide/shipping') }}" class="dropdown-item">
+                                    配送・送料
                                 </a>
                             </li>
 
                             <li>
-                                <a href="{{ url('/faq') }}" class="dropdown-item">
-                                    よくあるご質問
+                                <a href="{{ url('/guide/cancel-order') }}" class="dropdown-item">
+                                    返品・交換
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('orders.track') }}" class="dropdown-item">
+                                    ご注文の追跡
                                 </a>
                             </li>
                         </ul>
@@ -205,7 +211,7 @@
             <ul class="mobile-navigation-list">
                 <li><a href="{{ url('/products/thaisilk_01') }}">シルク製社員証ケース</a></li>
                 <li><a href="{{ url('/about-us') }}">私たちについて</a></li>
-                <li><a href="{{ url('/guide') }}" class="mobile-navigation-guide">ご利用ガイド <span
+                <li><a href="{{ route('guide.order') }}" class="mobile-navigation-guide">ご利用ガイド <span
                             aria-hidden="true">›</span></a></li>
                 <li><a href="{{ url('/contact') }}">お問い合わせ</a></li>
             </ul>
