@@ -90,7 +90,7 @@
                     </p>
                 </div>
 
-                <a href="{{ url('/products/id-case') }}" class="home-card-holder-image">
+                <a href="{{ url('/products') }}" class="home-card-holder-image">
                     <img
                         src="{{ asset('assets/images/home/image 13.png') }}"
                         alt="カラフルなタイシルク製社員証ケース"

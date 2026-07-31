@@ -207,15 +207,42 @@
             <button type="button" class="mobile-navigation-close" aria-label="メニューを閉じる"
                 data-mobile-menu-close></button>
         </div>
-        <nav aria-label="モバイルメニュー">
-            <ul class="mobile-navigation-list">
-                <li><a href="{{ url('/products/thaisilk_01') }}">シルク製社員証ケース</a></li>
-                <li><a href="{{ url('/about-us') }}">私たちについて</a></li>
-                <li><a href="{{ route('guide.order') }}" class="mobile-navigation-guide">ご利用ガイド <span
-                            aria-hidden="true">›</span></a></li>
-                <li><a href="{{ url('/contact') }}">お問い合わせ</a></li>
-            </ul>
-        </nav>
+        <div class="mobile-navigation-pages">
+            <div class="mobile-navigation-view mobile-navigation-main" data-mobile-menu-main aria-hidden="false">
+                <nav aria-label="モバイルメニュー">
+                    <ul class="mobile-navigation-list">
+                        <li><a href="{{ url('/products/thaisilk_01') }}">シルク製社員証ケース</a></li>
+                        <li><a href="{{ url('/about-us') }}">私たちについて</a></li>
+                        <li>
+                            <button type="button" class="mobile-navigation-guide" aria-controls="mobileGuideNavigation"
+                                aria-expanded="false" data-mobile-guide-open>
+                                ご利用ガイド
+                                <span aria-hidden="true">›</span>
+                            </button>
+                        </li>
+                        <li><a href="{{ url('/contact') }}">お問い合わせ</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="mobile-navigation-view mobile-navigation-guide-panel" id="mobileGuideNavigation"
+                data-mobile-guide-panel aria-hidden="true" inert>
+                <button type="button" class="mobile-navigation-guide-back" data-mobile-guide-back>
+                    <span class="mobile-navigation-back-icon" aria-hidden="true"></span>
+                    <span>ご利用ガイド</span>
+                </button>
+
+                <nav aria-label="ご利用ガイド">
+                    <ul class="mobile-navigation-submenu-list">
+                        <li><a href="{{ route('guide.order') }}">ご注文の流れ</a></li>
+                        <li><a href="{{ route('guide.payment') }}">お支払い方法</a></li>
+                        <li><a href="{{ url('/guide/shipping') }}">配送・送料</a></li>
+                        <li><a href="{{ route('guide.cancel-order') }}">返品・交換</a></li>
+                        <li><a href="{{ route('orders.track') }}">ご注文の追跡</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
     </div>
 </div>
 @php($loginErrors = $errors->getBag('login'))
@@ -354,24 +381,50 @@
             const mobileNavigationPanel = mobileNavigation?.querySelector('.mobile-navigation-panel');
             const mobileNavigationOpen = document.querySelector('[data-mobile-menu-open]');
             const mobileNavigationClose = mobileNavigation?.querySelector('[data-mobile-menu-close]');
+            const mobileMenuMain = mobileNavigation?.querySelector('[data-mobile-menu-main]');
+            const mobileGuideOpen = mobileNavigation?.querySelector('[data-mobile-guide-open]');
+            const mobileGuidePanel = mobileNavigation?.querySelector('[data-mobile-guide-panel]');
+            const mobileGuideBack = mobileNavigation?.querySelector('[data-mobile-guide-back]');
+            const setMobileGuideOpen = function(isOpen, restoreFocus = false) {
+                if (!mobileNavigationPanel || !mobileMenuMain || !mobileGuidePanel) return;
+
+                mobileNavigationPanel.classList.toggle('is-guide-open', isOpen);
+                mobileMenuMain.setAttribute('aria-hidden', String(isOpen));
+                mobileMenuMain.inert = isOpen;
+                mobileGuidePanel.setAttribute('aria-hidden', String(!isOpen));
+                mobileGuidePanel.inert = !isOpen;
+                mobileGuideOpen?.setAttribute('aria-expanded', String(isOpen));
+
+                window.requestAnimationFrame(() => {
+                    if (isOpen) {
+                        mobileGuideBack?.focus({ preventScroll: true });
+                    } else if (restoreFocus) {
+                        mobileGuideOpen?.focus({ preventScroll: true });
+                    }
+                });
+            };
             const openMobileNavigation = function() {
                 if (!mobileNavigation) return;
+                setMobileGuideOpen(false);
                 mobileNavigation.classList.add('is-open');
                 mobileNavigation.setAttribute('aria-hidden', 'false');
                 mobileNavigationOpen?.setAttribute('aria-expanded', 'true');
                 document.body.classList.add('mobile-navigation-open');
-                window.requestAnimationFrame(() => mobileNavigationPanel?.focus());
+                window.requestAnimationFrame(() => mobileNavigationPanel?.focus({ preventScroll: true }));
             };
             const closeMobileNavigation = function() {
                 if (!mobileNavigation) return;
+                setMobileGuideOpen(false);
                 mobileNavigation.classList.remove('is-open');
                 mobileNavigation.setAttribute('aria-hidden', 'true');
                 mobileNavigationOpen?.setAttribute('aria-expanded', 'false');
                 document.body.classList.remove('mobile-navigation-open');
-                mobileNavigationOpen?.focus();
+                mobileNavigationOpen?.focus({ preventScroll: true });
             };
             mobileNavigationOpen?.addEventListener('click', openMobileNavigation);
             mobileNavigationClose?.addEventListener('click', closeMobileNavigation);
+            mobileGuideOpen?.addEventListener('click', () => setMobileGuideOpen(true));
+            mobileGuideBack?.addEventListener('click', () => setMobileGuideOpen(false, true));
             mobileNavigation?.addEventListener('click', function(event) {
                 if (event.target === mobileNavigation) closeMobileNavigation();
             });
@@ -379,7 +432,11 @@
                 closeMobileNavigation));
             document.addEventListener('keydown', function(event) {
                 if (event.key === 'Escape' && mobileNavigation?.classList.contains('is-open')) {
-                    closeMobileNavigation();
+                    if (mobileNavigationPanel?.classList.contains('is-guide-open')) {
+                        setMobileGuideOpen(false, true);
+                    } else {
+                        closeMobileNavigation();
+                    }
                 }
             });
 
