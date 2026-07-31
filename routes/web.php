@@ -46,6 +46,7 @@ use App\Http\Controllers\CartQuotationController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FaqPageController;
 use App\Http\Controllers\ProductListController;
+use App\Http\Controllers\OrderTrackingController;
 use App\Models\HomeBanner;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
@@ -111,6 +112,21 @@ Route::get('/contact/complete', [ContactController::class, 'complete'])
 
 Route::get('/faq', [FaqPageController::class, 'index'])
     ->name('faq.index');
+
+Route::view('/guide/order', 'frontend.guide.order')
+    ->name('guide.order');
+Route::view('/guide/payment', 'frontend.guide.payment')
+    ->name('guide.payment');
+Route::view('/guide/cancel-order', 'frontend.guide.cancel-order')
+    ->name('guide.cancel-order');
+Route::view('/privacy-policy', 'frontend.guide.privacy-policy')
+    ->name('privacy-policy');
+
+Route::get('/track-order', [OrderTrackingController::class, 'index'])
+    ->name('orders.track');
+Route::post('/track-order', [OrderTrackingController::class, 'search'])
+    ->middleware('throttle:10,1')
+    ->name('orders.track.search');
 
 Route::get('/products', [ProductListController::class, 'index'])
     ->name('products.index');

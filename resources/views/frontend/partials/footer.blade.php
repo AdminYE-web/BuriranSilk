@@ -55,13 +55,13 @@
 
                     <ul class="footer-link-list">
                         <li>
-                            <a href="{{ url('/guide/order') }}">
+                            <a href="{{ route('guide.order') }}">
                                 ご注文の流れ
                             </a>
                         </li>
 
                         <li>
-                            <a href="{{ url('/guide/payment') }}">
+                            <a href="{{ route('guide.payment') }}">
                                 お支払い方法
                             </a>
                         </li>
@@ -69,6 +69,12 @@
                         <li>
                             <a href="{{ url('/guide/shipping') }}">
                                 配送・送料
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ route('guide.cancel-order') }}">
+                                ご注文のキャンセル
                             </a>
                         </li>
 
@@ -93,6 +99,12 @@
                     <li>
                         <a href="{{ url('/faq') }}">
                             よくあるご質問
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{{ route('orders.track') }}">
+                            ご注文の追跡
                         </a>
                     </li>
 
@@ -141,9 +153,10 @@
                     </button>
                     <div class="footer-accordion-body">
                         <ul class="footer-accordion-list">
-                            <li><a href="{{ url('/guide/order') }}">ご注文の流れ</a></li>
-                            <li><a href="{{ url('/guide/payment') }}">お支払い方法</a></li>
+                            <li><a href="{{ route('guide.order') }}">ご注文の流れ</a></li>
+                            <li><a href="{{ route('guide.payment') }}">お支払い方法</a></li>
                             <li><a href="{{ url('/guide/shipping') }}">配送・送料</a></li>
+                            <li><a href="{{ route('guide.cancel-order') }}">ご注文のキャンセル</a></li>
                             <li><a href="{{ url('/guide/returns') }}">返品・交換</a></li>
                         </ul>
                     </div>
@@ -160,6 +173,7 @@
                     <div class="footer-accordion-body">
                         <ul class="footer-accordion-list">
                             <li><a href="{{ url('/faq') }}">よくあるご質問</a></li>
+                            <li><a href="{{ route('orders.track') }}">ご注文の追跡</a></li>
                             <li><a href="{{ url('/contact') }}">お問い合わせ</a></li>
                             <li><a href="{{ url('/sample-request') }}">サンプル依頼</a></li>
                         </ul>
@@ -305,7 +319,7 @@
                 </li>
 
                 <li>
-                    <a href="{{ url('/privacy-policy') }}">
+                    <a href="{{ route('privacy-policy') }}">
                         プライバシーポリシー
                     </a>
                 </li>

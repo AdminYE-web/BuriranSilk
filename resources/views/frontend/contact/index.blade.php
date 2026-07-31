@@ -87,7 +87,7 @@
                                 <select id="contactInquiryType" name="inquiry_type" required>
                                     <option value="">選択してください</option>
                                     @foreach ($inquiryTypes as $value => $label)
-                                        <option value="{{ $value }}" @selected(old('inquiry_type') === $value)>{{ $label }}</option>
+                                        <option value="{{ $value }}" @selected(old('inquiry_type', request('inquiry_type')) === $value)>{{ $label }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -107,7 +107,7 @@
                         <label class="contact-privacy">
                             <input type="checkbox" name="privacy" value="1" @checked(old('privacy')) required>
                             <span class="contact-checkbox" aria-hidden="true"></span>
-                            <span>お問い合わせの前に、当社の<a href="{{ url('/privacy-policy') }}" target="_blank">プライバシーポリシー</a>をご確認ください。<br>
+                            <span>お問い合わせの前に、当社の<a href="{{ route('privacy-policy') }}" target="_blank">プライバシーポリシー</a>をご確認ください。<br>
                                 プライバシーポリシーに同意する <em>※必須</em></span>
                         </label>
 

@@ -75,7 +75,7 @@
 
                             <label class="register-consent">
                                 <input type="checkbox" name="term_policy" value="1" {{ old('term_policy') ? 'checked' : '' }} required>
-                                <span>「<a href="{{ url('/terms') }}" target="_blank">利用規約</a>」および「<a href="{{ url('/privacy-policy') }}" target="_blank">プライバシーポリシー</a>」に同意する</span>
+                                <span>「<a href="{{ url('/terms') }}" target="_blank">利用規約</a>」および「<a href="{{ route('privacy-policy') }}" target="_blank">プライバシーポリシー</a>」に同意する</span>
                             </label>
                             @error('term_policy') <small class="register-error register-consent-error">{{ $message }}</small> @enderror
 

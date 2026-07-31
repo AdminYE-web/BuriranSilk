@@ -90,26 +90,26 @@
                         class="sub-nav-link {{ request()->routeIs('admin.option-dependencies.*') ? 'active' : '' }}">
                         {{ request()->cookie('dev') == '1' ? 'Option Dependencies' : 'オプション依存関係' }}
                     </a></li>
-                <li><a href="{{ route('admin.product-artwork-templates.index') }}"
+                {{-- <li><a href="{{ route('admin.product-artwork-templates.index') }}"
                         class="sub-nav-link {{ request()->routeIs('admin.product-artwork-templates.*') ? 'active' : '' }}">
                         {{ request()->cookie('dev') == '1' ? 'Product Artwork Templates' : '商品アートワークテンプレート' }}
-                    </a></li>
-                <li>
+                    </a></li> --}}
+                {{-- <li>
                     <a href="{{ route('admin.product-templates.index') }}"
                         class="sub-nav-link {{ request()->routeIs('admin.product-templates.*') ? 'active' : '' }}">
                         {{ request()->cookie('dev') == '1' ? 'Product Templates' : '商品テンプレート' }}
                     </a>
-                </li>
+                </li> --}}
 
             </ul>
         </li>
         
- <li class="nav-item">
+ {{-- <li class="nav-item">
             <a href="{{ route('admin.menu-products.index') }}"
                 class="nav-link {{ request()->routeIs('admin.menu-products.*') ? 'active' : '' }}">
                 {{ request()->cookie('dev') == '1' ? 'Menu Products' : 'メニュープロダクト' }}
             </a>
-        </li>
+        </li> --}}
 
 
         @php
@@ -132,17 +132,17 @@
                     </a>
                 </li>
 
-                <li>
+                {{-- <li>
                     <a href="{{ route('admin.material-homes.index') }}"
                         class="sub-nav-link {{ request()->routeIs('admin.material-homes.*') ? 'active' : '' }}">
                         {{ request()->cookie('dev') == '1' ? 'Material Homes' : 'マテリアルホーム' }}
                     </a>
-                </li>
+                </li> --}}
 
                 <li>
                     <a href="{{ route('admin.about-us.edit') }}"
                         class="sub-nav-link {{ request()->routeIs('admin.about-us.*') ? 'active' : '' }}">
-                        {{ request()->cookie('dev') == '1' ? 'About Us CMS' : '私たちについて CMS' }}
+                        {{ request()->cookie('dev') == '1' ? 'About Us' : '私たちについて' }}
                     </a>
                 </li>
 
@@ -151,7 +151,7 @@
         @php
             $galleryMenuActive = request()->routeIs('admin.galleries.*', 'admin.gallery-banners.*');
         @endphp
-        <li class="nav-item has-dropdown {{ $galleryMenuActive ? 'open' : '' }}">
+        {{-- <li class="nav-item has-dropdown {{ $galleryMenuActive ? 'open' : '' }}">
             <button type="button" class="nav-link dropdown-toggle {{ $galleryMenuActive ? 'active' : '' }}"
                 onclick="this.closest('.has-dropdown').classList.toggle('open')">
                 <span>{{ request()->cookie('dev') == '1' ? 'Galleries' : 'ギャラリー' }}</span>
@@ -173,11 +173,11 @@
                 </li>
 
             </ul>
-        </li>
+        </li> --}}
         @php
             $articleMenuActive = request()->routeIs('admin.articles.*', 'admin.article-banners.*');
         @endphp
-        <li class="nav-item has-dropdown {{ $articleMenuActive ? 'open' : '' }}">
+        {{-- <li class="nav-item has-dropdown {{ $articleMenuActive ? 'open' : '' }}">
             <button type="button" class="nav-link dropdown-toggle {{ $articleMenuActive ? 'active' : '' }}"
                 onclick="this.closest('.has-dropdown').classList.toggle('open')">
                 <span>{{ request()->cookie('dev') == '1' ? 'Articles' : '記事' }}</span>
@@ -191,20 +191,20 @@
                         {{ request()->cookie('dev') == '1' ? 'Articles' : '記事' }}
                     </a>
                 </li>
-                {{-- <li>
+                <li>
                     <a href="{{ route('admin.article-banners.index') }}"
                         class="sub-nav-link {{ request()->routeIs('admin.article-banners.*') ? 'active' : '' }}">
                         {{ request()->cookie('dev') == '1' ? 'Article Banners' : '記事バナー' }}
                     </a>
-                </li> --}}
+                </li>
             </ul>
-        </li>
+        </li> --}}
       @if(!$isNormalAdmin)
     @php
         $systemMenuActive = request()->routeIs('admin.system-management.*');
     @endphp
 
-    <li class="nav-item has-dropdown {{ $systemMenuActive ? 'open' : '' }}">
+    {{-- <li class="nav-item has-dropdown {{ $systemMenuActive ? 'open' : '' }}">
         <button type="button" class="nav-link dropdown-toggle {{ $systemMenuActive ? 'active' : '' }}"
             onclick="this.closest('.has-dropdown').classList.toggle('open')">
             <span>{{ request()->cookie('dev') == '1' ? 'System' : 'システム' }}</span>
@@ -219,7 +219,7 @@
                 </a>
             </li>
         </ul>
-    </li>
+    </li> --}}
 @endif
         <li class="nav-item">
             <a href="{{ route('admin.orders.index') }}"
