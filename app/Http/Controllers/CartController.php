@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\ProductOptionAssignment;
 use App\Models\User;
 use App\Support\CartPricing;
+use App\Support\OptionPriceRulePricing;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -321,9 +322,26 @@ class CartController extends Controller
         $this->validateArtworkFiles($request);
 
         $itemId = $editingItemId ?: (string) Str::uuid();
-        $selectedOptions = $assignments->map(function (ProductOptionAssignment $assignment) use ($quantity) {
+        $selectedOptionIds = $assignments
+            ->pluck('option_id')
+            ->map(fn ($optionId) => (int) $optionId)
+            ->values()
+            ->all();
+        $optionPriceRules = OptionPriceRulePricing::forProduct($product);
+        $selectedOptions = $assignments->map(function (ProductOptionAssignment $assignment) use (
+            $quantity,
+            $optionPriceRules,
+            $selectedOptionIds
+        ) {
             $option = $assignment->option;
-            $additionalPrice = (float) $option->additional_price;
+            $baseAdditionalPrice = (float) $option->additional_price;
+            $additionalPrice = OptionPriceRulePricing::replacementPrice(
+                $optionPriceRules,
+                (int) $option->option_id,
+                $baseAdditionalPrice,
+                $quantity,
+                $selectedOptionIds
+            );
             $isFree = (int) $option->free_from_qty > 0
                 && $quantity >= (int) $option->free_from_qty;
             $priceType = $option->price_type ?: 'per_item';
@@ -338,6 +356,7 @@ class CartController extends Controller
                 'option_id' => (int) $option->option_id,
                 'option_name' => $option->option_name,
                 'option_detail' => $option->option_detail,
+                'base_additional_price' => $baseAdditionalPrice,
                 'additional_price' => $additionalPrice,
                 'price_type' => $priceType,
                 'free_from_qty' => $option->free_from_qty ? (int) $option->free_from_qty : null,
@@ -363,6 +382,7 @@ class CartController extends Controller
             'image' => $this->imageAssetPath($product->mainImage?->image_path),
             'quantity' => $quantity,
             'base_unit_price' => $unitPrice,
+            'option_price_rules' => $optionPriceRules,
             'selected_options' => $selectedOptions,
             'previous_order_numbers' => $this->normalizePreviousOrderNumbers(
                 $validated['previous_order_number'] ?? []
@@ -387,7 +407,7 @@ class CartController extends Controller
             'updated_at' => now()->toIso8601String(),
         ];
         $item['quantity_limits'] = $this->quantityLimits($selectedOptions);
-        $item = $this->recalculateItem($item, $quantity);
+        $item = $this->recalculateItem($item, $quantity, $product);
 
         $cart[$itemId] = $item;
         $request->session()->put('cart.items', $cart);
@@ -695,6 +715,8 @@ class CartController extends Controller
                 'mainImage',
                 'displayPriceTier',
                 'priceTiers',
+                'optionPriceRules.options',
+                'optionPriceRules.tiers',
                 'optionAssignments' => fn ($query) => $query
                     ->where('is_active', 1)
                     ->orderBy('sort_order'),
@@ -950,13 +972,34 @@ class CartController extends Controller
         })->filter(fn ($value) => $value !== null && $value !== '')->all();
     }
 
-    private function recalculateItem(array $item, int $quantity): array
+    private function recalculateItem(array $item, int $quantity, ?Product $product = null): array
     {
         $item['quantity'] = $quantity;
         $item['base_subtotal'] = (int) round((float) $item['base_unit_price'] * $quantity);
         $optionSubtotal = 0;
+        $optionPriceRules = $product
+            ? OptionPriceRulePricing::forProduct($product)
+            : ($item['option_price_rules'] ?? []);
+        $selectedOptionIds = collect($item['selected_options'] ?? [])
+            ->pluck('option_id')
+            ->map(fn ($optionId) => (int) $optionId)
+            ->values()
+            ->all();
 
         foreach ($item['selected_options'] as &$option) {
+            $baseAdditionalPrice = (float) (
+                $option['base_additional_price']
+                ?? $option['additional_price']
+                ?? 0
+            );
+            $option['base_additional_price'] = $baseAdditionalPrice;
+            $option['additional_price'] = OptionPriceRulePricing::replacementPrice(
+                $optionPriceRules,
+                (int) ($option['option_id'] ?? 0),
+                $baseAdditionalPrice,
+                $quantity,
+                $selectedOptionIds
+            );
             $isFree = (int) ($option['free_from_qty'] ?? 0) > 0
                 && $quantity >= (int) $option['free_from_qty'];
             $option['line_price'] = $isFree

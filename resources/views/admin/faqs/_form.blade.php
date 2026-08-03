@@ -77,15 +77,15 @@
 
             <label class="faq-check-box">
                 <input type="checkbox" name="show_main" value="1"
-                    {{ old('show_main', $faq->show_main ?? 0) ? 'checked' : '' }}>
+                    {{ old('show_main', $faq->show_main ?? 1) ? 'checked' : '' }}>
                 {{ request()->cookie('dev') == '1' ? 'Show on Main FAQ page' : 'メインFAQページに表示' }}
             </label>
 
-            <label class="faq-check-box">
+            {{-- <label class="faq-check-box">
                 <input type="checkbox" name="show_product" value="1"
                     {{ old('show_product', $faq->show_product ?? 0) ? 'checked' : '' }}>
                 {{ request()->cookie('dev') == '1' ? 'Show on Product Detail page' : '製品詳細ページに表示' }}
-            </label>
+            </label> --}}
         </div>
 
     </div>

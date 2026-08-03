@@ -783,6 +783,7 @@
             const form = document.getElementById('productCustomizeForm');
             const optionDependencies = @json($optionDependencies);
             const optionQuantityRules = @json($optionQuantityRules);
+            const optionPriceRules = @json($optionPriceRules);
             const editingFontEntries = @json($editingFontEntries);
             const editingArtworkNames = @json($editingArtworkNames);
             const editingCustomFields = @json($editingCartItem['custom_fields'] ?? []);
@@ -1177,14 +1178,51 @@
                 const selectedOptions = form.querySelectorAll(
                     'input[data-option-price]:checked:not(:disabled)'
                 );
+                const selectedOptionIds = Array.from(selectedOptions).map(function(selectedOption) {
+                    return Number(selectedOption.dataset.optionId);
+                });
 
                 selectedOptions.forEach(function(selectedOption) {
-                    const additionalPrice = Number(selectedOption.dataset.optionPrice || 0);
+                    let additionalPrice = Number(selectedOption.dataset.optionPrice || 0);
                     const priceType = selectedOption.dataset.priceType || 'per_item';
                     const freeFromQuantity = Number(selectedOption.dataset.freeFromQty || 0);
 
                     if (freeFromQuantity > 0 && quantity >= freeFromQuantity) {
                         return;
+                    }
+
+                    const targetOptionId = Number(selectedOption.dataset.optionId);
+                    const matchedRule = optionPriceRules.find(function(rule) {
+                        return Number(rule.target_option_id) === targetOptionId &&
+                            rule.option_ids.length > 0 &&
+                            rule.option_ids.every(function(optionId) {
+                                return selectedOptionIds.includes(Number(optionId));
+                            });
+                    });
+
+                    if (matchedRule) {
+                        const matchedTier = matchedRule.tiers
+                            .filter(function(tier) {
+                                const minimum = Number(tier.min_qty);
+                                const maximum = tier.max_qty === null ? null : Number(tier.max_qty);
+
+                                return quantity >= minimum &&
+                                    (maximum === null || quantity <= maximum);
+                            })
+                            .sort(function(left, right) {
+                                return Number(right.min_qty) - Number(left.min_qty);
+                            })[0];
+                        const highestTier = matchedRule.tiers
+                            .slice()
+                            .sort(function(left, right) {
+                                return Number(right.min_qty) - Number(left.min_qty);
+                            })[0];
+
+                        if (matchedTier) {
+                            additionalPrice = Number(matchedTier.additional_price || 0);
+                        } else if (highestTier && quantity > Number(highestTier.min_qty)) {
+                            additionalPrice = Number(highestTier.additional_price || 0);
+                        }
                     }
 
                     optionPrice += priceType === 'per_order' ?

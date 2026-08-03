@@ -8,6 +8,7 @@ use App\Models\ProductOption;
 use App\Models\Quotation;
 use App\Models\QuotationItem;
 use App\Models\QuotationItemOption;
+use App\Support\OptionPriceRulePricing;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -195,7 +196,6 @@ class QuotationController extends Controller
             'assignedOptions.group.parent',
             'assignedOptions.mainImage',
             'assignedOptions.variants',
-            'assignedOptions.priceRates',
             'priceRules.options',
             'priceRules.tiers',
             'optionPriceRules.options',
@@ -235,14 +235,8 @@ class QuotationController extends Controller
                             'option_group_id' => $option->option_group_id,
                             'option_name' => $option->option_name,
                             'additional_price' => (float) ($option->additional_price ?? 0),
-                            'price_type' => $option->price_type,
+                            'price_type' => $option->price_type ?: 'per_item',
                             'free_from_qty' => $option->free_from_qty ? (int) $option->free_from_qty : null,
-                            'price_rates' => $option->priceRates->map(function ($rate) {
-                                return [
-                                    'min_qty' => (int) $rate->min_qty,
-                                    'price' => (float) ($rate->additional_price ?? 0),
-                                ];
-                            })->values(),
                             'is_default' => (int) ($option->pivot->is_default ?? 0),
                         ];
                     })->values(),
@@ -271,21 +265,7 @@ class QuotationController extends Controller
                     })->values(),
                 ];
             })->values(),
-            'option_price_rules' => $product->optionPriceRules->map(function ($rule) {
-                return [
-                    'option_price_rule_id' => (int) $rule->option_price_rule_id,
-                    'rule_name' => $rule->rule_name,
-                    'target_option_id' => $rule->target_option_id ? (int) $rule->target_option_id : null,
-                    'option_ids' => $rule->options->pluck('option_id')->map(fn ($id) => (int) $id)->values(),
-                    'tiers' => $rule->tiers->map(function ($tier) {
-                        return [
-                            'min_qty' => (int) $tier->min_qty,
-                            'max_qty' => $tier->max_qty ? (int) $tier->max_qty : null,
-                            'additional_price' => (float) ($tier->additional_price ?? 0),
-                        ];
-                    })->values(),
-                ];
-            })->values(),
+            'option_price_rules' => OptionPriceRulePricing::forProduct($product),
         ]);
     }
 
@@ -351,7 +331,7 @@ class QuotationController extends Controller
             $unitPrice = $tier ? (float) $tier->unit_price : 0;
         }
 
-        $selectedOptions = ProductOption::with(['group', 'priceRates'])
+        $selectedOptions = ProductOption::with('group')
             ->whereIn('option_id', $selectedOptionIds)
             ->get();
 
@@ -361,22 +341,23 @@ class QuotationController extends Controller
 
         $optionTotal = 0;
         $optionRows = [];
+        $optionPriceRules = OptionPriceRulePricing::forProduct($product);
 
         foreach ($selectedOptions as $option) {
-            $additionalPrice = $this->getOptionPriceForQuantity($option, $quantity);
-            $priceType = $option->price_type ?? 'per_order';
+            $additionalPrice = (float) ($option->additional_price ?? 0);
+            $priceType = $option->price_type ?: 'per_item';
 
             if ($option->free_from_qty && $quantity >= (int) $option->free_from_qty) {
                 $additionalPrice = 0;
+            } else {
+                $additionalPrice = OptionPriceRulePricing::replacementPrice(
+                    $optionPriceRules,
+                    (int) $option->option_id,
+                    $additionalPrice,
+                    $quantity,
+                    $selectedOptionIds
+                );
             }
-
-            $additionalPrice = $this->getOptionReplacementPrice(
-                $product,
-                (int) $option->option_id,
-                $additionalPrice,
-                $quantity,
-                $selectedOptionIds
-            );
 
             $isIncludedInRule = in_array((int) $option->option_id, $ruleOptionIds, true);
 
@@ -411,78 +392,6 @@ class QuotationController extends Controller
             ] : null,
             'selected_options' => $optionRows,
         ];
-    }
-
-    private function getOptionPriceForQuantity(ProductOption $option, int $quantity): float
-    {
-        $basePrice = (float) ($option->additional_price ?? 0);
-
-        $matchedRate = $option->priceRates
-            ->where('min_qty', '<=', $quantity)
-            ->sortByDesc('min_qty')
-            ->first();
-
-        return $matchedRate
-            ? (float) ($matchedRate->additional_price ?? 0)
-            : $basePrice;
-    }
-
-    private function getOptionReplacementPrice(
-        Product $product,
-        int $targetOptionId,
-        float $currentPrice,
-        int $quantity,
-        array $selectedOptionIds
-    ): float {
-        $matchedRule = $product->optionPriceRules
-            ->filter(function ($rule) use ($targetOptionId, $selectedOptionIds) {
-                if ((int) $rule->target_option_id !== $targetOptionId) {
-                    return false;
-                }
-
-                $conditionOptionIds = $rule->options
-                    ->pluck('option_id')
-                    ->map(fn ($id) => (int) $id)
-                    ->values()
-                    ->toArray();
-
-                if (empty($conditionOptionIds)) {
-                    return false;
-                }
-
-                return collect($conditionOptionIds)
-                    ->every(fn ($id) => in_array($id, $selectedOptionIds, true));
-            })
-            ->sortByDesc(fn ($rule) => $rule->options->count())
-            ->first();
-
-        if (! $matchedRule) {
-            return $currentPrice;
-        }
-
-        $matchedTier = $matchedRule->tiers
-            ->filter(function ($tier) use ($quantity) {
-                $min = (int) $tier->min_qty;
-                $max = $tier->max_qty ? (int) $tier->max_qty : null;
-
-                return $quantity >= $min && ($max === null || $quantity <= $max);
-            })
-            ->sortByDesc('min_qty')
-            ->first();
-
-        if ($matchedTier) {
-            return (float) ($matchedTier->additional_price ?? 0);
-        }
-
-        $highestTier = $matchedRule->tiers
-            ->sortByDesc('min_qty')
-            ->first();
-
-        if ($highestTier && $quantity > (int) $highestTier->min_qty) {
-            return (float) ($highestTier->additional_price ?? 0);
-        }
-
-        return $currentPrice;
     }
 
     public function edit(Quotation $quotation)

@@ -7,6 +7,7 @@ use App\Models\OptionDependency;
 use App\Models\Product;
 use App\Models\ProductListBanner;
 use App\Models\ProductOptionGroupOrder;
+use App\Support\OptionPriceRulePricing;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -345,6 +346,8 @@ class ProductListController extends Controller
 
                 'displayPriceTier',
                 'priceTiers',
+                'optionPriceRules.options',
+                'optionPriceRules.tiers',
                 'optionAssignments' => function ($query) {
                     $query->where('is_active', 1)
                         ->orderBy('sort_order')
@@ -482,6 +485,8 @@ class ProductListController extends Controller
             })
             ->all();
 
+        $optionPriceRules = OptionPriceRulePricing::forProduct($productModel);
+
         $assignedGroupIds = collect($optionGroups)
             ->pluck('id')
             ->map(fn ($id) => (int) $id)
@@ -613,6 +618,7 @@ class ProductListController extends Controller
                 'optionGroups',
                 'optionDependencies',
                 'optionQuantityRules',
+                'optionPriceRules',
                 'editingCartItem',
                 'editingCartItemId'
             )

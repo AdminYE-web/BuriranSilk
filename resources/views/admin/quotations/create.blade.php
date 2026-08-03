@@ -519,21 +519,21 @@ if (discountInput) {
 
             checkedOptions.forEach(input => {
                 const optionId = parseInt(input.value);
-                let price = getRatePriceByQty(input, qty);
-                const priceType = input.dataset.priceType || 'per_order';
+                let price = parseFloat(input.dataset.price || 0);
+                const priceType = input.dataset.priceType || 'per_item';
                 const freeFromQty = parseInt(input.dataset.freeFromQty || 0);
 
                 if (freeFromQty > 0 && qty >= freeFromQty) {
                     price = 0;
+                } else {
+                    price = getOptionReplacementPrice(
+                        optionPriceRules,
+                        optionId,
+                        price,
+                        qty,
+                        selectedOptionIds
+                    );
                 }
-
-                price = getOptionReplacementPrice(
-                    optionPriceRules,
-                    optionId,
-                    price,
-                    qty,
-                    selectedOptionIds
-                );
 
                 const isRuleOption = matchedRule && matchedRule.option_ids.map(Number).includes(
                     optionId);
@@ -546,27 +546,6 @@ if (discountInput) {
             const itemTotal = (unitPrice * qty) + optionTotal;
 
             itemBox.querySelector('.quotation-item-total').textContent = itemTotal.toFixed(2);
-        }
-
-        function getRatePriceByQty(input, qty) {
-            const basePrice = parseFloat(input.dataset.price || 0);
-            let rates = [];
-
-            try {
-                rates = JSON.parse(input.dataset.priceRates || '[]');
-            } catch (error) {
-                rates = [];
-            }
-
-            if (!Array.isArray(rates) || !rates.length) {
-                return basePrice;
-            }
-
-            return rates.reduce((matchedPrice, rate) => {
-                return qty >= parseInt(rate.min_qty || 0)
-                    ? parseFloat(rate.price || 0)
-                    : matchedPrice;
-            }, basePrice);
         }
 
         function getOptionReplacementPrice(optionPriceRules, optionId, currentPrice, qty, selectedOptionIds) {
