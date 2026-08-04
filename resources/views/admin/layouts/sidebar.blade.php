@@ -52,7 +52,7 @@
                         {{ request()->cookie('dev') == '1' ? 'Product List Banners' : '商品一覧バナー' }}
                     </a>
                 </li>
-                <li><a href="{{ route('admin.categories.index') }}"
+                {{-- <li><a href="{{ route('admin.categories.index') }}"
                         class="sub-nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
                         {{ request()->cookie('dev') == '1' ? 'Categories' : 'カテゴリ' }}
                     </a>
@@ -61,7 +61,7 @@
                         class="sub-nav-link {{ request()->routeIs('admin.materials.*') ? 'active' : '' }}">
                         {{ request()->cookie('dev') == '1' ? 'Materials' : '素材' }}
                     </a>
-                </li>
+                </li> --}}
                 <li><a href="{{ route('admin.products.index') }}"
                         class="sub-nav-link {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
                         {{ request()->cookie('dev') == '1' ? 'Products' : '商品' }}
