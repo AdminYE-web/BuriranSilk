@@ -35,7 +35,7 @@
                 </ol>
 
                 @if ($step === 1)
-                    <form action="{{ route('register.step1.store') }}" method="POST" class="register-form">
+                    <form action="{{ route('register.step1.store') }}" method="POST" class="register-form" novalidate>
                         @csrf
                         <section class="register-panel" aria-labelledby="registerTitle">
                             <header class="register-panel-header">
@@ -74,17 +74,22 @@
                             </div>
 
                             <label class="register-consent">
-                                <input type="checkbox" name="term_policy" value="1" {{ old('term_policy') ? 'checked' : '' }} required>
+                                <input type="checkbox" name="term_policy" value="1"
+                                    {{ old('term_policy') ? 'checked' : '' }} required
+                                    aria-describedby="termPolicyError" data-register-consent>
                                 <span>「<a href="{{ url('/terms') }}" target="_blank">利用規約</a>」および「<a href="{{ route('privacy-policy') }}" target="_blank">プライバシーポリシー</a>」に同意する</span>
                             </label>
-                            @error('term_policy') <small class="register-error register-consent-error">{{ $message }}</small> @enderror
+                            <small id="termPolicyError" class="register-error register-consent-error"
+                                data-register-consent-error @if (! $errors->has('term_policy')) hidden @endif>
+                                {{ $errors->first('term_policy') ?: '利用規約およびプライバシーポリシーへの同意が必要です。' }}
+                            </small>
 
                             <button type="submit" class="register-primary-button">次へ</button>
                             <p class="register-login-link">すでにアカウントをお持ちの方は <a href="{{ route('home', ['login' => 1]) }}">こちら &gt;</a></p>
                         </section>
                     </form>
                 @elseif ($step === 2)
-                    <form action="{{ route('register.step2.store') }}" method="POST" class="register-form">
+                    <form action="{{ route('register.step2.store') }}" method="POST" class="register-form" novalidate>
                         @csrf
                         <section class="register-panel" aria-labelledby="customerInfoTitle">
                             <header class="register-panel-header">
@@ -202,7 +207,7 @@
                         </section>
                     </form>
                 @else
-                    <form action="{{ route('register.store') }}" method="POST" class="register-form">
+                    <form action="{{ route('register.store') }}" method="POST" class="register-form" novalidate>
                         @csrf
                         <section class="register-panel" aria-labelledby="confirmTitle">
                             <header class="register-panel-header">
@@ -264,6 +269,132 @@
         }
 
         document.addEventListener('DOMContentLoaded', function () {
+            const consentInput = document.querySelector('[data-register-consent]');
+            const consentError = document.querySelector('[data-register-consent-error]');
+            const setConsentError = function (show) {
+                if (!consentInput || !consentError) return;
+
+                consentError.hidden = !show;
+                consentInput.setAttribute('aria-invalid', show ? 'true' : 'false');
+            };
+
+            const requiredMessages = {
+                email: 'メールアドレスを入力してください。',
+                password: 'パスワードを入力してください。',
+                password_confirmation: '確認用パスワードを入力してください。',
+                term_policy: '利用規約およびプライバシーポリシーへの同意が必要です。',
+                customer_type: '区分を選択してください。',
+                last_name: '姓を入力してください。',
+                first_name: '名を入力してください。',
+                last_name_kana: '姓（カタカナ）を入力してください。',
+                first_name_kana: '名（カタカナ）を入力してください。',
+                company_name: '会社名を入力してください。',
+                company_name_kana: '会社名（フリガナ）を入力してください。',
+                phone: '電話番号を入力してください。',
+                postal_code_front: '郵便番号を入力してください。',
+                postal_code_back: '郵便番号を入力してください。',
+                prefecture: '都道府県を入力してください。',
+                city: '市区町村を入力してください。',
+                address: '町名・番地を入力してください。',
+            };
+            const clientErrors = new WeakMap();
+            const getValidationMessage = function (field) {
+                if (field.validity.valueMissing) {
+                    return requiredMessages[field.name] || 'この項目を入力してください。';
+                }
+
+                if (field.validity.typeMismatch) {
+                    return '正しいメールアドレスを入力してください。';
+                }
+
+                if (field.validity.tooShort || field.validity.patternMismatch) {
+                    if (field.matches('[data-register-password]')) {
+                        return '8文字以上の半角英数字で入力してください。';
+                    }
+                    if (field.name === 'postal_code_front' || field.name === 'postal_code_back') {
+                        return '郵便番号を正しく入力してください。';
+                    }
+                    return field.title || '入力内容を確認してください。';
+                }
+
+                return '入力内容を確認してください。';
+            };
+            const getErrorHost = function (field) {
+                return field.closest('.register-field') || field.closest('.register-field-group');
+            };
+            const showClientError = function (field) {
+                if (field === consentInput) {
+                    setConsentError(true);
+                    return;
+                }
+
+                let error = clientErrors.get(field);
+                if (!error) {
+                    error = document.createElement('small');
+                    error.className = 'register-error register-client-error';
+                    const choiceField = field.closest('.register-choice-field');
+                    const errorHost = getErrorHost(field);
+
+                    if (choiceField) {
+                        choiceField.insertAdjacentElement('afterend', error);
+                    } else if (errorHost) {
+                        errorHost.appendChild(error);
+                    } else {
+                        field.insertAdjacentElement('afterend', error);
+                    }
+                    clientErrors.set(field, error);
+                }
+
+                error.textContent = getValidationMessage(field);
+                error.hidden = false;
+                field.setAttribute('aria-invalid', 'true');
+            };
+            const clearClientError = function (field) {
+                if (field === consentInput) {
+                    setConsentError(false);
+                    return;
+                }
+
+                const error = clientErrors.get(field);
+                if (error) error.hidden = true;
+                field.removeAttribute('aria-invalid');
+            };
+
+            document.querySelectorAll('.register-form input, .register-form select, .register-form textarea').forEach(function (field) {
+                field.addEventListener('invalid', function (event) {
+                    event.preventDefault();
+                    showClientError(field);
+                });
+                field.addEventListener('input', function () {
+                    if (field.validity.valid) clearClientError(field);
+                });
+                field.addEventListener('change', function () {
+                    if (field.validity.valid) clearClientError(field);
+                });
+            });
+
+            document.querySelectorAll('.register-form').forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    let firstInvalidField = null;
+
+                    form.querySelectorAll('input, select, textarea').forEach(function (field) {
+                        if (field.disabled) return;
+
+                        if (!field.validity.valid) {
+                            showClientError(field);
+                            if (!firstInvalidField) firstInvalidField = field;
+                        } else {
+                            clearClientError(field);
+                        }
+                    });
+
+                    if (firstInvalidField) {
+                        event.preventDefault();
+                        firstInvalidField.focus();
+                    }
+                });
+            });
+
             document.querySelectorAll('[data-register-password-toggle]').forEach(function (button) {
                 button.addEventListener('click', function () {
                     const input = button.closest('.register-input-wrap').querySelector('[data-register-password]');

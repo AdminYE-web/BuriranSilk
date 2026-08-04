@@ -438,6 +438,19 @@ body.register-page::before {
     text-align: center;
 }
 
+.register-consent-error[hidden] {
+    display: none;
+}
+
+.register-client-error {
+    display: block;
+    margin-top: 1px;
+}
+
+.register-client-error[hidden] {
+    display: none;
+}
+
 .register-newsletter {
     justify-content: flex-start;
     margin: 7px 0 2px;
