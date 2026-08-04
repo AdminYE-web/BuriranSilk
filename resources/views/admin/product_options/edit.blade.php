@@ -414,7 +414,7 @@
                     <small>ใช้สำหรับผูก option เดียวกันข้ามภาษา</small>
                 </div>
 
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label>{{ request()->cookie('dev') === '1' ? 'Additional Price' : '追加料金' }}</label>
 
                     <input type="number" step="0.01" name="additional_price"
@@ -426,7 +426,7 @@
                     <input type="number" step="0.01" name="additional_price_with_tax"
                         value="{{ old('additional_price_with_tax', $option->additional_price_with_tax ?? '') }}"
                         min="0" placeholder=" 220">
-                </div>
+                </div> --}}
 
                 @php
                     $currentPriceMode = old('price_mode');
@@ -436,7 +436,7 @@
                     }
                 @endphp
 
-                <div class="form-group full">
+                {{-- <div class="form-group full">
                     <label>{{ request()->cookie('dev') === '1' ? 'Additional Price Mode' : '追加料金モード' }}</label>
 
                     <div class="price-mode-box">
@@ -452,7 +452,7 @@
                             {{ request()->cookie('dev') === '1' ? 'Rate by Quantity' : '数量別価格' }}
                         </label>
                     </div>
-                </div>
+                </div> --}}
 
                 @php
                     $priceRates = old('price_rates');

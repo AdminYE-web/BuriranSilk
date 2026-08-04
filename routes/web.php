@@ -404,7 +404,7 @@ Route::prefix('admin-panel')->name('admin.')->group(function () {
         // Route::post('users/{user}/email-change', [UserAdminController::class, 'sendEmailChangeVerification'])
         //     ->name('users.email-change.send');
 
-        Route::get('/products/{product}/preview', [ProductController::class, 'preview'])
+        Route::get('/products/{product}/preview', [ProductListController::class, 'previewOrder'])
             ->name('products.preview');
         Route::get('products/{product}/preview-order', [ProductListController::class, 'previewOrder'])
             ->name('products.preview-order');

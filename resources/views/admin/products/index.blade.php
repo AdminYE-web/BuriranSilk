@@ -694,24 +694,10 @@
                                         </button>
                                     </form>
                                 @else
-                                    {{-- Preview Dropdown --}}
-                                    <div class="action-dropdown">
-                                        <button type="button" class="action-link dropdown-btn">
-                                            {{ request()->cookie('dev') == '1' ? 'Preview ▾' : 'プレビュー ▾' }}
-                                        </button>
-
-                                        <div class="action-menu">
-                                            <a href="{{ route('admin.products.preview', $product->product_id) }}"
-                                                target="_blank">
-                                                {{ request()->cookie('dev') == '1' ? 'Product Preview' : '製品プレビュー' }}
-                                            </a>
-
-                                            <a href="{{ route('admin.products.preview-order', $product->product_id) }}"
-                                                target="_blank">
-                                                {{ request()->cookie('dev') == '1' ? 'Order Preview' : '注文プレビュー' }}
-                                            </a>
-                                        </div>
-                                    </div>
+                                    <a href="{{ route('admin.products.preview', $product->product_id) }}"
+                                        class="action-link" target="_blank">
+                                        {{ request()->cookie('dev') == '1' ? 'Product Preview' : '製品プレビュー' }}
+                                    </a>
 
                                     {{-- More Dropdown --}}
                                     <div class="action-dropdown">

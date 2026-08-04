@@ -557,49 +557,36 @@
     font-size: 12px;
 }
 
-.product-font-field > input:focus,
-.product-font-size-control input:focus {
+.product-font-field > .product-font-select {
+    width: 100%;
+    min-height: 42px;
+    padding: 8px 40px 8px 12px;
+    color: #3f3934;
+    background-color: #fff;
+    border-color: #d9d3cb;
+    border-radius: 6px;
+    font-family: "Noto Serif JP", serif;
+    font-size: 14px;
+    box-shadow: 0 1px 3px rgba(86, 68, 50, 0.08);
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-font-field > .product-font-select:hover {
+    border-color: #b9aa99;
+}
+
+.product-font-field > input:focus {
     border-color: var(--detail-brown);
     outline: 2px solid rgba(159, 128, 91, 0.2);
     outline-offset: 1px;
 }
 
-.product-font-size-control {
-    display: flex;
-    align-items: center;
-    gap: 4px;
+.product-font-field > .product-font-select:focus {
+    border-color: var(--detail-brown);
+    box-shadow: 0 0 0 0.2rem rgba(159, 128, 91, 0.18);
 }
 
-.product-font-size-control button {
-    width: 18px;
-    height: 30px;
-    padding: 0;
-    color: #333;
-    background: transparent;
-    border: 0;
-    font: inherit;
-    font-size: 20px;
-    line-height: 1;
-    cursor: pointer;
-}
-
-.product-font-size-control input {
-    width: 90px;
-    height: 30px;
-    padding: 4px 8px;
-    background: #fff;
-    border: 1px solid #e8e5e0;
-    border-radius: 2px;
-    font: inherit;
-    text-align: center;
-    appearance: textfield;
-}
-
-.product-font-size-control input::-webkit-inner-spin-button,
-.product-font-size-control input::-webkit-outer-spin-button {
-    margin: 0;
-    appearance: none;
-}
 
 .product-font-entry-add {
     width: calc(100% - 36px);

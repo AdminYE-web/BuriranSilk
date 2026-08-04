@@ -356,7 +356,7 @@
 
                 </div>
 
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label>{{ request()->cookie('dev') === '1' ? 'Additional Price' : '追加料金' }}</label>
 
                     <input type="number" step="0.01" name="additional_price" value="{{ old('additional_price', 0) }}">
@@ -367,8 +367,8 @@
 
                     <input type="number" step="0.01" name="additional_price_with_tax"
                         value="{{ old('additional_price_with_tax') }}" min="0" placeholder="For example 220">
-                </div>
-                <div class="form-group full price-mode-field">
+                </div> --}}
+                {{-- <div class="form-group full price-mode-field">
                     <label>{{ request()->cookie('dev') === '1' ? 'Additional Price Mode' : '追加料金モード' }}</label>
 
                     <div class="price-mode-box">
@@ -390,7 +390,7 @@
                             ? 'Normal Price = Uses the standard Additional Price / Rate by Quantity = Sets the price based on product quantity.'
                             : '通常価格＝通常の追加料金を使用します／数量別価格＝商品数量に応じて価格を設定します。' }}
                     </small>
-                </div>
+                </div> --}}
                 <div class="form-group full" id="price-rate-section">
                     <label>{{ request()->cookie('dev') === '1' ? 'Additional Price Rates' : '数量別追加料金設定' }}</label>
 
@@ -455,7 +455,11 @@
                     </select>
                 </div>
 
-                <div class="form-group full color-code-field">
+               
+
+               
+            </div>
+             <div class="form-group ">
                     <label>{{ request()->cookie('dev') === '1' ? 'Color Code' : '色コード' }}</label>
 
                     <div class="color-picker-group">
@@ -466,8 +470,7 @@
                             onchange="document.getElementById('color_code_input').value = this.value">
                     </div>
                 </div>
-
-                <div class="form-group full option-detail-field">
+             <div class="form-group ">
                     <label>{{ request()->cookie('dev') === '1' ? 'Option Detail' : 'オプション詳細' }}</label>
 
                     <textarea name="option_detail" rows="8"
@@ -475,7 +478,6 @@
                             ? 'Model: ID-6_N / Type: Soft Card Holder / Card Size: 91 mm (H) x 55 mm (W)'
                             : 'モデル: ID-6_N / タイプ: ソフトカードホルダー / カードサイズ: 91 mm (高さ) x 55 mm (幅)' }}">{{ old('option_detail') }}</textarea>
                 </div>
-            </div>
 
             <div class="section-title">{{ request()->cookie('dev') === '1' ? 'Option Status' : 'オプションステータス' }}</div>
 

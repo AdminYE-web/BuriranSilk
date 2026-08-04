@@ -187,6 +187,21 @@
                                     対応形式：ai、pdf、eps、psd、png、jpg。大容量データは別途ご相談ください。
                                 </p>
                             @elseif ($displayType === 'font_option')
+                                @php
+                                    $fontChoices = [
+                                        'ゴシック体',
+                                        '丸ゴシック体',
+                                        '明朝体',
+                                        '教科書体',
+                                        '行書体',
+                                        'Rockwell',
+                                        'Impact',
+                                        'Times New Roman',
+                                        'Baskerville',
+                                        'Helvetica',
+                                        'その他',
+                                    ];
+                                @endphp
                                 <p class="product-option-help">{{ $optionGroup['name'] }}</p>
 
                                 <div class="product-option-stack">
@@ -231,7 +246,7 @@
                                             </div>
 
                                             <label class="product-font-field">
-                                                <span>名入れ文字・テキスト</span>
+                                                <span>名入れ文字・テキスト1</span>
                                                 <input type="text"
                                                     name="font_entries[{{ $optionGroup['id'] }}][0][text]"
                                                     placeholder="配置する文字をご入力ください" data-font-field="text">
@@ -239,24 +254,16 @@
 
                                             <label class="product-font-field">
                                                 <span>ご希望の書体・フォント</span>
-                                                <input type="text"
+                                                <select class="form-select product-font-select"
                                                     name="font_entries[{{ $optionGroup['id'] }}][0][font]"
-                                                    placeholder="例: ゴシック体 / 明朝体" data-font-field="font">
+                                                    data-font-field="font">
+                                                    <option value="">フォント</option>
+                                                    @foreach ($fontChoices as $fontChoice)
+                                                        <option value="{{ $fontChoice }}">{{ $fontChoice }}</option>
+                                                    @endforeach
+                                                </select>
                                             </label>
 
-                                            <div class="product-font-field">
-                                                <span>フォントサイズ</span>
-                                                <div class="product-font-size-control">
-                                                    <button type="button" data-font-size-action="decrease"
-                                                        aria-label="フォントサイズを小さくする">−</button>
-                                                    <input type="number"
-                                                        name="font_entries[{{ $optionGroup['id'] }}][0][size]"
-                                                        min="1" max="200" value="12"
-                                                        data-font-field="size">
-                                                    <button type="button" data-font-size-action="increase"
-                                                        aria-label="フォントサイズを大きくする">＋</button>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
 
@@ -282,21 +289,14 @@
 
                                             <label class="product-font-field">
                                                 <span>ご希望の書体・フォント</span>
-                                                <input type="text" placeholder="例: ゴシック体 / 明朝体"
-                                                    data-font-field="font">
+                                                <select class="form-select product-font-select" data-font-field="font">
+                                                    <option value="">フォント</option>
+                                                    @foreach ($fontChoices as $fontChoice)
+                                                        <option value="{{ $fontChoice }}">{{ $fontChoice }}</option>
+                                                    @endforeach
+                                                </select>
                                             </label>
 
-                                            <div class="product-font-field">
-                                                <span>フォントサイズ</span>
-                                                <div class="product-font-size-control">
-                                                    <button type="button" data-font-size-action="decrease"
-                                                        aria-label="フォントサイズを小さくする">−</button>
-                                                    <input type="number" min="1" max="200" value="12"
-                                                        data-font-field="size">
-                                                    <button type="button" data-font-size-action="increase"
-                                                        aria-label="フォントサイズを大きくする">＋</button>
-                                                </div>
-                                            </div>
                                         </div>
                                     </template>
                                 </div>
@@ -1409,22 +1409,6 @@
                     return;
                 }
 
-                const sizeButton = event.target.closest('[data-font-size-action]');
-
-                if (!sizeButton) {
-                    return;
-                }
-
-                const sizeInput = sizeButton.closest('.product-font-size-control')
-                    .querySelector('[data-font-field="size"]');
-                const minimum = Number(sizeInput.min || 1);
-                const maximum = Number(sizeInput.max || 200);
-                const currentValue = Number(sizeInput.value || 12);
-                const adjustment = sizeButton.dataset.fontSizeAction === 'increase' ? 1 : -1;
-                sizeInput.value = Math.max(minimum, Math.min(maximum, currentValue + adjustment));
-                sizeInput.dispatchEvent(new Event('input', {
-                    bubbles: true
-                }));
             });
 
             quantityInput.addEventListener('input', updatePrice);
@@ -1585,7 +1569,7 @@
                     const savedEntry = savedEntries[index] || {};
                     entry.querySelector('[data-font-field="text"]').value = savedEntry.text || '';
                     entry.querySelector('[data-font-field="font"]').value = savedEntry.font || '';
-                    entry.querySelector('[data-font-field="size"]').value = savedEntry.size || 12;
+
                 });
                 reindexFontEntries(details);
             });

@@ -379,6 +379,41 @@ class ProductListController extends Controller
             )
             ->firstOrFail();
 
+        return $this->renderProduct($productModel);
+    }
+
+    public function previewOrder(Product $product): View
+    {
+        abort_unless(in_array((int) $product->is_active, [1, 3], true), 404);
+
+        $product->load([
+            'mainImage',
+            'secondImage',
+            'galleryImages',
+            'detail' => function ($query) {
+                $query->where('is_active', 1);
+            },
+            'displayPriceTier',
+            'priceTiers',
+            'optionPriceRules.options',
+            'optionPriceRules.tiers',
+            'optionAssignments' => function ($query) {
+                $query->where('is_active', 1)
+                    ->orderBy('sort_order')
+                    ->orderBy('assignment_id');
+            },
+            'optionAssignments.option' => function ($query) {
+                $query->where('is_active', 1)
+                    ->with(['group', 'mainImage']);
+            },
+        ]);
+
+        return $this->renderProduct($product);
+    }
+
+    private function renderProduct(Product $productModel): View
+    {
+
         /*
         |--------------------------------------------------------------------------
         | Gallery
