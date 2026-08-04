@@ -83,7 +83,7 @@
                                     <p class="cart-item-custom-detail">
                                         <span>テキスト {{ $entryIndex + 1 }}</span>
                                         <strong>{{ $entry['text'] ?: '未入力' }}</strong>
-                                        <small>{{ $entry['font'] ?: '書体指定なし' }} / {{ $entry['size'] }}pt</small>
+                                        <small>{{ $entry['font'] ?: '書体指定なし' }} </small>
                                     </p>
                                 @endforeach
                             @endforeach

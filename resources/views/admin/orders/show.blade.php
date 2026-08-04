@@ -1037,12 +1037,12 @@
             <tr><th>{{ $isEnglish ? 'Notes' : 'ご連絡事項' }}</th><td class="pre-line">{{ $order->notes ?? '-' }}</td></tr>
         </table>
 
-        @if (!empty($checkoutData))
+        {{-- @if (!empty($checkoutData))
             <details class="json-details" style="margin-top: 18px;">
                 <summary>{{ $isEnglish ? 'Original Checkout Data' : '注文時の入力データ（原本）' }}</summary>
                 <pre class="json-code">{{ json_encode($checkoutData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) }}</pre>
             </details>
-        @endif
+        @endif --}}
 
     </div>
 
