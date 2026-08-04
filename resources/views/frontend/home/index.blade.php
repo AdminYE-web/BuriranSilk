@@ -81,7 +81,7 @@
             <div class="home-card-holder-layout">
                 <div class="home-card-holder-copy">
                     <h3>
-                        <a href="{{ url('/products/id-case') }}">シルク製社員証ケース</a>
+                        <a href="{{ url('/products') }}">シルク製社員証ケース</a>
                     </h3>
 
                     <p>
