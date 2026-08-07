@@ -42,7 +42,7 @@
             @enderror
         </div>
 
-        <div class="faq-form-group">
+        {{-- <div class="faq-form-group">
             <label>{{ request()->cookie('dev') == '1' ? 'Sort Order' : 'ソート順' }} <span>*</span></label>
             <input
                 type="number"
@@ -54,7 +54,7 @@
             @error('sort_order')
                 <div class="error-text">{{ $message }}</div>
             @enderror
-        </div>
+        </div> --}}
 
         <div class="faq-form-group">
             <label>{{ request()->cookie('dev') == '1' ? 'Status' : 'ステータス' }} <span>*</span></label>
